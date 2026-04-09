@@ -175,35 +175,47 @@ textarea.form-input{resize:vertical;min-height:90px;line-height:1.65}
 .prompt-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;font-family:'Courier New',monospace;font-size:0.76rem;color:var(--text2);line-height:1.85;white-space:pre-wrap;margin-bottom:10px;max-height:200px;overflow-y:auto}
 
 /* ════════════════════════════════════════════════════
-   MEAL PLANNER VIEW
+   MEAL PLANNER — WEEK GRID
    ════════════════════════════════════════════════════ */
-.planner-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.planner-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
 .planner-header h2{font-family:'Playfair Display',serif;font-size:1.7rem}
 
-/* Day tabs */
-.day-tabs{display:flex;gap:6px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
-.day-tabs::-webkit-scrollbar{height:3px}
-.day-tabs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.day-tab{padding:8px 16px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-family:'Lato',sans-serif;font-size:0.82rem;font-weight:700;color:var(--text2);transition:all .15s;white-space:nowrap;flex-shrink:0;position:relative}
-.day-tab.active{background:var(--green);color:#fff;border-color:var(--green)}
-.day-tab.today-tab::after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--terra)}
+.week-grid-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
+.week-grid-wrap::-webkit-scrollbar{height:4px}
+.week-grid-wrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
-/* Meal slots */
-.day-slots{display:grid;gap:10px}
-.slot-row{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden}
-.slot-header{padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.slot-meal-label{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text2)}
-.slot-body{padding:14px 16px;cursor:pointer;transition:background .1s;min-height:56px;display:flex;align-items:center;gap:10px}
-.slot-body:hover{background:var(--bg)}
-.slot-body:active{background:var(--green-light)}
-.slot-empty{color:var(--text3);font-size:0.88rem;font-style:italic}
-.slot-recipe-name{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:600}
-.slot-text-val{font-size:0.9rem;color:var(--text)}
-.slot-servings-badge{font-size:0.75rem;color:var(--text2);background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:2px 8px;margin-left:auto;flex-shrink:0}
-.slot-edit-btn{margin-left:auto;background:none;border:none;color:var(--text3);cursor:pointer;font-size:0.85rem;padding:4px;transition:color .15s;flex-shrink:0}
-.slot-body:hover .slot-edit-btn{color:var(--green)}
-.slot-clear-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:0.82rem;padding:4px 8px;transition:color .15s}
-.slot-clear-btn:hover{color:var(--red)}
+.week-grid{display:grid;grid-template-columns:72px repeat(7,1fr);min-width:640px;background:var(--surface);overflow:hidden}
+
+/* Corner + Day headers */
+.wg-corner{background:var(--surface2);border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.wg-day{padding:10px 6px;text-align:center;background:var(--surface2);border-bottom:1px solid var(--border);border-left:1px solid var(--border)}
+.wg-day .wd-name{font-size:0.78rem;font-weight:700;letter-spacing:.3px;color:var(--text2);text-transform:uppercase}
+.wg-day .wd-date{font-size:0.65rem;color:var(--text3);margin-top:2px}
+.wg-day.wg-today{background:var(--green)}
+.wg-day.wg-today .wd-name{color:#fff}
+.wg-day.wg-today .wd-date{color:rgba(255,255,255,0.7)}
+
+/* Meal row label */
+.wg-meal-label{display:flex;flex-direction:column;justify-content:center;padding:6px 8px;background:var(--surface2);border-top:1px solid var(--border);border-right:1px solid var(--border);min-height:78px}
+.wg-meal-label .wml-icon{font-size:1rem;margin-bottom:2px}
+.wg-meal-label .wml-text{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);line-height:1.2}
+
+/* Meal cells */
+.wg-cell{border-top:1px solid var(--border);border-left:1px solid var(--border);min-height:78px;cursor:pointer;transition:background .12s;padding:8px;display:flex;flex-direction:column;justify-content:center;position:relative;gap:3px}
+.wg-cell:hover{background:var(--green-light)}
+.wg-cell:active{background:#d4eadb}
+.wg-cell.wg-today-col{border-left:2px solid var(--green)}
+.wg-cell.wg-filled{background:#f8fdf9}
+.wg-cell.wg-filled:hover{background:#e8f5ec}
+.wg-cell-name{font-family:'Playfair Display',serif;font-size:0.82rem;font-weight:600;line-height:1.3;color:var(--text)}
+.wg-cell-free{font-size:0.82rem;color:var(--text2);line-height:1.3;font-style:italic}
+.wg-cell-srv{font-size:0.66rem;color:var(--green);font-weight:700;letter-spacing:.2px}
+.wg-cell-empty{font-size:0.72rem;color:var(--text3);display:flex;align-items:center;gap:4px}
+.wg-cell-empty .plus{font-size:1rem;font-weight:300;color:var(--border)}
+.wg-cell:hover .wg-cell-empty .plus{color:var(--green)}
+.wg-clear-btn{position:absolute;top:4px;right:4px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:0.68rem;line-height:1;padding:2px 4px;border-radius:4px;opacity:0;transition:all .15s}
+.wg-cell:hover .wg-clear-btn{opacity:1}
+.wg-clear-btn:hover{color:var(--red);background:var(--terra-light)}
 
 /* ════════════════════════════════════════════════════
    SLOT MODAL
@@ -480,11 +492,18 @@ Here is the recipe to format:
 <!-- ═══ MEAL PLANNER ══════════════════════════════════ -->
 <div id="view-planner" class="view">
   <div class="planner-header">
-    <h2>Meal Planner</h2>
-    <button class="btn btn-outline btn-sm" onclick="addPlanToShopping()">📥 Add to Shopping List</button>
+    <div>
+      <h2>Meal Planner</h2>
+      <p style="font-size:0.82rem;color:var(--text2);margin-top:3px">Tap any cell to add or edit a meal</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-outline btn-sm" onclick="clearFullPlan()">🗑️ Clear Week</button>
+      <button class="btn btn-primary btn-sm" onclick="addPlanToShopping()">📥 Add to Shopping</button>
+    </div>
   </div>
-  <div class="day-tabs" id="day-tabs"></div>
-  <div class="day-slots" id="day-slots"></div>
+  <div class="week-grid-wrap">
+    <div class="week-grid" id="week-grid"></div>
+  </div>
 </div>
 
 <!-- ═══ SHOPPING ══════════════════════════════════════ -->
@@ -642,7 +661,6 @@ let formMealType = 'dinner';
 let formSelectedTags = [];
 
 // Planner state
-let activePlanDay = null;
 let modalState = { day:null, meal:null, mode:'recipe', recipeId:null, servings:4 };
 
 // Season state
@@ -956,53 +974,81 @@ function parseRecipe(){
 /* ═══════════════════════════════════════════════════
    MEAL PLANNER
    ═══════════════════════════════════════════════════ */
-function renderPlanner(){
-  const today=todayDay();
-  if(!activePlanDay)activePlanDay=today;
-  document.getElementById('day-tabs').innerHTML=DAYS.map(d=>`
-    <button class="day-tab${activePlanDay===d?' active':''}${d===today?' today-tab':''}" onclick="selectPlanDay('${d}')">${d}</button>
-  `).join('');
-  renderDaySlots(activePlanDay);
+/* ═══════════════════════════════════════════════════
+   MEAL PLANNER — WEEK GRID
+   ═══════════════════════════════════════════════════ */
+const MEAL_ICONS = { breakfast:'🍳', lunch:'🥗', dinner:'🍽️', snacks:'🍎' };
+const MEAL_SHORT = { breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner', snacks:'Snacks' };
+
+function getWeekDates(){
+  const today=new Date(), dow=today.getDay(); // 0=Sun
+  const monday=new Date(today); monday.setDate(today.getDate()-(dow===0?6:dow-1));
+  return DAYS.map((_,i)=>{ const d=new Date(monday); d.setDate(monday.getDate()+i); return d; });
 }
 
-function selectPlanDay(d){activePlanDay=d;renderPlanner()}
+function renderPlanner(){
+  const dates=getWeekDates();
+  const todayStr=new Date().toDateString();
+  const grid=document.getElementById('week-grid');
 
-function renderDaySlots(day){
-  const dayPlan=state.plan[day]||{};
-  document.getElementById('day-slots').innerHTML=MEALS.map(meal=>{
-    const slot=dayPlan[meal];
-    let bodyHTML='';
-    if(!slot){
-      bodyHTML=`<span class="slot-empty">Tap to add ${meal}…</span><button class="slot-edit-btn">+</button>`;
-    } else if(slot.type==='recipe'){
-      const r=state.recipes.find(x=>x.id===slot.recipeId);
-      const name=r?r.name:'(recipe removed)';
-      bodyHTML=`<span class="slot-recipe-name">${name}</span><span class="slot-servings-badge">× ${slot.servings} srv</span><button class="slot-clear-btn" onclick="event.stopPropagation();clearSlotDirect('${day}','${meal}')">✕</button>`;
-    } else {
-      bodyHTML=`<span class="slot-text-val">${slot.text}</span><button class="slot-clear-btn" onclick="event.stopPropagation();clearSlotDirect('${day}','${meal}')">✕</button>`;
-    }
-    return `<div class="slot-row">
-      <div class="slot-header"><span class="slot-meal-label">${MEAL_LABELS[meal]}</span></div>
-      <div class="slot-body" onclick="openSlotModal('${day}','${meal}')">${bodyHTML}</div>
-    </div>`;
-  }).join('');
+  // Corner
+  let html=`<div class="wg-corner"></div>`;
+
+  // Day headers
+  DAYS.forEach((day,i)=>{
+    const d=dates[i];
+    const isToday=d.toDateString()===todayStr;
+    const dateStr=`${d.getDate()}/${d.getMonth()+1}`;
+    html+=`<div class="wg-day${isToday?' wg-today':''}"><div class="wd-name">${day}</div><div class="wd-date">${dateStr}</div></div>`;
+  });
+
+  // Meal rows
+  MEALS.forEach(meal=>{
+    // Row label
+    html+=`<div class="wg-meal-label"><div class="wml-icon">${MEAL_ICONS[meal]}</div><div class="wml-text">${MEAL_SHORT[meal]}</div></div>`;
+    // Day cells
+    DAYS.forEach((day,i)=>{
+      const isToday=dates[i].toDateString()===new Date().toDateString();
+      const slot=state.plan[day]?.[meal];
+      let inner='';
+      if(!slot){
+        inner=`<div class="wg-cell-empty"><span class="plus">+</span> Add</div>`;
+      } else if(slot.type==='recipe'){
+        const r=state.recipes.find(x=>x.id===slot.recipeId);
+        inner=`<div class="wg-cell-name">${r?r.name:'(removed)'}</div><div class="wg-cell-srv">× ${slot.servings} servings</div>
+          <button class="wg-clear-btn" onclick="event.stopPropagation();clearSlotDirect('${day}','${meal}')">✕</button>`;
+      } else {
+        inner=`<div class="wg-cell-free">${slot.text}</div>
+          <button class="wg-clear-btn" onclick="event.stopPropagation();clearSlotDirect('${day}','${meal}')">✕</button>`;
+      }
+      html+=`<div class="wg-cell${slot?' wg-filled':''}${isToday?' wg-today-col':''}" onclick="openSlotModal('${day}','${meal}')">${inner}</div>`;
+    });
+  });
+
+  grid.innerHTML=html;
   updateBadges();
 }
 
 function clearSlotDirect(day,meal){
-  state.plan[day][meal]=null;saveData();renderDaySlots(day);updateBadges();
+  state.plan[day][meal]=null;saveData();renderPlanner();updateBadges();
+}
+
+function clearFullPlan(){
+  if(!confirm('Clear the entire week plan?'))return;
+  DAYS.forEach(d=>MEALS.forEach(m=>state.plan[d][m]=null));
+  saveData();renderPlanner();updateBadges();toast('Week cleared');
 }
 
 function addPlanToShopping(){
   let added=0;
-  DAYS.forEach(d=>['breakfast','lunch','dinner'].forEach(m=>{
+  DAYS.forEach(d=>MEALS.forEach(m=>{
     const slot=state.plan[d]?.[m];
     if(slot?.type==='recipe'&&slot.recipeId&&!state.shoppingRecipes.find(x=>x.id===slot.recipeId)){
       state.shoppingRecipes.push({id:slot.recipeId,servings:slot.servings||4});added++;
     }
   }));
   saveData();updateBadges();
-  if(added){toast(`${added} recipe${added>1?'s':''} added from meal plan`);showView('shopping')}
+  if(added){toast(`${added} recipe${added>1?'s':''} added to shopping`);showView('shopping')}
   else toast('No new recipes to add from plan');
 }
 
@@ -1075,13 +1121,13 @@ function saveSlot(){
   }
   saveData();
   document.getElementById('slot-modal').classList.remove('open');
-  renderDaySlots(day);updateBadges();
+  renderPlanner();updateBadges();
 }
 function clearSlot(){
   state.plan[modalState.day][modalState.meal]=null;
   saveData();
   document.getElementById('slot-modal').classList.remove('open');
-  renderDaySlots(modalState.day);updateBadges();
+  renderPlanner();updateBadges();
 }
 
 /* ═══════════════════════════════════════════════════
