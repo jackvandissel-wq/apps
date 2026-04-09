@@ -4,277 +4,108 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#0f0f0f">
+<meta name="theme-color" content="#3B6E52">
 <title>JV — Apps</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f0f0f;
-    --surface: #181818;
-    --border: #2a2a2a;
-    --accent: #e8c84a;
-    --accent-dim: rgba(232,200,74,0.1);
-    --orange: #d4622a;
-    --green: #4a9e6b;
-    --text: #e8e4dc;
-    --muted: #6a6560;
+    --bg: #FAF7F2; --surface: #FFF; --surface2: #F5F0E8; --border: #E8E2D8;
+    --text: #1C1917; --text2: #78716C; --text3: #A8A29E;
+    --green: #3B6E52; --green-light: #EBF4EE;
+    --terra: #C4622D; --terra-light: #FBF0E9;
+    --gold: #B07D2A; --gold-light: #FBF5E6;
+    --shadow: 0 2px 12px rgba(28,25,23,0.07);
+    --shadow-lg: 0 8px 32px rgba(28,25,23,0.13);
+    --radius: 12px; --radius-sm: 8px;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Lato', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 0 0 60px; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-weight: 300;
-    min-height: 100vh;
-    padding: 0 0 60px;
-  }
+  header { background: var(--green); padding: 32px 24px 28px; }
+  .header-eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 8px; }
+  header h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #fff; font-weight: 700; line-height: 1.1; margin-bottom: 6px; }
+  header p { font-size: 0.8rem; color: rgba(255,255,255,0.6); font-weight: 300; letter-spacing: 0.5px; }
 
-  /* grid texture */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(232,200,74,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232,200,74,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
+  .wrap { max-width: 600px; margin: 0 auto; padding: 28px 20px; }
 
-  .wrap { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; padding: 0 20px; }
-
-  /* HEADER */
-  header {
-    padding: 48px 0 40px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 40px;
-  }
-
-  .eyebrow {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
-    opacity: 0;
-    animation: fadeUp 0.5s ease forwards;
-  }
-
-  h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(52px, 12vw, 88px);
-    line-height: 0.88;
-    letter-spacing: 3px;
-    color: var(--text);
-    opacity: 0;
-    animation: fadeUp 0.5s ease 0.1s forwards;
-  }
-
-  h1 em {
-    color: var(--accent);
-    font-style: normal;
-  }
-
-  .tagline {
-    margin-top: 16px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 1px;
-    line-height: 1.7;
-    opacity: 0;
-    animation: fadeUp 0.5s ease 0.2s forwards;
-  }
-
-  /* SECTION */
-  .section-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* APP CARDS */
-  .apps-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 48px;
-  }
+  .section-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text3); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 
   .app-card {
     display: block;
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 22px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
     text-decoration: none;
     color: inherit;
-    transition: border-color 0.2s, background 0.2s;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
     position: relative;
     overflow: hidden;
-    opacity: 0;
-    animation: fadeUp 0.4s ease forwards;
   }
+  .app-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); border-color: var(--green); }
+  .app-card::after { content: '→'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; color: var(--text3); transition: all 0.2s; }
+  .app-card:hover::after { color: var(--green); transform: translateY(-50%) translateX(-3px); }
 
-  .app-card::after {
-    content: '→';
-    position: absolute;
-    right: 22px;
-    top: 50%;
-    transform: translateY(-50%) translateX(4px);
-    font-size: 18px;
-    color: var(--muted);
-    transition: color 0.2s, transform 0.2s;
+  .app-tag { display: inline-block; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 20px; margin-bottom: 8px; }
+  .tag-fitness { background: var(--terra-light); color: var(--terra); }
+  .tag-kitchen { background: var(--green-light); color: var(--green); }
+  .tag-tool    { background: var(--gold-light); color: var(--gold); }
+
+  .app-name { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--text); margin-bottom: 5px; padding-right: 32px; }
+  .app-desc { font-size: 0.8rem; color: var(--text2); line-height: 1.55; padding-right: 32px; }
+
+  .coming-card {
+    background: var(--surface2);
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 12px;
   }
+  .coming-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 5px; }
+  .coming-text { font-size: 0.8rem; color: var(--text3); }
 
-  .app-card:hover {
-    border-color: var(--accent);
-    background: rgba(232,200,74,0.04);
-  }
-
-  .app-card:hover::after {
-    color: var(--accent);
-    transform: translateY(-50%) translateX(0);
-  }
-
-  .app-card-inner { padding-right: 32px; }
-
-  .app-tag {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 2px 7px;
-    border-radius: 3px;
-    display: inline-block;
-    margin-bottom: 8px;
-  }
-
-  .tag-fitness { background: rgba(212,98,42,0.15); color: var(--orange); }
-  .tag-finance { background: rgba(74,158,107,0.15); color: var(--green); }
-  .tag-tool    { background: rgba(232,200,74,0.12); color: var(--accent); }
-
-  .app-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 26px;
-    letter-spacing: 1.5px;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-
-  .app-desc {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.55;
-  }
-
-  /* COMING SOON */
-  .coming-soon {
-    background: var(--surface);
-    border: 1px dashed var(--border);
-    border-radius: 10px;
-    padding: 20px 22px;
-    opacity: 0;
-    animation: fadeUp 0.4s ease forwards;
-  }
-
-  .coming-soon-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-
-  .coming-soon-text {
-    font-size: 12px;
-    color: #444;
-    line-height: 1.55;
-  }
-
-  /* FOOTER */
-  footer {
-    border-top: 1px solid var(--border);
-    padding-top: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-    opacity: 0;
-    animation: fadeUp 0.4s ease 0.6s forwards;
-  }
-
-  .footer-left {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 1px;
-    color: var(--muted);
-  }
-
-  .footer-left span { color: var(--accent); }
-
-  .footer-right {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    color: #333;
-    letter-spacing: 1px;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  footer { border-top: 1px solid var(--border); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .footer-l { font-size: 0.72rem; color: var(--text3); font-weight: 700; }
+  .footer-l span { color: var(--green); }
+  .footer-r { font-size: 0.72rem; color: var(--border); }
 </style>
 </head>
 <body>
+
+<header>
+  <div class="header-eyebrow">Personal Apps</div>
+  <h1>JV Apps</h1>
+  <p>Built with Claude · Hosted on GitHub Pages</p>
+</header>
+
 <div class="wrap">
+  <div class="section-label" style="margin-bottom:14px">Active Apps</div>
 
-  <header>
-    <div class="eyebrow">Personal Apps</div>
-    <h1>JV<br><em>APPS</em></h1>
-    <p class="tagline">Built with Claude · Hosted on GitHub Pages<br>Add apps to your phone home screen for quick access.</p>
-  </header>
+  <a class="app-card" href="easy-strength-swings_2.html">
+    <span class="app-tag tag-fitness">Fitness</span>
+    <div class="app-name">Easy Strength + Swings</div>
+    <div class="app-desc">Dan John's Easy Strength — 40 sessions, 5 lifts, 75 swings daily. Weight tracking with auto-projection and session log.</div>
+  </a>
 
-  <div style="margin-bottom: 32px; opacity:0; animation: fadeUp 0.4s ease 0.25s forwards;">
-    <div class="section-label">Active Apps</div>
-    <div class="apps-grid">
+  <a class="app-card" href="my-kitchen-v2.html">
+    <span class="app-tag tag-kitchen">Kitchen</span>
+    <div class="app-name">My Kitchen</div>
+    <div class="app-desc">Personal recipe manager. Save, search, and scale recipes. Shopping list and meal planning.</div>
+  </a>
 
-      <a class="app-card" href="easy-strength-swings_2.html" style="animation-delay: 0.3s">
-        <div class="app-card-inner">
-          <span class="app-tag tag-fitness">Fitness</span>
-          <div class="app-name">Easy Strength + Swings</div>
-          <div class="app-desc">Dan John's Easy Strength program with KB swings. 40 sessions, 8 weeks. Weight tracking, feel ratings, and auto-projection.</div>
-        </div>
-      </a>
-
-    </div>
-  </div>
-
-  <div style="margin-bottom: 48px; opacity:0; animation: fadeUp 0.4s ease 0.45s forwards;">
-    <div class="section-label">Coming Soon</div>
-    <div class="coming-soon" style="animation-delay: 0.5s">
-      <div class="coming-soon-label">Next App</div>
-      <div class="coming-soon-text">Describe what you want to Claude and upload the file here.</div>
-    </div>
+  <div class="section-label" style="margin-top:24px;margin-bottom:14px">Coming Soon</div>
+  <div class="coming-card">
+    <div class="coming-label">Next App</div>
+    <div class="coming-text">Describe what you want to Claude — it gets built and uploaded here.</div>
   </div>
 
   <footer>
-    <div class="footer-left"><span>jackvandissel-wq</span>.github.io/apps</div>
-    <div class="footer-right">Built with Claude</div>
+    <div class="footer-l"><span>jackvandissel-wq</span>.github.io/apps</div>
+    <div class="footer-r">Built with Claude</div>
   </footer>
-
 </div>
+
 </body>
 </html>
