@@ -11,822 +11,373 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #FAF7F2;
-  --surface: #FFFFFF;
-  --surface2: #F5F0E8;
-  --border: #E8E2D8;
-  --text: #1C1917;
-  --text2: #78716C;
-  --text3: #A8A29E;
-  --green: #3B6E52;
-  --green-mid: #5A8F70;
-  --green-light: #EBF4EE;
-  --terra: #C4622D;
-  --terra-light: #FBF0E9;
-  --gold: #B07D2A;
-  --gold-light: #FBF5E6;
-  --shadow: 0 2px 12px rgba(28,25,23,0.07);
-  --shadow-lg: 0 8px 32px rgba(28,25,23,0.13);
-  --radius: 12px;
-  --radius-sm: 8px;
-  --nav-h: 64px;
-  --safe-bot: env(safe-area-inset-bottom, 0px);
+  --bg:#FAF7F2; --surface:#FFF; --surface2:#F5F0E8; --border:#E8E2D8;
+  --text:#1C1917; --text2:#78716C; --text3:#A8A29E;
+  --green:#3B6E52; --green-mid:#5A8F70; --green-light:#EBF4EE;
+  --terra:#C4622D; --terra-light:#FBF0E9;
+  --gold:#B07D2A; --gold-light:#FBF5E6;
+  --blue:#1D5FA8; --blue-light:#EBF2FB;
+  --shadow:0 2px 12px rgba(28,25,23,0.07);
+  --shadow-lg:0 8px 32px rgba(28,25,23,0.13);
+  --radius:12px; --radius-sm:8px;
+  --nav-h:64px; --safe-bot:env(safe-area-inset-bottom,0px);
 }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:calc(var(--nav-h) + var(--safe-bot));overflow-x:hidden}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif}
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; }
-body {
-  font-family: 'Lato', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  padding-bottom: calc(var(--nav-h) + var(--safe-bot));
-  overflow-x: hidden;
-}
-h1, h2, h3, .serif { font-family: 'Playfair Display', Georgia, serif; }
+/* HEADER */
+.app-header{background:var(--green);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.header-left h1{font-family:'Playfair Display',serif;font-size:1.35rem;color:#fff;font-weight:700;line-height:1.1}
+.header-left .sub{font-size:0.65rem;color:rgba(255,255,255,0.6);font-weight:300;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
+.header-badge{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:#fff;font-size:0.75rem;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:0.5px}
 
-/* ── HEADER ── */
-.app-header {
-  background: var(--green);
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-.header-left h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.35rem;
-  color: #fff;
-  font-weight: 700;
-  line-height: 1.1;
-}
-.header-left .sub {
-  font-size: 0.65rem;
-  color: rgba(255,255,255,0.6);
-  font-weight: 300;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-top: 2px;
-}
-.header-badge {
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.25);
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 20px;
-  letter-spacing: 0.5px;
-}
+/* NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + var(--safe-bot));padding-bottom:var(--safe-bot);background:var(--surface);border-top:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;box-shadow:0 -4px 20px rgba(28,25,23,0.08);z-index:100}
+.bottom-nav::-webkit-scrollbar{display:none}
+.nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;background:none;color:var(--text3);font-family:'Lato',sans-serif;font-size:0.52rem;font-weight:700;letter-spacing:0.3px;text-transform:uppercase;cursor:pointer;padding:7px 10px;transition:color 0.15s;flex-shrink:0;min-width:60px}
+.nav-item .nav-icon{font-size:1.1rem;line-height:1}
+.nav-item.active{color:var(--green)}
+.nav-item:active{opacity:0.6}
+/* Anna nav accent */
+.nav-item.anna-nav.active{color:var(--terra)}
 
-/* ── NAV ── */
-.bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  height: calc(var(--nav-h) + var(--safe-bot));
-  padding-bottom: var(--safe-bot);
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  box-shadow: 0 -4px 20px rgba(28,25,23,0.08);
-  z-index: 100;
-}
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  border: none;
-  background: none;
-  color: var(--text3);
-  font-family: 'Lato', sans-serif;
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  cursor: pointer;
-  padding: 8px 4px;
-  transition: color 0.15s;
-}
-.nav-item .nav-icon { font-size: 1.2rem; line-height: 1; }
-.nav-item.active { color: var(--green); }
-.nav-item:active { opacity: 0.6; }
+/* PAGES */
+.page{display:none}.page.active{display:block}
+.page-inner{max-width:600px;margin:0 auto;padding:18px 16px}
 
-/* ── PAGES ── */
-.page { display: none; }
-.page.active { display: block; }
-.page-inner { max-width: 600px; margin: 0 auto; padding: 20px 16px; }
+/* TOAST */
+.toast{position:fixed;bottom:calc(var(--nav-h) + var(--safe-bot) + 14px);left:50%;transform:translateX(-50%) translateY(14px);background:var(--text);color:#fff;padding:10px 22px;border-radius:24px;font-size:0.88rem;font-weight:700;opacity:0;transition:all .28s;pointer-events:none;z-index:500;white-space:nowrap;box-shadow:var(--shadow-lg)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ── TOAST ── */
-.toast {
-  position: fixed;
-  bottom: calc(var(--nav-h) + var(--safe-bot) + 14px);
-  left: 50%;
-  transform: translateX(-50%) translateY(14px);
-  background: var(--text);
-  color: #fff;
-  padding: 10px 22px;
-  border-radius: 24px;
-  font-size: 0.88rem;
-  font-weight: 700;
-  opacity: 0;
-  transition: all 0.28s;
-  pointer-events: none;
-  z-index: 500;
-  white-space: nowrap;
-  box-shadow: var(--shadow-lg);
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* SHARED */
+.section-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+.chip{display:inline-block;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:2px 8px;border-radius:20px}
+.chip-green{background:var(--green-light);color:var(--green)}
+.chip-terra{background:var(--terra-light);color:var(--terra)}
+.chip-gold{background:var(--gold-light);color:var(--gold)}
+.chip-blue{background:var(--blue-light);color:var(--blue)}
 
-/* ── SECTION LABEL ── */
-.section-label {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  color: var(--text3);
-  margin-bottom: 10px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border);
-}
+/* ══ TODAY ══ */
+.session-hero{background:var(--green);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;color:#fff;position:relative;overflow:hidden}
+.session-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none}
+.hero-eyebrow{font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:5px}
+.hero-num{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:700;line-height:1;color:#fff}
+.hero-sub{font-size:0.78rem;color:rgba(255,255,255,0.65);margin-top:3px}
+.hero-meta{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.15);flex-wrap:wrap}
+.hero-pill{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.hero-info{font-size:0.73rem;color:rgba(255,255,255,0.6)}
 
-/* ════════════════════════════
-   TODAY PAGE
-   ════════════════════════════ */
-
-.session-hero {
-  background: var(--green);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin-bottom: 16px;
-  color: #fff;
-  position: relative;
-  overflow: hidden;
-}
-.session-hero::before {
-  content: '';
-  position: absolute;
-  top: -40px; right: -40px;
-  width: 160px; height: 160px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.05);
-  pointer-events: none;
-}
-.session-hero .eyebrow {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.6);
-  margin-bottom: 6px;
-}
-.session-hero .session-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.8rem;
-  font-weight: 700;
-  line-height: 1;
-  color: #fff;
-}
-.session-hero .session-sub {
-  font-size: 0.8rem;
-  color: rgba(255,255,255,0.7);
-  margin-top: 4px;
-}
-.session-hero .session-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255,255,255,0.15);
-  flex-wrap: wrap;
-}
-.session-pill {
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.25);
-  color: #fff;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 20px;
-  white-space: nowrap;
-}
-.session-info-text {
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.6);
-}
+/* Rest Timer */
+.rest-timer{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
+.rt-display{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--text);min-width:65px;line-height:1}
+.rt-display.running{color:var(--terra)}
+.rt-display.done{color:var(--green)}
+.rt-info{flex:1}
+.rt-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:2px}
+.rt-sub{font-size:0.75rem;color:var(--text2)}
+.rt-btns{display:flex;gap:5px}
+.rtbtn{padding:6px 10px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-family:'Lato',sans-serif;font-size:0.72rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.rtbtn.go{background:var(--green);color:#fff;border-color:var(--green)}
+.rtbtn.stop{background:var(--terra);color:#fff;border-color:var(--terra)}
 
 /* Exercise cards */
-.ex-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-
-.ex-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  transition: border-color 0.2s;
-}
-.ex-card.done { border-color: var(--green); }
-.ex-card.is-swing { border-left: 4px solid var(--terra); }
-.ex-card.is-main { border-left: 4px solid var(--green); }
-.ex-card.is-carry { border-left: 4px solid var(--gold); }
-
-.ex-card-top {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 14px 14px 10px;
-}
-.ex-card-info { flex: 1; min-width: 0; }
-.ex-card-name {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 3px;
-}
-.ex-card-note {
-  font-size: 0.78rem;
-  color: var(--text2);
-  line-height: 1.45;
-}
-.ex-card-right { flex-shrink: 0; text-align: right; }
-.ex-card-sets {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--green);
-  line-height: 1;
-}
-.ex-card-sub {
-  font-size: 0.7rem;
-  color: var(--text3);
-  margin-top: 2px;
-}
-
-.ex-weight-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 14px 8px;
-}
-.ex-weight-label {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--text3);
-}
-.ex-weight-val {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--green);
-}
-.ex-weight-val.unset {
-  font-family: 'Lato', sans-serif;
-  font-size: 0.75rem;
-  color: var(--text3);
-  font-weight: 400;
-}
+.ex-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.ex-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:border-color 0.2s}
+.ex-card.done{border-color:var(--green)}
+.ex-card.is-swing{border-left:4px solid var(--terra)}
+.ex-card.is-main{border-left:4px solid var(--green)}
+.ex-card.is-carry{border-left:4px solid var(--gold)}
+.ex-card-top{display:flex;align-items:flex-start;gap:12px;padding:12px 14px 9px}
+.ex-card-info{flex:1;min-width:0}
+.ex-card-name{font-size:0.93rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.ex-card-note{font-size:0.76rem;color:var(--text2);line-height:1.45}
+.ex-card-right{flex-shrink:0;text-align:right}
+.ex-card-sets{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--green);line-height:1}
+.ex-card-sub{font-size:0.68rem;color:var(--text3);margin-top:2px}
+.ex-wrow{display:flex;align-items:center;gap:8px;padding:0 14px 8px}
+.ex-wlabel{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3)}
+.ex-wval{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--green)}
+.ex-wval.unset{font-family:'Lato',sans-serif;font-size:0.73rem;color:var(--text3);font-weight:400}
+.done-btn{display:block;margin:0 12px 10px;width:calc(100% - 24px);padding:9px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-family:'Lato',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.3px;cursor:pointer;text-transform:uppercase}
+.ex-card.done .done-btn{background:var(--green-light);border-color:var(--green);color:var(--green)}
 
 /* Swing counter */
-.swing-counter {
-  margin: 0 14px 12px;
-  background: var(--terra-light);
-  border: 1.5px solid #F0CEB8;
-  border-radius: var(--radius-sm);
-  padding: 12px 14px;
-}
-.swing-counter-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-.swing-counter-label {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--terra);
-}
-.swing-count-display {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--terra);
-  line-height: 1;
-}
-.swing-count-display .swing-total {
-  font-size: 0.8rem;
-  color: var(--text3);
-  font-family: 'Lato', sans-serif;
-  font-weight: 400;
-}
-.swing-progress {
-  height: 6px;
-  background: rgba(196,98,45,0.15);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-.swing-progress-fill {
-  height: 100%;
-  background: var(--terra);
-  border-radius: 3px;
-  transition: width 0.3s ease;
-}
-.swing-btns { display: flex; gap: 6px; }
-.swing-btn {
-  flex: 1;
-  padding: 8px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid #F0CEB8;
-  background: var(--surface);
-  color: var(--terra);
-  font-family: 'Lato', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.swing-btn.primary {
-  background: var(--terra);
-  color: #fff;
-  border-color: var(--terra);
-}
-.swing-btn:active { opacity: 0.7; }
+.swing-counter{margin:0 12px 10px;background:var(--terra-light);border:1.5px solid #F0CEB8;border-radius:var(--radius-sm);padding:12px}
+.sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.sc-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--terra)}
+.sc-display{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--terra);line-height:1}
+.sc-total{font-size:0.75rem;color:var(--text3);font-family:'Lato',sans-serif;font-weight:400}
+.sc-bar{height:5px;background:rgba(196,98,45,0.15);border-radius:3px;overflow:hidden;margin-bottom:9px}
+.sc-fill{height:100%;background:var(--terra);border-radius:3px;transition:width 0.3s}
+.sc-btns{display:flex;gap:5px}
+.scbtn{flex:1;padding:7px 4px;border-radius:var(--radius-sm);border:1.5px solid #F0CEB8;background:var(--surface);color:var(--terra);font-family:'Lato',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;text-align:center}
+.scbtn.primary{background:var(--terra);color:#fff;border-color:var(--terra)}
+.scbtn:active{opacity:0.7}
 
-/* Done button */
-.done-btn {
-  display: block;
-  margin: 0 14px 12px;
-  width: calc(100% - 28px);
-  padding: 10px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border);
-  background: var(--bg);
-  color: var(--text2);
-  font-family: 'Lato', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  cursor: pointer;
-  text-transform: uppercase;
-  transition: all 0.15s;
-}
-.ex-card.done .done-btn {
-  background: var(--green-light);
-  border-color: var(--green);
-  color: var(--green);
-}
+/* Nav buttons */
+.next-btn{width:100%;padding:13px;border-radius:var(--radius);border:none;background:var(--green);color:#fff;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:var(--shadow);margin-bottom:7px}
+.next-btn:active{opacity:0.85}
+.prev-btn{width:100%;padding:9px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface);color:var(--text2);font-family:'Lato',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:14px}
 
-/* Next session button */
-.next-session-btn {
-  width: 100%;
-  padding: 14px;
-  border-radius: var(--radius);
-  border: none;
-  background: var(--green);
-  color: #fff;
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: background 0.15s;
-  margin-bottom: 8px;
-}
-.next-session-btn:hover { background: #2d5a42; }
-.next-session-btn:active { opacity: 0.85; }
+/* ══ WARMUP ══ */
+.warmup-intro{background:var(--green-light);border:1.5px solid #C0D9C8;border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;font-size:0.82rem;color:var(--green-mid);line-height:1.6}
+.warmup-intro strong{color:var(--green)}
 
-.prev-session-btn {
-  width: 100%;
-  padding: 10px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border);
-  background: var(--surface);
-  color: var(--text2);
-  font-family: 'Lato', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s;
-  margin-bottom: 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
+.wu-section{margin-bottom:18px}
+.wu-section-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:10px}
 
-/* Rest timer */
-.rest-timer {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  box-shadow: var(--shadow);
-}
-.rest-timer-display {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text);
-  min-width: 70px;
-  line-height: 1;
-}
-.rest-timer-display.running { color: var(--terra); }
-.rest-timer-display.done { color: var(--green); }
-.rest-timer-info { flex: 1; }
-.rest-timer-label {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--text3);
-  margin-bottom: 3px;
-}
-.rest-timer-sub { font-size: 0.78rem; color: var(--text2); }
-.rest-timer-btns { display: flex; gap: 6px; }
-.rtbtn {
-  padding: 7px 12px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border);
-  background: var(--bg);
-  color: var(--text2);
-  font-family: 'Lato', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s;
-  white-space: nowrap;
-}
-.rtbtn.start { background: var(--green); color: #fff; border-color: var(--green); }
-.rtbtn.stop  { background: var(--terra); color: #fff; border-color: var(--terra); }
+.wu-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow)}
+.wu-card-header{display:flex;align-items:center;gap:12px;padding:13px 14px;cursor:pointer}
+.wu-card.done-wu .wu-card-header{background:var(--green-light)}
+.wu-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.75rem;transition:all 0.2s;color:transparent}
+.wu-card.done-wu .wu-check{background:var(--green);border-color:var(--green);color:#fff}
+.wu-card-info{flex:1;min-width:0}
+.wu-card-name{font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.wu-card.done-wu .wu-card-name{color:var(--green)}
+.wu-card-brief{font-size:0.73rem;color:var(--text3)}
+.wu-card-right{flex-shrink:0;text-align:right}
+.wu-sets-val{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--green);line-height:1}
+.wu-sets-sub{font-size:0.65rem;color:var(--text3)}
 
-/* ════════════════════════════
-   LOG PAGE
-   ════════════════════════════ */
-.log-summary {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-.log-stat {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 14px 10px;
-  text-align: center;
-  box-shadow: var(--shadow);
-}
-.log-stat-val {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--green);
-  line-height: 1;
-}
-.log-stat-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--text3);
-  margin-top: 4px;
-}
+.wu-card-body{display:none;padding:0 14px 14px}
+.wu-card.expanded .wu-card-body{display:block}
 
-.dot-grid {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 5px;
-  margin-bottom: 20px;
-}
-.dot {
-  aspect-ratio: 1;
-  border-radius: 6px;
-  background: var(--border);
-  border: 1.5px solid var(--border);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--text3);
-  transition: all 0.15s;
-}
-.dot.done { background: var(--green-light); border-color: var(--green); color: var(--green); }
-.dot.current { background: var(--green); color: #fff; border-color: var(--green); }
-.dot:active { transform: scale(0.9); }
+.wu-steps{margin-bottom:12px}
+.wu-step{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.8rem;line-height:1.5;color:var(--text2)}
+.wu-step:last-child{border-bottom:none}
+.wu-step-num{background:var(--green);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;flex-shrink:0;margin-top:1px}
+.wu-step strong{color:var(--text)}
 
-.week-block { margin-bottom: 14px; }
-.week-block-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  color: var(--text3);
-  margin-bottom: 7px;
-}
-.week-tiles {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-}
-.wtile {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 10px 4px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.15s;
-  user-select: none;
-}
-.wtile:active { transform: scale(0.94); }
-.wtile.wdone { background: var(--green-light); border-color: var(--green); }
-.wtile.wcurrent { background: var(--green); }
-.wtile .wday {
-  font-size: 0.6rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--text3);
-  margin-bottom: 4px;
-}
-.wtile.wdone .wday { color: var(--green); }
-.wtile.wcurrent .wday { color: rgba(255,255,255,0.7); }
-.wtile .wnum {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1;
-}
-.wtile.wdone .wnum { color: var(--green); }
-.wtile.wcurrent .wnum { color: #fff; }
-.wtile .wchk { font-size: 0.75rem; margin-top: 2px; height: 12px; }
-.wtile.wdone .wchk::after { content: '✓'; color: var(--green); }
-.wtile.wcurrent .wchk::after { content: '●'; color: rgba(255,255,255,0.7); }
-.wtile:not(.wdone):not(.wcurrent) .wchk::after { content: '·'; color: var(--border); }
+.wu-why{background:var(--gold-light);border-radius:var(--radius-sm);padding:10px 12px;font-size:0.75rem;color:var(--text2);line-height:1.55;margin-bottom:10px}
+.wu-why strong{color:var(--gold)}
 
-.reset-btn {
-  width: 100%;
-  padding: 12px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border);
-  background: var(--surface);
-  color: var(--text3);
-  font-family: 'Lato', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 8px;
-}
-.reset-btn:hover { border-color: var(--terra); color: var(--terra); }
+/* Goblet counter */
+.gob-counter{display:flex;align-items:center;justify-content:space-between;background:var(--green-light);border:1.5px solid #C0D9C8;border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:8px}
+.gob-count-display{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--green);line-height:1}
+.gob-count-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green-mid);margin-top:2px}
+.gob-btns{display:flex;gap:5px}
+.gobbtn{padding:7px 12px;border-radius:var(--radius-sm);border:1.5px solid #C0D9C8;background:var(--surface);color:var(--green);font-family:'Lato',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer}
+.gobbtn.go{background:var(--green);color:#fff;border-color:var(--green)}
 
-/* ════════════════════════════
-   WEIGHTS PAGE
-   ════════════════════════════ */
-.weights-intro {
-  background: var(--gold-light);
-  border: 1.5px solid #E8D5A0;
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  font-size: 0.83rem;
-  color: var(--text2);
-  line-height: 1.6;
-  margin-bottom: 16px;
-}
-.weights-intro strong { color: var(--gold); }
+.wu-done-btn{width:100%;padding:9px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-family:'Lato',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:0.3px}
+.wu-card.done-wu .wu-done-btn{background:var(--green-light);border-color:var(--green);color:var(--green)}
 
-.proj-legend {
-  background: var(--green-light);
-  border: 1.5px solid #C0D9C8;
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  font-size: 0.78rem;
-  color: var(--green);
-  font-weight: 700;
-  margin-bottom: 14px;
-}
+.wu-progress{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
+.wu-prog-bar-wrap{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.wu-prog-bar{height:100%;background:var(--green);border-radius:3px;transition:width 0.3s}
+.wu-prog-text{font-size:0.72rem;font-weight:700;color:var(--green);white-space:nowrap}
+.wu-prog-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px}
 
-.lift-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  margin-bottom: 12px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-}
-.lift-card-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 16px;
-  cursor: pointer;
-  border-bottom: 1.5px solid transparent;
-  transition: background 0.15s;
-}
-.lift-card.open .lift-card-header { border-bottom-color: var(--border); }
-.lift-card-header:hover { background: var(--bg); }
-.lift-card-name {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--text);
-  flex: 1;
-}
-.lift-tag {
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 2px 8px;
-  border-radius: 20px;
-}
-.lt-main  { background: var(--green-light); color: var(--green); }
-.lt-swing { background: var(--terra-light); color: var(--terra); }
-.lt-carry { background: var(--gold-light); color: var(--gold); }
-.lift-chevron { color: var(--text3); font-size: 0.75rem; transition: transform 0.2s; }
-.lift-card.open .lift-chevron { transform: rotate(180deg); }
+.wu-reset-btn{width:100%;padding:9px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface);color:var(--text3);font-family:'Lato',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;text-transform:uppercase;margin-bottom:14px}
 
-.lift-card-body { display: none; padding: 14px 16px; }
-.lift-card.open .lift-card-body { display: block; }
+/* ══ LOG ══ */
+.log-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
+.log-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 10px;text-align:center;box-shadow:var(--shadow)}
+.log-stat-val{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--green);line-height:1}
+.log-stat-label{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-top:3px}
+.dot-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;margin-bottom:18px}
+.dot{aspect-ratio:1;border-radius:6px;background:var(--border);border:1.5px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:700;color:var(--text3);transition:all 0.15s}
+.dot.done{background:var(--green-light);border-color:var(--green);color:var(--green)}
+.dot.current{background:var(--green);color:#fff;border-color:var(--green)}
+.dot:active{transform:scale(0.9)}
+.week-block{margin-bottom:12px}
+.week-block-label{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:6px}
+.week-tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.wtile{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 4px;text-align:center;cursor:pointer;transition:all 0.15s;user-select:none}
+.wtile:active{transform:scale(0.94)}
+.wtile.wdone{background:var(--green-light);border-color:var(--green)}
+.wtile.wcurrent{background:var(--green)}
+.wday{font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);margin-bottom:3px}
+.wtile.wdone .wday{color:var(--green)}
+.wtile.wcurrent .wday{color:rgba(255,255,255,0.7)}
+.wnum{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--text);line-height:1}
+.wtile.wdone .wnum{color:var(--green)}
+.wtile.wcurrent .wnum{color:#fff}
+.wchk{font-size:0.72rem;margin-top:1px;height:11px}
+.wtile.wdone .wchk::after{content:'✓';color:var(--green)}
+.wtile.wcurrent .wchk::after{content:'●';color:rgba(255,255,255,0.7)}
+.wtile:not(.wdone):not(.wcurrent) .wchk::after{content:'·';color:var(--border)}
+.reset-btn{width:100%;padding:11px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--surface);color:var(--text3);font-family:'Lato',sans-serif;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;margin-top:6px}
+.reset-btn:hover{border-color:var(--terra);color:var(--terra)}
 
-.week-entry {
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--border);
-}
-.week-entry:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-.week-entry-top {
-  display: grid;
-  grid-template-columns: 54px 1fr 52px;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-.week-entry-label {
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--text3);
-}
-.week-entry-label.proj { color: var(--green); }
-.weight-input {
-  width: 100%;
-  padding: 9px 10px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--text);
-  background: var(--surface);
-  text-align: center;
-  -webkit-appearance: none;
-  outline: none;
-  transition: border-color 0.15s;
-}
-.weight-input:focus { border-color: var(--green); }
-.weight-input::placeholder { color: var(--border); font-size: 0.8rem; font-family: 'Lato', sans-serif; }
-.weight-input.is-proj { background: var(--green-light); border-color: #C0D9C8; color: var(--green); }
-.week-unit {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--text3);
-  white-space: nowrap;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
+/* ══ WEIGHTS ══ */
+.weights-intro{background:var(--gold-light);border:1.5px solid #E8D5A0;border-radius:var(--radius);padding:13px 15px;font-size:0.81rem;color:var(--text2);line-height:1.6;margin-bottom:14px}
+.weights-intro strong{color:var(--gold)}
+.proj-legend{background:var(--green-light);border:1.5px solid #C0D9C8;border-radius:var(--radius-sm);padding:9px 13px;font-size:0.76rem;color:var(--green);font-weight:700;margin-bottom:13px}
+.lift-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow)}
+.lift-card-header{display:flex;align-items:center;gap:10px;padding:13px 15px;cursor:pointer;transition:background 0.15s}
+.lift-card.open .lift-card-header{border-bottom:1.5px solid var(--border)}
+.lift-card-header:hover{background:var(--bg)}
+.lift-card-name{font-size:0.93rem;font-weight:700;color:var(--text);flex:1}
+.lift-tag{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:2px 7px;border-radius:20px}
+.lt-main{background:var(--green-light);color:var(--green)}
+.lt-swing{background:var(--terra-light);color:var(--terra)}
+.lt-carry{background:var(--gold-light);color:var(--gold)}
+.lift-chevron{color:var(--text3);font-size:0.72rem;transition:transform 0.2s}
+.lift-card.open .lift-chevron{transform:rotate(180deg)}
+.lift-card-body{display:none;padding:13px 15px}
+.lift-card.open .lift-card-body{display:block}
+.week-entry{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.week-entry:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.week-entry-top{display:grid;grid-template-columns:52px 1fr 50px;align-items:center;gap:8px;margin-bottom:7px}
+.week-entry-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3)}
+.week-entry-label.proj{color:var(--green)}
+.weight-input{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--text);background:var(--surface);text-align:center;-webkit-appearance:none;outline:none;transition:border-color 0.15s}
+.weight-input:focus{border-color:var(--green)}
+.weight-input::placeholder{color:var(--border);font-size:0.78rem;font-family:'Lato',sans-serif}
+.weight-input.is-proj{background:var(--green-light);border-color:#C0D9C8;color:var(--green)}
+.week-unit{font-size:0.7rem;font-weight:700;color:var(--text3);white-space:nowrap;text-transform:uppercase;letter-spacing:0.5px}
+.feel-row{display:flex;gap:5px}
+.fbtn{flex:1;padding:6px 3px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-family:'Lato',sans-serif;font-size:0.73rem;font-weight:700;cursor:pointer;text-align:center}
+.fbtn.f-easy{background:var(--green-light);border-color:var(--green);color:var(--green)}
+.fbtn.f-good{background:var(--gold-light);border-color:#D4A82A;color:var(--gold)}
+.fbtn.f-hard{background:var(--terra-light);border-color:var(--terra);color:var(--terra)}
 
-.feel-row { display: flex; gap: 6px; }
-.fbtn {
-  flex: 1;
-  padding: 7px 4px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border);
-  background: var(--bg);
-  color: var(--text2);
-  font-family: 'Lato', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.15s;
-}
-.fbtn.f-easy { background: var(--green-light); border-color: var(--green); color: var(--green); }
-.fbtn.f-good { background: var(--gold-light); border-color: #D4A82A; color: var(--gold); }
-.fbtn.f-hard { background: var(--terra-light); border-color: var(--terra); color: var(--terra); }
+/* ══ PR TRACKER ══ */
+.pr-intro{background:var(--blue-light);border:1.5px solid #B8D0EE;border-radius:var(--radius);padding:13px 15px;font-size:0.81rem;color:var(--text2);line-height:1.6;margin-bottom:14px}
+.pr-intro strong{color:var(--blue)}
 
-/* ════════════════════════════
-   PROGRAM PAGE
-   ════════════════════════════ */
-.program-header {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow);
-}
-.program-header h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.3rem;
-  margin-bottom: 8px;
-}
-.program-header p {
-  font-size: 0.83rem;
-  color: var(--text2);
-  line-height: 1.6;
-}
-.program-header p strong { color: var(--text); }
+.pr-add-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}
+.pr-add-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:12px}
+.pr-form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.pr-form-group{display:flex;flex-direction:column;gap:5px}
+.pr-form-group.full{grid-column:1/-1}
+.pr-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3)}
+.pr-input{padding:9px 11px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Lato',sans-serif;font-size:0.9rem;color:var(--text);background:var(--surface);-webkit-appearance:none;outline:none;transition:border-color 0.15s;width:100%}
+.pr-input:focus{border-color:var(--blue)}
+.pr-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23A8A29E' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+.pr-save-btn{width:100%;padding:11px;border-radius:var(--radius-sm);border:none;background:var(--blue);color:#fff;font-family:'Lato',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;margin-top:2px}
+.pr-save-btn:active{opacity:0.85}
 
-.prog-lift {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  box-shadow: var(--shadow);
-}
-.prog-lift.is-swing { border-left: 4px solid var(--terra); }
-.prog-lift.is-main  { border-left: 4px solid var(--green); }
-.prog-lift.is-carry { border-left: 4px solid var(--gold); }
-.prog-lift-info { flex: 1; }
-.prog-lift-name {
-  font-size: 0.93rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 4px;
-}
-.prog-lift-note {
-  font-size: 0.78rem;
-  color: var(--text2);
-  line-height: 1.5;
-}
-.prog-lift-sets {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--green);
-  text-align: right;
-  flex-shrink: 0;
-  line-height: 1;
-}
-.prog-lift-sets.swing-sets { color: var(--terra); }
-.prog-lift-int {
-  font-size: 0.68rem;
-  color: var(--text3);
-  text-align: right;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
+.pr-lift-group{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow)}
+.pr-lift-header{display:flex;align-items:center;gap:10px;padding:13px 15px;cursor:pointer}
+.pr-lift-header:hover{background:var(--bg)}
+.pr-lift-group.open .pr-lift-header{border-bottom:1.5px solid var(--border)}
+.pr-lift-name{font-size:0.93rem;font-weight:700;color:var(--text);flex:1}
+.pr-best{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--blue);text-align:right}
+.pr-best-label{font-size:0.62rem;color:var(--text3);text-align:right}
+.pr-lift-chev{color:var(--text3);font-size:0.72rem;transition:transform 0.2s}
+.pr-lift-group.open .pr-lift-chev{transform:rotate(180deg)}
+.pr-lift-body{display:none;padding:0}
+.pr-lift-group.open .pr-lift-body{display:block}
 
-.rule-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 10px;
-  box-shadow: var(--shadow);
-}
-.rule-card.rc-green { border-left: 4px solid var(--green); }
-.rule-card.rc-terra { border-left: 4px solid var(--terra); }
-.rule-card.rc-gold  { border-left: 4px solid var(--gold); }
-.rule-title {
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 7px;
-}
-.rc-green .rule-title { color: var(--green); }
-.rc-terra .rule-title { color: var(--terra); }
-.rc-gold  .rule-title { color: var(--gold); }
-.rule-body { font-size: 0.83rem; color: var(--text2); line-height: 1.7; }
-.rule-body strong { color: var(--text); }
+.pr-entry{display:flex;align-items:center;gap:10px;padding:10px 15px;border-bottom:1px solid var(--border)}
+.pr-entry:last-child{border-bottom:none}
+.pr-entry.is-best{background:var(--blue-light)}
+.pr-entry-left{flex:1}
+.pr-entry-weight{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--text)}
+.pr-entry.is-best .pr-entry-weight{color:var(--blue)}
+.pr-entry-reps{font-size:0.75rem;color:var(--text2);margin-top:1px}
+.pr-entry-date{font-size:0.72rem;color:var(--text3);white-space:nowrap}
+.pr-entry-badge{font-size:0.6rem;font-weight:700;text-transform:uppercase;background:var(--blue);color:#fff;padding:2px 6px;border-radius:10px;white-space:nowrap}
+.pr-delete-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:0.85rem;padding:4px;line-height:1}
+.pr-delete-btn:hover{color:var(--terra)}
 
-.spc { height: 12px; }
-.divider { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+.pr-empty{text-align:center;padding:30px 20px;color:var(--text3);font-size:0.83rem}
+.pr-empty .pr-empty-icon{font-size:2rem;margin-bottom:10px}
+
+/* ══ PROGRAM ══ */
+.program-header{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.program-header h2{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:7px}
+.program-header p{font-size:0.81rem;color:var(--text2);line-height:1.6}
+.program-header p strong{color:var(--text)}
+.prog-lift{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px 15px;margin-bottom:9px;display:flex;align-items:flex-start;gap:12px;box-shadow:var(--shadow)}
+.prog-lift.is-swing{border-left:4px solid var(--terra)}
+.prog-lift.is-main{border-left:4px solid var(--green)}
+.prog-lift.is-carry{border-left:4px solid var(--gold)}
+.prog-lift-info{flex:1}
+.prog-lift-name{font-size:0.91rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.prog-lift-note{font-size:0.76rem;color:var(--text2);line-height:1.5}
+.prog-lift-sets{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--green);text-align:right;flex-shrink:0;line-height:1}
+.prog-lift-sets.tc{color:var(--terra)}
+.prog-lift-int{font-size:0.65rem;color:var(--text3);text-align:right;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+.rule-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:9px;box-shadow:var(--shadow)}
+.rule-card.rc-green{border-left:4px solid var(--green)}
+.rule-card.rc-terra{border-left:4px solid var(--terra)}
+.rule-card.rc-gold{border-left:4px solid var(--gold)}
+.rule-title{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.rc-green .rule-title{color:var(--green)}
+.rc-terra .rule-title{color:var(--terra)}
+.rc-gold .rule-title{color:var(--gold)}
+.rule-body{font-size:0.81rem;color:var(--text2);line-height:1.7}
+.rule-body strong{color:var(--text)}
+
+.spc{height:10px}
+
+/* ══ ANNA ══ */
+.anna-hero{background:linear-gradient(135deg,#B5365A 0%,#8B1F3F 100%);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;color:#fff;position:relative;overflow:hidden}
+.anna-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.06);pointer-events:none}
+.anna-eyebrow{font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:5px}
+.anna-session-name{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;line-height:1;color:#fff;margin-bottom:4px}
+.anna-session-sub{font-size:0.8rem;color:rgba(255,255,255,0.65)}
+.anna-meta{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.15);flex-wrap:wrap}
+.anna-pill{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+
+.pushup-mode-card{background:#fff;border:1.5px solid #F0D0D8;border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.pushup-mode-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#B5365A;margin-bottom:8px}
+.pushup-mode-toggle{display:flex;gap:6px}
+.pumode-btn{flex:1;padding:9px 8px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-family:'Lato',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s}
+.pumode-btn.active-knee{background:#FBEDF1;border-color:#B5365A;color:#B5365A}
+.pumode-btn.active-full{background:#EBF4EE;border-color:var(--green);color:var(--green)}
+.pushup-hint{font-size:0.72rem;color:var(--text3);margin-top:8px;line-height:1.5}
+.pushup-hint strong{color:var(--text2)}
+
+.pfa-card{background:#FBEDF1;border:1.5px solid #F0D0D8;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+.pfa-stat{text-align:center}
+.pfa-val{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:#B5365A;line-height:1}
+.pfa-label{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#C4607A;margin-top:2px}
+.pfa-divider{width:1px;background:#F0D0D8;align-self:stretch}
+.pfa-info{flex:1;font-size:0.75rem;color:#7a3d4a;line-height:1.55}
+.pfa-info strong{color:#B5365A}
+
+.anna-ex-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:10px}
+.anna-ex-card.is-pushup{border-left:4px solid #B5365A}
+.anna-ex-card.is-press{border-left:4px solid var(--green)}
+.anna-ex-card.is-pull{border-left:4px solid var(--blue)}
+.anna-ex-card.is-lower{border-left:4px solid var(--gold)}
+.anna-ex-card.anna-done{border-color:var(--green)}
+.anna-ex-top{display:flex;align-items:flex-start;gap:12px;padding:12px 14px 8px}
+.anna-ex-info{flex:1;min-width:0}
+.anna-ex-name{font-size:0.93rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.anna-ex-note{font-size:0.75rem;color:var(--text2);line-height:1.45}
+.anna-ex-right{flex-shrink:0;text-align:right}
+.anna-ex-sets{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#B5365A;line-height:1}
+.anna-ex-sub{font-size:0.68rem;color:var(--text3);margin-top:2px}
+
+.anna-weight-row{display:flex;align-items:center;gap:8px;padding:0 14px 8px}
+.anna-weight-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3)}
+.anna-weight-input{flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--text);background:var(--surface);text-align:center;-webkit-appearance:none;outline:none;max-width:100px;transition:border-color 0.15s}
+.anna-weight-input:focus{border-color:#B5365A}
+.anna-weight-unit{font-size:0.72rem;font-weight:700;color:var(--text3);text-transform:uppercase}
+.anna-weight-last{font-size:0.72rem;color:var(--text3);margin-left:4px}
+
+.anna-pushup-tracker{margin:0 14px 10px;background:#FBEDF1;border:1.5px solid #F0D0D8;border-radius:var(--radius-sm);padding:12px}
+.apt-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.apt-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#B5365A}
+.apt-display{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#B5365A;line-height:1}
+.apt-target{font-size:0.75rem;color:#C4607A}
+.apt-btns{display:flex;gap:5px}
+.aptbtn{flex:1;padding:7px 4px;border-radius:var(--radius-sm);border:1.5px solid #F0D0D8;background:#fff;color:#B5365A;font-family:'Lato',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer;text-align:center}
+.aptbtn.primary{background:#B5365A;color:#fff;border-color:#B5365A}
+.aptbtn:active{opacity:0.7}
+
+.anna-done-btn{display:block;margin:0 12px 10px;width:calc(100% - 24px);padding:9px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-family:'Lato',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:0.3px}
+.anna-ex-card.anna-done .anna-done-btn{background:var(--green-light);border-color:var(--green);color:var(--green)}
+
+.anna-next-btn{width:100%;padding:13px;border-radius:var(--radius);border:none;background:#B5365A;color:#fff;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:var(--shadow);margin-bottom:14px}
+.anna-next-btn:active{opacity:0.85}
+
+.pushup-history{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
+.ph-title{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.ph-entry{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.82rem}
+.ph-entry:last-child{border-bottom:none}
+.ph-session{color:var(--text2)}
+.ph-reps{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#B5365A}
+.ph-mode{font-size:0.65rem;color:var(--text3);margin-left:4px}
+.ph-empty{color:var(--text3);font-size:0.8rem;text-align:center;padding:10px 0}
 </style>
 </head>
 <body>
@@ -841,176 +392,416 @@ h1, h2, h3, .serif { font-family: 'Playfair Display', Georgia, serif; }
   <div class="header-badge" id="hbadge">0 / 40</div>
 </header>
 
-<!-- TODAY PAGE -->
+<!-- ══════════ TODAY ══════════ -->
 <div class="page active" id="page-today">
   <div class="page-inner">
-
-    <div class="session-hero" id="session-hero">
-      <div class="eyebrow">Current Session</div>
-      <div class="session-num" id="session-num">1</div>
-      <div class="session-sub" id="session-sub">Week 1 of 8</div>
-      <div class="session-meta">
-        <span class="session-pill" id="session-pill">Session 1 of 40</span>
-        <span class="session-info-text" id="session-info">0 / 40 complete</span>
+    <div class="session-hero">
+      <div class="hero-eyebrow">Current Session</div>
+      <div class="hero-num" id="hero-num">1</div>
+      <div class="hero-sub" id="hero-sub">Week 1 of 8</div>
+      <div class="hero-meta">
+        <span class="hero-pill" id="hero-pill">Session 1 of 40</span>
+        <span class="hero-info" id="hero-info">0 sessions complete</span>
       </div>
     </div>
 
-    <!-- Rest Timer -->
-    <div class="rest-timer" id="rest-timer">
-      <div class="rest-timer-display" id="rtDisplay">2:00</div>
-      <div class="rest-timer-info">
-        <div class="rest-timer-label">Rest Timer</div>
-        <div class="rest-timer-sub" id="rtSub">Tap start between sets</div>
+    <div class="rest-timer">
+      <div class="rt-display" id="rtDisp">2:00</div>
+      <div class="rt-info">
+        <div class="rt-label">Rest Timer</div>
+        <div class="rt-sub" id="rtSub">Start between sets</div>
       </div>
-      <div class="rest-timer-btns">
-        <button class="rtbtn start" id="rtBtn" onclick="toggleTimer()">Start</button>
+      <div class="rt-btns">
+        <button class="rtbtn go" id="rtBtn" onclick="toggleTimer()">Start</button>
         <button class="rtbtn" onclick="resetTimer()">↺</button>
       </div>
     </div>
 
-    <div class="section-label">Today's Exercises</div>
+    <div class="section-label">Exercises</div>
     <div class="ex-list" id="ex-list"></div>
 
-    <button class="next-session-btn" onclick="nextSession()" id="nextBtn">
-      Complete Session &amp; Continue →
-    </button>
-    <button class="prev-session-btn" onclick="prevSession()" id="prevBtn">
-      ← Back to Session <span id="prevNum">—</span>
-    </button>
-
+    <button class="next-btn" id="nextBtn" onclick="nextSession()">Complete Session &amp; Continue →</button>
+    <button class="prev-btn" id="prevBtn" onclick="prevSession()" style="display:none">← Back to Session <span id="prevNum">0</span></button>
     <div class="spc"></div>
   </div>
 </div>
 
-<!-- LOG PAGE -->
+<!-- ══════════ WARMUP ══════════ -->
+<div class="page" id="page-warmup">
+  <div class="page-inner">
+
+    <div class="warmup-intro">
+      Dan John's prescribed warmup: <strong>Goblet squats to groove the hinge, Original Strength movements to wake up the nervous system, then stretches for what's stiff.</strong> Do this before every session. 5–10 minutes total.
+    </div>
+
+    <div class="wu-progress">
+      <div style="flex:1">
+        <div class="wu-prog-label">Warmup Progress</div>
+        <div class="wu-prog-bar-wrap"><div class="wu-prog-bar" id="wu-prog-bar" style="width:0%"></div></div>
+      </div>
+      <div class="wu-prog-text" id="wu-prog-text">0 / 6</div>
+    </div>
+
+    <!-- 1. Goblet Squat -->
+    <div class="wu-card" id="wu-goblet">
+      <div class="wu-card-header" onclick="expandWu('wu-goblet')">
+        <div class="wu-check">✓</div>
+        <div class="wu-card-info">
+          <div class="wu-card-name">Goblet Squat Warmup</div>
+          <div class="wu-card-brief">10–15 reps · grease the hinge pattern</div>
+        </div>
+        <div class="wu-card-right">
+          <div class="wu-sets-val" id="gob-count-display">0</div>
+          <div class="wu-sets-sub">/ 15 reps</div>
+        </div>
+      </div>
+      <div class="wu-card-body">
+        <div class="wu-why"><strong>Why:</strong> Dan John calls this the "cure" for movement problems. It teaches the squat pattern, opens the hips, and warms up the entire posterior chain at once. Do it with a light-to-moderate KB — this is prep, not training.</div>
+        <div class="wu-steps">
+          <div class="wu-step"><div class="wu-step-num">1</div><div>Hold a KB at chest height with both hands, one hand on each side of the handle. Feet shoulder-width or slightly wider, toes turned out about 30°.</div></div>
+          <div class="wu-step"><div class="wu-step-num">2</div><div><strong>Sit down between your knees</strong> — not back over your heels. Think of dropping straight down, not sitting back. Elbows come inside your knees at the bottom.</div></div>
+          <div class="wu-step"><div class="wu-step-num">3</div><div>At the bottom, use your elbows to push your knees out slightly. <strong>Chest stays tall.</strong> Pause for a second and feel the stretch in your hips.</div></div>
+          <div class="wu-step"><div class="wu-step-num">4</div><div>Stand back up by driving your feet through the floor. Squeeze your glutes at the top. That's one rep.</div></div>
+        </div>
+        <div class="gob-counter">
+          <div>
+            <div class="gob-count-display" id="gob-big-count">0 <span style="font-size:0.9rem;color:var(--text3);font-family:'Lato',sans-serif;font-weight:400">/ 15</span></div>
+            <div class="gob-count-label">Reps completed</div>
+          </div>
+          <div class="gob-btns">
+            <button class="gobbtn" onclick="addGob(-1)">−</button>
+            <button class="gobbtn go" onclick="addGob(1)">+ Rep</button>
+            <button class="gobbtn go" onclick="addGob(15 - wuState.gobCount)">Done</button>
+          </div>
+        </div>
+        <button class="wu-done-btn" onclick="markWuDone('wu-goblet')">Mark Complete ✓</button>
+      </div>
+    </div>
+
+    <!-- 2. Six-Point Rocks -->
+    <div class="wu-card" id="wu-rocks">
+      <div class="wu-card-header" onclick="expandWu('wu-rocks')">
+        <div class="wu-check">✓</div>
+        <div class="wu-card-info">
+          <div class="wu-card-name">Six-Point Rocks</div>
+          <div class="wu-card-brief">10 reps · reset the spine and nervous system</div>
+        </div>
+        <div class="wu-card-right">
+          <div class="wu-sets-val">10</div>
+          <div class="wu-sets-sub">reps</div>
+        </div>
+      </div>
+      <div class="wu-card-body">
+        <div class="wu-why"><strong>Why:</strong> This is from Tim Anderson's Original Strength system — Dan John includes it in every warmup. Rocking reconnects your breathing with your movement, resets your nervous system, and activates your core before you load it.</div>
+        <div class="wu-steps">
+          <div class="wu-step"><div class="wu-step-num">1</div><div>Get on all fours — hands under shoulders, knees under hips. You're now on <strong>six points</strong> (2 hands, 2 knees, 2 feet).</div></div>
+          <div class="wu-step"><div class="wu-step-num">2</div><div>Take a deep breath in. As you breathe out, <strong>slowly rock your hips back</strong> towards your heels, like you're trying to sit back. Let your arms stretch forward as you go.</div></div>
+          <div class="wu-step"><div class="wu-step-num">3</div><div>Rock forward slowly back to the start position. Keep your head relaxed — <strong>don't look up</strong>, let your neck stay long.</div></div>
+          <div class="wu-step"><div class="wu-step-num">4</div><div>Breathe naturally and move at a slow, controlled pace. The goal is smooth, rhythmic movement — not a stretch. 10 rocks total.</div></div>
+        </div>
+        <button class="wu-done-btn" onclick="markWuDone('wu-rocks')">Mark Complete ✓</button>
+      </div>
+    </div>
+
+    <!-- 3. Head Nods -->
+    <div class="wu-card" id="wu-nods">
+      <div class="wu-card-header" onclick="expandWu('wu-nods')">
+        <div class="wu-check">✓</div>
+        <div class="wu-card-info">
+          <div class="wu-card-name">Head Nods ("Find Your Shoes")</div>
+          <div class="wu-card-brief">10 reps · activate the reflexive core</div>
+        </div>
+        <div class="wu-card-right">
+          <div class="wu-sets-val">10</div>
+          <div class="wu-sets-sub">reps</div>
+        </div>
+      </div>
+      <div class="wu-card-body">
+        <div class="wu-why"><strong>Why:</strong> The head and neck control the rest of the body through reflexive pathways. Nodding your head activates your deep neck flexors, which switches on your core — Dan John calls this one of his greatest training secrets.</div>
+        <div class="wu-steps">
+          <div class="wu-step"><div class="wu-step-num">1</div><div>Stand tall or sit on the edge of a bench. Shoulders relaxed, arms loose at your sides.</div></div>
+          <div class="wu-step"><div class="wu-step-num">2</div><div><strong>Tuck your chin gently</strong> — like you're making a slight double chin. Hold for 1 second. This is the "yes" nod. Dan John calls it "finding your shoes" because you're looking slightly down.</div></div>
+          <div class="wu-step"><div class="wu-step-num">3</div><div>Return to neutral. Don't jerk or rush — slow and deliberate. You should feel a gentle activation in the front of your neck and your deep abs.</div></div>
+          <div class="wu-step"><div class="wu-step-num">4</div><div>Repeat 10 times. Add a gentle side-to-side head rotation (look left, look right) for another 5 reps each way if you have time.</div></div>
+        </div>
+        <button class="wu-done-btn" onclick="markWuDone('wu-nods')">Mark Complete ✓</button>
+      </div>
+    </div>
+
+    <!-- 4. Prone Nods -->
+    <div class="wu-card" id="wu-prone">
+      <div class="wu-card-header" onclick="expandWu('wu-prone')">
+        <div class="wu-check">✓</div>
+        <div class="wu-card-info">
+          <div class="wu-card-name">Prone Nods ("Find Your Shoes" on Floor)</div>
+          <div class="wu-card-brief">10 reps · thoracic extension and core reset</div>
+        </div>
+        <div class="wu-card-right">
+          <div class="wu-sets-val">10</div>
+          <div class="wu-sets-sub">reps</div>
+        </div>
+      </div>
+      <div class="wu-card-body">
+        <div class="wu-why"><strong>Why:</strong> Same concept as head nods but from the floor. Lying face down and nodding activates the posterior chain and gets the thoracic spine moving. It counters the forward-head posture most people carry from sitting.</div>
+        <div class="wu-steps">
+          <div class="wu-step"><div class="wu-step-num">1</div><div>Lie face down on the floor with your arms resting alongside your body or hands under your forehead. Completely relaxed.</div></div>
+          <div class="wu-step"><div class="wu-step-num">2</div><div>Gently lift your head and tuck your chin — "find your shoes" — looking slightly down your body. <strong>Don't crane your neck up</strong>, just a gentle nod forward.</div></div>
+          <div class="wu-step"><div class="wu-step-num">3</div><div>Lower your head back down. Breathe. That's one rep. You may feel a gentle lengthening through your spine.</div></div>
+          <div class="wu-step"><div class="wu-step-num">4</div><div>10 reps. Move slowly. If your neck feels tight, this is normal — it means it needs it.</div></div>
+        </div>
+        <button class="wu-done-btn" onclick="markWuDone('wu-prone')">Mark Complete ✓</button>
+      </div>
+    </div>
+
+    <!-- 5. Egg Rolls -->
+    <div class="wu-card" id="wu-eggs">
+      <div class="wu-card-header" onclick="expandWu('wu-eggs')">
+        <div class="wu-check">✓</div>
+        <div class="wu-card-info">
+          <div class="wu-card-name">Egg Rolls</div>
+          <div class="wu-card-brief">5 each side · spinal mobility and coordination</div>
+        </div>
+        <div class="wu-card-right">
+          <div class="wu-sets-val">5+5</div>
+          <div class="wu-sets-sub">each side</div>
+        </div>
+      </div>
+      <div class="wu-card-body">
+        <div class="wu-why"><strong>Why:</strong> Egg rolls develop rotational movement of the spine and coordinate the upper and lower body. Dan John includes them because most training is front-to-back — rotation is the gap. They also develop the reflexive stability you need for heavy lifts.</div>
+        <div class="wu-steps">
+          <div class="wu-step"><div class="wu-step-num">1</div><div>Lie on your back. Pull your knees to your chest and hug them with both arms. <strong>Curl up like an egg.</strong> Tuck your chin gently.</div></div>
+          <div class="wu-step"><div class="wu-step-num">2</div><div>Using your legs as a pendulum, gently <strong>roll to one side</strong> (say, your right). Your right elbow and right knee move towards each other. Roll far enough that your right hip touches the floor.</div></div>
+          <div class="wu-step"><div class="wu-step-num">3</div><div>Roll back through centre and continue to the <strong>left side</strong>. Left elbow and left knee reach toward each other. That's one full rep.</div></div>
+          <div class="wu-step"><div class="wu-step-num">4</div><div>5 rolls to each side. Keep your chin tucked throughout. Move slowly and feel your spine articulate. If one side is stiffer, spend a little extra time there.</div></div>
+        </div>
+        <button class="wu-done-btn" onclick="markWuDone('wu-eggs')">Mark Complete ✓</button>
+      </div>
+    </div>
+
+    <!-- 6. Hip Flexor + Hamstring Stretch -->
+    <div class="wu-card" id="wu-stretch">
+      <div class="wu-card-header" onclick="expandWu('wu-stretch')">
+        <div class="wu-check">✓</div>
+        <div class="wu-card-info">
+          <div class="wu-card-name">Hip Flexor &amp; Hamstring Stretch</div>
+          <div class="wu-card-brief">30–45 sec each side · stretch what's stiff</div>
+        </div>
+        <div class="wu-card-right">
+          <div class="wu-sets-val">30s</div>
+          <div class="wu-sets-sub">each side</div>
+        </div>
+      </div>
+      <div class="wu-card-body">
+        <div class="wu-why"><strong>Why:</strong> Dan John's principle: <em>"stretch what's stiff, strengthen what's weak."</em> For most people, the hip flexors and hamstrings are chronically tight from sitting. Loosening these before deadlifts and swings improves range of motion and protects the lower back.</div>
+        <div class="wu-steps">
+          <div class="wu-step"><div class="wu-step-num">1</div><div><strong>Hip Flexor:</strong> Kneel on one knee (half-kneeling). Back knee on the floor, front foot forward. Shift your weight gently forward until you feel a stretch in the front of the back hip. Don't arch your lower back. Hold 30 seconds. Switch sides.</div></div>
+          <div class="wu-step"><div class="wu-step-num">2</div><div><strong>Hamstring:</strong> From the half-kneeling position, straighten your front leg and hinge forward from your hips — not your back — until you feel a stretch in the back of your front thigh. Hold 30 seconds. Switch sides.</div></div>
+          <div class="wu-step"><div class="wu-step-num">3</div><div>Breathe steadily through both stretches. Don't bounce or force the range. <strong>The goal is relaxation, not pain.</strong></div></div>
+        </div>
+        <button class="wu-done-btn" onclick="markWuDone('wu-stretch')">Mark Complete ✓</button>
+      </div>
+    </div>
+
+    <button class="wu-reset-btn" onclick="resetWarmup()">↺ Reset Warmup</button>
+    <div class="spc"></div>
+  </div>
+</div>
+
+<!-- ══════════ LOG ══════════ -->
 <div class="page" id="page-log">
   <div class="page-inner">
     <div class="log-summary">
-      <div class="log-stat"><div class="log-stat-val" id="lsDone">0</div><div class="log-stat-label">Done</div></div>
-      <div class="log-stat"><div class="log-stat-val" id="lsLeft">40</div><div class="log-stat-label">Left</div></div>
-      <div class="log-stat"><div class="log-stat-val" id="lsWeek">1</div><div class="log-stat-label">Week</div></div>
+      <div class="log-stat"><div class="log-stat-val" id="ls-done">0</div><div class="log-stat-label">Done</div></div>
+      <div class="log-stat"><div class="log-stat-val" id="ls-left">40</div><div class="log-stat-label">Left</div></div>
+      <div class="log-stat"><div class="log-stat-val" id="ls-week">1</div><div class="log-stat-label">Week</div></div>
     </div>
-
     <div class="section-label">40 Sessions</div>
     <div class="dot-grid" id="dot-grid"></div>
-
     <div id="week-blocks"></div>
-
     <button class="reset-btn" onclick="resetAll()">↺ Reset All Progress</button>
     <div class="spc"></div>
   </div>
 </div>
 
-<!-- WEIGHTS PAGE -->
+<!-- ══════════ WEIGHTS ══════════ -->
 <div class="page" id="page-weights">
   <div class="page-inner">
-    <div class="weights-intro">
-      Enter your <strong>Week 1 starting weights</strong>. Rate how each week felt — the app projects forward automatically. <strong>Easy or Good = load increases next week. Hard = hold.</strong>
-    </div>
+    <div class="weights-intro">Enter your <strong>Week 1 starting weights</strong>. Rate how each week felt and the app projects forward. <strong>Easy or Good = load up next week. Hard = hold.</strong></div>
     <div class="proj-legend" id="proj-legend" style="display:none">↗ Green fields are projected from your feel ratings. Tap to override.</div>
     <div id="weights-container"></div>
     <div class="spc"></div>
   </div>
 </div>
 
-<!-- PROGRAM PAGE -->
-<div class="page" id="page-program">
+<!-- ══════════ PRs ══════════ -->
+<div class="page" id="page-prs">
   <div class="page-inner">
+    <div class="pr-intro">Log your personal records here — not just the 5 program lifts, any exercise you want to track long-term. <strong>The app automatically flags your best ever</strong> for each lift.</div>
 
-    <div class="program-header">
-      <h2>Every Session. Every Day.</h2>
-      <p>The same <strong>5 exercises</strong> for all 40 sessions. Load changes. Exercises don't. That's the point — make heavy feel easy through repetition, not variety.</p>
+    <div class="pr-add-card">
+      <div class="pr-add-title">Log a PR</div>
+      <div class="pr-form-row">
+        <div class="pr-form-group full">
+          <label class="pr-label">Exercise</label>
+          <input class="pr-input" id="pr-exercise" list="pr-exercise-list" placeholder="e.g. Trap Bar Deadlift">
+          <datalist id="pr-exercise-list">
+            <option value="Trap Bar Deadlift">
+            <option value="Overhead Press">
+            <option value="Pull-up (added weight)">
+            <option value="Goblet Squat">
+            <option value="Bench Press">
+            <option value="Back Squat">
+            <option value="Romanian Deadlift">
+            <option value="Barbell Row">
+            <option value="KB Swing">
+          </datalist>
+        </div>
+      </div>
+      <div class="pr-form-row">
+        <div class="pr-form-group">
+          <label class="pr-label">Weight (kg)</label>
+          <input class="pr-input" id="pr-weight" type="number" inputmode="decimal" placeholder="e.g. 100">
+        </div>
+        <div class="pr-form-group">
+          <label class="pr-label">Reps</label>
+          <input class="pr-input" id="pr-reps" type="number" inputmode="numeric" placeholder="e.g. 5">
+        </div>
+      </div>
+      <div class="pr-form-row">
+        <div class="pr-form-group">
+          <label class="pr-label">Date</label>
+          <input class="pr-input" id="pr-date" type="date">
+        </div>
+        <div class="pr-form-group">
+          <label class="pr-label">Notes (optional)</label>
+          <input class="pr-input" id="pr-notes" placeholder="felt easy, new belt, etc.">
+        </div>
+      </div>
+      <button class="pr-save-btn" onclick="savePR()">Save PR</button>
     </div>
 
-    <div class="section-label">Session Structure</div>
+    <div class="section-label">PR History</div>
+    <div id="pr-list"></div>
+    <div class="spc"></div>
+  </div>
+</div>
 
+<!-- ══════════ PROGRAM ══════════ -->
+<div class="page" id="page-program">
+  <div class="page-inner">
+    <div class="program-header">
+      <h2>Every Session. Every Day.</h2>
+      <p>The same <strong>5 exercises</strong> for all 40 sessions. Load changes. Exercises don't. Make heavy feel easy through repetition, not variety.</p>
+    </div>
+    <div class="section-label">Session Structure</div>
     <div class="prog-lift is-swing">
       <div class="prog-lift-info">
         <div class="prog-lift-name">KB Swings</div>
-        <div class="prog-lift-note">75 reps total. Do sets of 10–15 with a strong plank and powerful hip snap. When form breaks or grip fades, put the bell down and rest. Keep a running count. Get to 75 however it takes.</div>
+        <div class="prog-lift-note">75 reps total. Sets of 10–15 with a powerful hip snap and strong plank. Rest when form breaks. Get to 75 however it takes — set count doesn't matter.</div>
       </div>
-      <div>
-        <div class="prog-lift-sets swing-sets">75</div>
-        <div class="prog-lift-int">reps total</div>
-      </div>
+      <div><div class="prog-lift-sets tc">75</div><div class="prog-lift-int">reps</div></div>
     </div>
-
     <div class="prog-lift is-main">
       <div class="prog-lift-info">
         <div class="prog-lift-name">Overhead Press</div>
-        <div class="prog-lift-note">Barbell or dumbbell. Brace hard, glutes tight, slight arc. The same weight every session until it feels genuinely easy for two sessions — then add 2.5kg.</div>
+        <div class="prog-lift-note">Brace hard, glutes tight, slight arc. Same weight every session until it feels genuinely easy for two sessions — then add 2.5kg.</div>
       </div>
-      <div>
-        <div class="prog-lift-sets">2×5</div>
-        <div class="prog-lift-int">~80%</div>
-      </div>
+      <div><div class="prog-lift-sets">2×5</div><div class="prog-lift-int">~80%</div></div>
     </div>
-
     <div class="prog-lift is-main">
       <div class="prog-lift-info">
         <div class="prog-lift-name">Pull-up</div>
-        <div class="prog-lift-note">Full hang at bottom, chin over bar. Add belt weight once bodyweight 5s feel controlled. Same grip every session.</div>
+        <div class="prog-lift-note">Full hang, chin over bar. Add belt weight once bodyweight 5s feel controlled. Same grip every session.</div>
       </div>
-      <div>
-        <div class="prog-lift-sets">2×5</div>
-        <div class="prog-lift-int">weighted</div>
-      </div>
+      <div><div class="prog-lift-sets">2×5</div><div class="prog-lift-int">weighted</div></div>
     </div>
-
     <div class="prog-lift is-main">
       <div class="prog-lift-info">
         <div class="prog-lift-name">Trap Bar Deadlift</div>
         <div class="prog-lift-note">Hips back, drive the floor away. Never grind — stop at 5 even when you have more. Same weight every session until it feels like a warmup.</div>
       </div>
-      <div>
-        <div class="prog-lift-sets">2×5</div>
-        <div class="prog-lift-int">~80%</div>
-      </div>
+      <div><div class="prog-lift-sets">2×5</div><div class="prog-lift-int">~80%</div></div>
     </div>
-
     <div class="prog-lift is-main">
       <div class="prog-lift-info">
         <div class="prog-lift-name">Ab Wheel</div>
-        <div class="prog-lift-note">From knees until you own standing rollouts. Rib cage down, no sagging hips. Chase one more rep or slightly longer extension each session — never speed.</div>
+        <div class="prog-lift-note">From knees until you own standing rollouts. Rib cage down, no sagging hips. Chase one more rep or slightly longer extension — never speed.</div>
       </div>
-      <div>
-        <div class="prog-lift-sets">2×5</div>
-        <div class="prog-lift-int">controlled</div>
-      </div>
+      <div><div class="prog-lift-sets">2×5</div><div class="prog-lift-int">controlled</div></div>
     </div>
-
     <div class="prog-lift is-carry">
       <div class="prog-lift-info">
         <div class="prog-lift-name">Loaded Carry</div>
-        <div class="prog-lift-note">Rotates each session — Farmer → Suitcase → Waiter → Rack → repeat. Dan John's rule: never repeat a carry session. Change the load, the distance, or the variation every time.</div>
+        <div class="prog-lift-note">Rotates each session: Farmer → Suitcase → Waiter → Rack → repeat. Never repeat a carry session. Change the load or distance every time too.</div>
       </div>
-      <div>
-        <div class="prog-lift-sets" style="color:var(--gold)">varies</div>
-        <div class="prog-lift-int">rotate</div>
-      </div>
+      <div><div class="prog-lift-sets" style="color:var(--gold);font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700">varies</div><div class="prog-lift-int">rotate</div></div>
     </div>
-
     <div class="divider"></div>
     <div class="section-label">The Rules</div>
-
     <div class="rule-card rc-green">
       <div class="rule-title">Never Miss. Never Grind.</div>
       <div class="rule-body">Show up every session. Never miss a rep. Leave 2–3 in the tank every set. <strong>If you're questioning whether you'll make the rep, the weight is too heavy.</strong></div>
     </div>
-
     <div class="rule-card rc-terra">
       <div class="rule-title">75 Real Swings</div>
-      <div class="rule-body">Dan John tested 250, 125, and finally settled on <strong>75 reps of real swings</strong> per session. Not EMOM, not timed — just 75 quality reps. Sets of 10–15, rest when needed, stop at 75.</div>
+      <div class="rule-body">Dan John settled on <strong>75 reps of real swings</strong> per session after testing 250 and 125. Not EMOM, not timed — just 75 quality reps. Sets of 10–15, rest when needed.</div>
     </div>
-
     <div class="rule-card rc-gold">
       <div class="rule-title">Carries: Never Repeat</div>
-      <div class="rule-body">The carry rotates every session across four variations: Farmer, Suitcase, Waiter, Rack. <strong>Never repeat the same carry session.</strong> Change the load or distance each time too.</div>
+      <div class="rule-body">The carry rotates every session: Farmer → Suitcase → Waiter → Rack. <strong>Never repeat the same carry session.</strong> Change load or distance each time too.</div>
     </div>
-
     <div class="rule-card rc-green">
       <div class="rule-title">Add Load When It Feels Easy</div>
-      <div class="rule-body">Wait until a weight feels genuinely easy for two consecutive sessions before adding load. OHP/Deadlift: +2.5–5kg. Pull-ups: add belt weight. <strong>Patience is the mechanism.</strong></div>
+      <div class="rule-body">Wait until a weight feels genuinely easy for two consecutive sessions. OHP/Deadlift: +2.5–5kg. Pull-ups: add belt weight. <strong>Patience is the mechanism.</strong></div>
+    </div>
+    <div class="spc"></div>
+  </div>
+</div>
+
+<!-- ══════════ ANNA ══════════ -->
+<div class="page" id="page-anna">
+  <div class="page-inner">
+
+    <div class="anna-hero">
+      <div class="anna-eyebrow">Anna's Workouts · ADF Air Force Prep</div>
+      <div class="anna-session-name" id="anna-session-name">Session 1</div>
+      <div class="anna-session-sub" id="anna-session-sub">Push Focus</div>
+      <div class="anna-meta">
+        <span class="anna-pill" id="anna-count-pill">0 sessions done</span>
+        <span class="anna-pill" id="anna-pushup-pill">Best: — push-ups</span>
+      </div>
+    </div>
+
+    <!-- PFA target card -->
+    <div class="pfa-card">
+      <div class="pfa-stat">
+        <div class="pfa-val">10</div>
+        <div class="pfa-label">Push-up Target</div>
+      </div>
+      <div class="pfa-divider"></div>
+      <div class="pfa-info">
+        <strong>Air Force PFA minimum:</strong> 10 push-ups, 20 sit-ups, Beep Test 6.1. Aim for 15 push-ups as your buffer. Push-ups first every session — always when freshest.</div>
+    </div>
+
+    <!-- Push-up mode toggle -->
+    <div class="pushup-mode-card">
+      <div class="pushup-mode-label">Current Push-up Mode</div>
+      <div class="pushup-mode-toggle">
+        <button class="pumode-btn" id="mode-knee" onclick="setPushupMode('knee')">🦵 Knee Push-ups</button>
+        <button class="pumode-btn" id="mode-full" onclick="setPushupMode('full')">💪 Full Push-ups</button>
+      </div>
+      <div class="pushup-hint" id="pushup-hint">Start with knee push-ups. <strong>Switch to full when you can do 5 clean reps from toes.</strong></div>
+    </div>
+
+    <div class="section-label" id="anna-ex-label">Exercises</div>
+    <div id="anna-ex-list"></div>
+
+    <button class="anna-next-btn" onclick="annaNextSession()">Complete Session &amp; Continue →</button>
+
+    <!-- Push-up history -->
+    <div class="pushup-history">
+      <div class="ph-title">Push-up History</div>
+      <div id="pushup-history-list"></div>
     </div>
 
     <div class="spc"></div>
@@ -1019,443 +810,354 @@ h1, h2, h3, .serif { font-family: 'Playfair Display', Georgia, serif; }
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <button class="nav-item active" onclick="showPage('today', this)">
-    <span class="nav-icon">⚡</span><span>Today</span>
-  </button>
-  <button class="nav-item" onclick="showPage('log', this)">
-    <span class="nav-icon">📅</span><span>Log</span>
-  </button>
-  <button class="nav-item" onclick="showPage('weights', this)">
-    <span class="nav-icon">🏋️</span><span>Weights</span>
-  </button>
-  <button class="nav-item" onclick="showPage('program', this)">
-    <span class="nav-icon">📖</span><span>Program</span>
-  </button>
+  <button class="nav-item active" onclick="showPage('today',this)"><span class="nav-icon">⚡</span><span>Today</span></button>
+  <button class="nav-item" onclick="showPage('warmup',this)"><span class="nav-icon">🤸</span><span>Warmup</span></button>
+  <button class="nav-item" onclick="showPage('log',this)"><span class="nav-icon">📅</span><span>Log</span></button>
+  <button class="nav-item" onclick="showPage('weights',this)"><span class="nav-icon">🏋️</span><span>Weights</span></button>
+  <button class="nav-item" onclick="showPage('prs',this)"><span class="nav-icon">🏆</span><span>PRs</span></button>
+  <button class="nav-item anna-nav" onclick="showPage('anna',this)"><span class="nav-icon">🎖️</span><span>Anna</span></button>
 </nav>
 
 <script>
-// ════════════════════════════
-// DATA
-// ════════════════════════════
-
+// ══════════════════════════════
+// CONSTANTS
+// ══════════════════════════════
 const LIFTS = [
-  { id:'swg', name:'KB Swings',         type:'swing', note:'75 reps total — sets of 10–15, rest when form breaks.',    hasWeight:true,  unit:'kg',        step:4   },
-  { id:'ohp', name:'Overhead Press',    type:'main',  note:'Brace hard, glutes tight. Stop at 5.',                     hasWeight:true,  unit:'kg',        step:2.5 },
-  { id:'pul', name:'Pull-up',           type:'main',  note:'Full hang, chin over bar.',                                hasWeight:true,  unit:'kg added',  step:2.5 },
-  { id:'tbdl',name:'Trap Bar Deadlift', type:'main',  note:'Hips back, drive floor. Never grind.',                     hasWeight:true,  unit:'kg',        step:5   },
-  { id:'abw', name:'Ab Wheel',          type:'main',  note:'Rib cage down. One more rep than last session.',           hasWeight:false, unit:'',          step:0   },
-  { id:'car', name:'Loaded Carry',      type:'carry', note:'',                                                         hasWeight:true,  unit:'kg',        step:2.5 },
+  {id:'swg', name:'KB Swings',        type:'swing', note:'75 reps total — sets of 10–15, rest when form breaks.',  hasWeight:true, unit:'kg',       step:4  },
+  {id:'ohp', name:'Overhead Press',   type:'main',  note:'Brace hard, glutes tight. Stop at 5.',                   hasWeight:true, unit:'kg',       step:2.5},
+  {id:'pul', name:'Pull-up',          type:'main',  note:'Full hang, chin over bar.',                              hasWeight:true, unit:'kg added', step:2.5},
+  {id:'tbdl',name:'Trap Bar Deadlift',type:'main',  note:'Hips back, drive floor. Never grind.',                   hasWeight:true, unit:'kg',       step:5  },
+  {id:'abw', name:'Ab Wheel',         type:'main',  note:'Rib cage down. One more rep than last session.',         hasWeight:false,unit:'',         step:0  },
+  {id:'car', name:'Loaded Carry',     type:'carry', note:'',                                                       hasWeight:true, unit:'kg',       step:2.5},
 ];
-
-const CARRY_ROTATION = ['Farmer Carry','Suitcase Carry','Waiter Carry','Rack Carry'];
+const CARRIES  = ['Farmer Carry','Suitcase Carry','Waiter Carry','Rack Carry'];
 const CARRY_NOTES = [
-  'Both hands. Heavy KBs or DBs. Walk tall, shoulders packed.',
-  'Single KB, one side only. Resist the lean hard. Alternate sides.',
-  'KB overhead one arm. Lock out. Core tight. Alternate sides.',
-  'KB at shoulder (rack position). Tall posture. Alternate sides.',
+  'Both hands. Heavy KBs or DBs. Walk tall, shoulders packed, breathe through the nose.',
+  'Single KB one side. Resist the lean hard. Walk 20m, switch sides.',
+  'KB overhead one arm, locked out. Core tight and tall. Switch sides.',
+  'KB at shoulder in rack position. Tall posture. Switch sides.',
 ];
+const WU_IDS = ['wu-goblet','wu-rocks','wu-nods','wu-prone','wu-eggs','wu-stretch'];
 
-// ════════════════════════════
+// ══════════════════════════════
 // STATE
-// ════════════════════════════
-
+// ══════════════════════════════
 function loadState() {
   try {
     return {
-      currentSession: parseInt(localStorage.getItem('es3_current') || '1'),
-      completedSessions: new Set(JSON.parse(localStorage.getItem('es3_completed') || '[]')),
-      weights: JSON.parse(localStorage.getItem('es3_weights') || '{}'),
-      feels:   JSON.parse(localStorage.getItem('es3_feels') || '{}'),
-      exDone:  JSON.parse(localStorage.getItem('es3_exdone') || '{}'),
-      swingCount: parseInt(localStorage.getItem('es3_swings') || '0'),
+      currentSession: parseInt(localStorage.getItem('es4_sess') || '1'),
+      completed:      new Set(JSON.parse(localStorage.getItem('es4_completed') || '[]')),
+      weights:        JSON.parse(localStorage.getItem('es4_weights') || '{}'),
+      feels:          JSON.parse(localStorage.getItem('es4_feels') || '{}'),
+      exDone:         JSON.parse(localStorage.getItem('es4_exdone') || '{}'),
+      swingCount:     parseInt(localStorage.getItem('es4_swings') || '0'),
+      wuDone:         JSON.parse(localStorage.getItem('es4_wudone') || '[]'),
+      prs:            JSON.parse(localStorage.getItem('es4_prs') || '[]'),
     };
   } catch(e) {
-    return { currentSession:1, completedSessions: new Set(), weights:{}, feels:{}, exDone:{}, swingCount:0 };
+    return {currentSession:1,completed:new Set(),weights:{},feels:{},exDone:{},swingCount:0,wuDone:[],prs:[]};
   }
 }
-
 function saveState() {
   try {
-    localStorage.setItem('es3_current',   S.currentSession);
-    localStorage.setItem('es3_completed', JSON.stringify([...S.completedSessions]));
-    localStorage.setItem('es3_weights',   JSON.stringify(S.weights));
-    localStorage.setItem('es3_feels',     JSON.stringify(S.feels));
-    localStorage.setItem('es3_exdone',    JSON.stringify(S.exDone));
-    localStorage.setItem('es3_swings',    S.swingCount);
-  } catch(e) {}
+    localStorage.setItem('es4_sess',      S.currentSession);
+    localStorage.setItem('es4_completed', JSON.stringify([...S.completed]));
+    localStorage.setItem('es4_weights',   JSON.stringify(S.weights));
+    localStorage.setItem('es4_feels',     JSON.stringify(S.feels));
+    localStorage.setItem('es4_exdone',    JSON.stringify(S.exDone));
+    localStorage.setItem('es4_swings',    S.swingCount);
+    localStorage.setItem('es4_wudone',    JSON.stringify(S.wuDone));
+    localStorage.setItem('es4_prs',       JSON.stringify(S.prs));
+  } catch(e){}
 }
-
 const S = loadState();
 
-// ════════════════════════════
+// Warmup sub-state (per session, cleared on next)
+const wuState = { gobCount: 0 };
+
+// ══════════════════════════════
 // HELPERS
-// ════════════════════════════
-
-function getWeek(session) { return Math.min(8, Math.ceil(session / 5)); }
-function getWeekDay(session) { return ((session - 1) % 5); }
-
-function getCarryForSession(session) {
-  const idx = (session - 1) % 4;
-  return { name: CARRY_ROTATION[idx], note: CARRY_NOTES[idx] };
-}
-
-function projectWeights(liftId) {
-  const lift = LIFTS.find(l => l.id === liftId);
-  if (!lift.hasWeight || lift.step === 0) return Array(8).fill(null);
-  const w1raw = S.weights[liftId + '_w1'];
-  const w1 = (w1raw !== undefined && w1raw !== '') ? parseFloat(w1raw) : null;
-  if (w1 === null) return Array(8).fill(null);
-  const res = [w1];
-  for (let w = 2; w <= 8; w++) {
-    const prev = res[w-2];
-    if (prev === null) { res.push(null); continue; }
-    const feel = S.feels[liftId + '_w' + (w-1)];
-    res.push((feel === 'easy' || feel === 'good') ? prev + lift.step : prev);
+// ══════════════════════════════
+function getWeek(s){ return Math.min(8,Math.ceil(s/5)); }
+function projWeights(lid){
+  const lf=LIFTS.find(l=>l.id===lid);
+  if(!lf.hasWeight||lf.step===0) return Array(8).fill(null);
+  const r1=S.weights[lid+'_w1'];
+  const w1=(r1!==undefined&&r1!=='') ? parseFloat(r1) : null;
+  if(w1===null) return Array(8).fill(null);
+  const res=[w1];
+  for(let w=2;w<=8;w++){
+    const p=res[w-2]; if(p===null){res.push(null);continue;}
+    const f=S.feels[lid+'_w'+(w-1)];
+    res.push((f==='easy'||f==='good')?p+lf.step:p);
   }
   return res;
 }
-
-function getWeightForSession(liftId, session) {
-  const week = getWeek(session);
-  const manual = S.weights[liftId + '_w' + week];
-  if (manual !== undefined && manual !== '') return parseFloat(manual);
-  return projectWeights(liftId)[week - 1];
+function getW(lid,sess){
+  const wk=getWeek(sess);
+  const m=S.weights[lid+'_w'+wk];
+  if(m!==undefined&&m!=='') return parseFloat(m);
+  return projWeights(lid)[wk-1];
 }
 
-// ════════════════════════════
-// NAV
-// ════════════════════════════
-
-function showPage(name, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  if (btn) btn.classList.add('active');
-  window.scrollTo(0, 0);
+// ══════════════════════════════
+// NAV / TOAST
+// ══════════════════════════════
+function showPage(name,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  if(btn) btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+let toastT;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2200);
 }
 
-// ════════════════════════════
-// TOAST
-// ════════════════════════════
-
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
-}
-
-// ════════════════════════════
+// ══════════════════════════════
 // REST TIMER
-// ════════════════════════════
-
-let rtSeconds = 120;
-let rtRunning = false;
-let rtInterval = null;
-let rtDuration = 120;
-
-function formatTime(s) {
-  return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
-}
-
-function toggleTimer() {
-  if (rtRunning) {
-    clearInterval(rtInterval);
-    rtRunning = false;
-    document.getElementById('rtBtn').textContent = 'Start';
-    document.getElementById('rtBtn').className = 'rtbtn start';
-    document.getElementById('rtDisplay').className = 'rest-timer-display';
+// ══════════════════════════════
+let rtSec=120,rtRun=false,rtInt=null;
+function fmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function toggleTimer(){
+  if(rtRun){
+    clearInterval(rtInt); rtRun=false;
+    document.getElementById('rtBtn').textContent='Start';
+    document.getElementById('rtBtn').className='rtbtn go';
+    document.getElementById('rtDisp').className='rt-display';
   } else {
-    rtRunning = true;
-    document.getElementById('rtBtn').textContent = 'Stop';
-    document.getElementById('rtBtn').className = 'rtbtn stop';
-    document.getElementById('rtDisplay').className = 'rest-timer-display running';
-    rtInterval = setInterval(() => {
-      rtSeconds--;
-      document.getElementById('rtDisplay').textContent = formatTime(rtSeconds);
-      if (rtSeconds <= 0) {
-        clearInterval(rtInterval);
-        rtRunning = false;
-        document.getElementById('rtDisplay').textContent = 'Done!';
-        document.getElementById('rtDisplay').className = 'rest-timer-display done';
-        document.getElementById('rtBtn').textContent = 'Start';
-        document.getElementById('rtBtn').className = 'rtbtn start';
-        document.getElementById('rtSub').textContent = 'Rest complete — go!';
+    rtRun=true;
+    document.getElementById('rtBtn').textContent='Stop';
+    document.getElementById('rtBtn').className='rtbtn stop';
+    document.getElementById('rtDisp').className='rt-display running';
+    rtInt=setInterval(()=>{
+      rtSec--;
+      document.getElementById('rtDisp').textContent=fmt(rtSec);
+      if(rtSec<=0){
+        clearInterval(rtInt); rtRun=false;
+        document.getElementById('rtDisp').textContent='Go!';
+        document.getElementById('rtDisp').className='rt-display done';
+        document.getElementById('rtBtn').textContent='Start';
+        document.getElementById('rtBtn').className='rtbtn go';
+        document.getElementById('rtSub').textContent='Rest done — lift!';
         showToast('Rest complete — go!');
       }
-    }, 1000);
+    },1000);
   }
 }
-
-function resetTimer() {
-  clearInterval(rtInterval);
-  rtRunning = false;
-  rtSeconds = rtDuration;
-  document.getElementById('rtDisplay').textContent = formatTime(rtSeconds);
-  document.getElementById('rtDisplay').className = 'rest-timer-display';
-  document.getElementById('rtBtn').textContent = 'Start';
-  document.getElementById('rtBtn').className = 'rtbtn start';
-  document.getElementById('rtSub').textContent = 'Tap start between sets';
+function resetTimer(){
+  clearInterval(rtInt); rtRun=false; rtSec=120;
+  document.getElementById('rtDisp').textContent=fmt(rtSec);
+  document.getElementById('rtDisp').className='rt-display';
+  document.getElementById('rtBtn').textContent='Start';
+  document.getElementById('rtBtn').className='rtbtn go';
+  document.getElementById('rtSub').textContent='Start between sets';
 }
 
-// ════════════════════════════
-// SWING COUNTER
-// ════════════════════════════
-
-function addSwings(n) {
-  S.swingCount = Math.min(75, S.swingCount + n);
-  saveState();
-  renderToday();
-}
-
-function resetSwings() {
-  S.swingCount = 0;
-  saveState();
-  renderToday();
-}
-
-// ════════════════════════════
+// ══════════════════════════════
 // TODAY
-// ════════════════════════════
+// ══════════════════════════════
+function renderToday(){
+  const sess=S.currentSession, wk=getWeek(sess), done=S.completed.size;
+  document.getElementById('hero-num').textContent=sess;
+  document.getElementById('hero-sub').textContent='Week '+wk+' of 8';
+  document.getElementById('hero-pill').textContent='Session '+sess+' of 40';
+  document.getElementById('hero-info').textContent=done+' sessions complete';
+  document.getElementById('prevBtn').style.display=sess>1?'block':'none';
+  document.getElementById('prevNum').textContent=sess-1;
+  const nb=document.getElementById('nextBtn');
+  if(sess>40){nb.textContent='🎉 Program Complete!';nb.disabled=true;}
+  else{nb.textContent='Complete Session & Continue →';nb.disabled=false;}
 
-function renderToday() {
-  const sess = S.currentSession;
-  const week = getWeek(sess);
-  const done = S.completedSessions.size;
+  const carry=CARRIES[(sess-1)%4];
+  const carryNote=CARRY_NOTES[(sess-1)%4];
+  const list=document.getElementById('ex-list');
+  list.innerHTML='';
 
-  document.getElementById('session-num').textContent = sess;
-  document.getElementById('session-sub').textContent = 'Week ' + week + ' of 8';
-  document.getElementById('session-pill').textContent = 'Session ' + sess + ' of 40';
-  document.getElementById('session-info').textContent = done + ' sessions complete';
+  LIFTS.forEach((lift,i)=>{
+    const key='s'+sess+'_'+lift.id;
+    const isDone=!!S.exDone[key];
+    const isSwing=lift.type==='swing', isCarry=lift.type==='carry';
+    const card=document.createElement('div');
+    card.className='ex-card'+(isDone?' done':'')+(isSwing?' is-swing':isCarry?' is-carry':' is-main');
 
-  // prev/next buttons
-  const prevBtn = document.getElementById('prevBtn');
-  const prevNum = document.getElementById('prevNum');
-  if (sess > 1) {
-    prevBtn.style.display = 'block';
-    prevNum.textContent = sess - 1;
-  } else {
-    prevBtn.style.display = 'none';
-  }
-  if (sess > 40) {
-    document.getElementById('nextBtn').textContent = '🎉 Program Complete!';
-    document.getElementById('nextBtn').disabled = true;
-  } else {
-    document.getElementById('nextBtn').textContent = 'Complete Session & Continue →';
-    document.getElementById('nextBtn').disabled = false;
-  }
-
-  const carry = getCarryForSession(sess);
-  const list = document.getElementById('ex-list');
-  list.innerHTML = '';
-
-  LIFTS.forEach((lift, i) => {
-    const key = 'sess' + sess + '_' + lift.id;
-    const isDone = !!S.exDone[key];
-    const isSwing = lift.type === 'swing';
-    const isCarry = lift.type === 'carry';
-
-    const card = document.createElement('div');
-    card.className = 'ex-card' + (isDone ? ' done' : '') + (isSwing ? ' is-swing' : isCarry ? ' is-carry' : ' is-main');
-
-    // Weight display
-    let weightHTML = '';
-    if (lift.hasWeight && !isSwing) {
-      const w = getWeightForSession(lift.id, sess);
-      const name = isCarry ? carry.name : lift.name;
-      if (w !== null && w !== undefined) {
-        weightHTML = `<div class="ex-weight-row">
-          <span class="ex-weight-label">Load</span>
-          <span class="ex-weight-val">${w}${lift.unit}</span>
-          <span class="ex-weight-label" style="margin-left:auto">Wk ${week}</span>
-        </div>`;
-      } else {
-        weightHTML = `<div class="ex-weight-row"><span class="ex-weight-val unset">→ Set week 1 weight in Weights tab</span></div>`;
-      }
+    let wHTML='';
+    if(lift.hasWeight&&!isSwing){
+      const w=getW(lift.id,sess);
+      wHTML=(w!==null&&w!==undefined)
+        ?`<div class="ex-wrow"><span class="ex-wlabel">Load</span><span class="ex-wval">${w}${lift.unit}</span><span class="ex-wlabel" style="margin-left:auto">Wk ${wk}</span></div>`
+        :`<div class="ex-wrow"><span class="ex-wval unset">→ Set week 1 weight in Weights tab</span></div>`;
     }
 
-    // Swing counter special UI
-    let swingHTML = '';
-    if (isSwing) {
-      const pct = Math.min(100, (S.swingCount / 75) * 100);
-      swingHTML = `<div class="swing-counter">
-        <div class="swing-counter-top">
-          <span class="swing-counter-label">Swing Count</span>
-          <span class="swing-count-display">${S.swingCount}<span class="swing-total"> / 75</span></span>
+    let scHTML='';
+    if(isSwing){
+      const pct=Math.min(100,(S.swingCount/75)*100);
+      const left=Math.max(0,75-S.swingCount);
+      scHTML=`<div class="swing-counter">
+        <div class="sc-top">
+          <span class="sc-label">Swing Count</span>
+          <span class="sc-display">${S.swingCount}<span class="sc-total"> / 75</span></span>
         </div>
-        <div class="swing-progress"><div class="swing-progress-fill" style="width:${pct}%"></div></div>
-        <div class="swing-btns">
-          <button class="swing-btn" onclick="addSwings(10)">+10</button>
-          <button class="swing-btn" onclick="addSwings(15)">+15</button>
-          <button class="swing-btn primary" onclick="addSwings(${Math.max(0, 75 - S.swingCount)})">Finish (${Math.max(0, 75 - S.swingCount)} left)</button>
-          <button class="swing-btn" onclick="resetSwings()">↺</button>
+        <div class="sc-bar"><div class="sc-fill" style="width:${pct}%"></div></div>
+        <div class="sc-btns">
+          <button class="scbtn" onclick="addSwings(10)">+10</button>
+          <button class="scbtn" onclick="addSwings(15)">+15</button>
+          <button class="scbtn primary" onclick="addSwings(${left})">${left===0?'Done ✓':'Finish ('+left+' left)'}</button>
+          <button class="scbtn" onclick="addSwings(-S.swingCount)" onclick="resetSwings()">↺</button>
         </div>
       </div>`;
     }
 
-    const liftName = isCarry ? carry.name : lift.name;
-    const liftNote = isCarry ? carry.note : lift.note;
-    const setsDisplay = isSwing ? '75 reps' : '2×5';
-    const subDisplay  = isSwing ? 'sets of 10–15' : (lift.id === 'abw' ? 'controlled' : '~80%');
+    const nm=isCarry?carry:lift.name;
+    const nt=isCarry?carryNote:lift.note;
+    const sets=isSwing?'75 reps':'2×5';
+    const sub=isSwing?'sets of 10–15':lift.id==='abw'?'controlled':'~80%';
 
-    card.innerHTML = `
-      <div class="ex-card-top">
-        <div class="ex-card-info">
-          <div class="ex-card-name">${liftName}</div>
-          <div class="ex-card-note">${liftNote}</div>
-        </div>
-        <div class="ex-card-right">
-          <div class="ex-card-sets">${setsDisplay}</div>
-          <div class="ex-card-sub">${subDisplay}</div>
-        </div>
-      </div>
-      ${isSwing ? swingHTML : weightHTML}
-      <button class="done-btn" onclick="toggleExDone('${key}')">${isDone ? '✓ Done' : 'Mark Complete'}</button>
-    `;
+    card.innerHTML=`<div class="ex-card-top">
+      <div class="ex-card-info"><div class="ex-card-name">${nm}</div><div class="ex-card-note">${nt}</div></div>
+      <div class="ex-card-right"><div class="ex-card-sets">${sets}</div><div class="ex-card-sub">${sub}</div></div>
+    </div>${isSwing?scHTML:wHTML}
+    <button class="done-btn" onclick="toggleExDone('${key}')">${isDone?'✓ Done':'Mark Complete'}</button>`;
     list.appendChild(card);
   });
-
   renderLogSummary();
 }
-
-function toggleExDone(key) {
-  S.exDone[key] = !S.exDone[key];
-  saveState();
-  renderToday();
+function toggleExDone(key){S.exDone[key]=!S.exDone[key];saveState();renderToday();}
+function addSwings(n){S.swingCount=Math.max(0,Math.min(75,S.swingCount+n));saveState();renderToday();}
+function resetSwings(){S.swingCount=0;saveState();renderToday();}
+function nextSession(){
+  if(S.currentSession>40)return;
+  S.completed.add(S.currentSession);
+  S.swingCount=0;
+  S.currentSession=Math.min(41,S.currentSession+1);
+  saveState(); renderToday(); renderLog();
+  showToast('Session '+(S.currentSession-1)+' complete 💪');
+  window.scrollTo(0,0);
+}
+function prevSession(){
+  if(S.currentSession<=1)return;
+  S.completed.delete(S.currentSession-1);
+  S.currentSession=Math.max(1,S.currentSession-1);
+  S.swingCount=0;
+  saveState(); renderToday(); renderLog();
 }
 
-function nextSession() {
-  if (S.currentSession > 40) return;
-  S.completedSessions.add(S.currentSession);
-  // Reset swing count for next session
-  S.swingCount = 0;
-  // Clear exDone for the new session
-  S.currentSession = Math.min(41, S.currentSession + 1);
-  saveState();
-  renderToday();
-  renderLog();
-  showToast('Session ' + (S.currentSession - 1) + ' complete 💪');
-  window.scrollTo(0, 0);
+// ══════════════════════════════
+// WARMUP
+// ══════════════════════════════
+function expandWu(id){
+  const card=document.getElementById(id);
+  card.classList.toggle('expanded');
+}
+function markWuDone(id){
+  const card=document.getElementById(id);
+  card.classList.add('done-wu');
+  card.classList.remove('expanded');
+  if(!S.wuDone.includes(id)){S.wuDone.push(id);}
+  saveState(); updateWuProgress();
+}
+function addGob(n){
+  wuState.gobCount=Math.max(0,Math.min(15,wuState.gobCount+n));
+  document.getElementById('gob-count-display').textContent=wuState.gobCount;
+  document.getElementById('gob-big-count').innerHTML=wuState.gobCount+' <span style="font-size:0.9rem;color:var(--text3);font-family:\'Lato\',sans-serif;font-weight:400">/ 15</span>';
+}
+function updateWuProgress(){
+  const done=S.wuDone.length;
+  const pct=Math.round((done/WU_IDS.length)*100);
+  document.getElementById('wu-prog-bar').style.width=pct+'%';
+  document.getElementById('wu-prog-text').textContent=done+' / '+WU_IDS.length;
+  WU_IDS.forEach(id=>{
+    const card=document.getElementById(id);
+    if(card&&S.wuDone.includes(id)) card.classList.add('done-wu');
+  });
+}
+function resetWarmup(){
+  S.wuDone=[];
+  wuState.gobCount=0;
+  document.getElementById('gob-count-display').textContent='0';
+  document.getElementById('gob-big-count').innerHTML='0 <span style="font-size:0.9rem;color:var(--text3);font-family:\'Lato\',sans-serif;font-weight:400">/ 15</span>';
+  WU_IDS.forEach(id=>{
+    const card=document.getElementById(id);
+    if(card){card.classList.remove('done-wu');card.classList.remove('expanded');}
+  });
+  saveState(); updateWuProgress();
+  showToast('Warmup reset');
 }
 
-function prevSession() {
-  if (S.currentSession <= 1) return;
-  S.completedSessions.delete(S.currentSession - 1);
-  S.currentSession = Math.max(1, S.currentSession - 1);
-  S.swingCount = 0;
-  saveState();
-  renderToday();
-  renderLog();
-}
-
-// ════════════════════════════
+// ══════════════════════════════
 // LOG
-// ════════════════════════════
-
-function renderLogSummary() {
-  const done = S.completedSessions.size;
-  const week = getWeek(S.currentSession);
-  document.getElementById('lsDone').textContent = done;
-  document.getElementById('lsLeft').textContent = Math.max(0, 40 - done);
-  document.getElementById('lsWeek').textContent = week;
-  document.getElementById('hbadge').textContent = done + ' / 40';
+// ══════════════════════════════
+function renderLogSummary(){
+  const done=S.completed.size, wk=getWeek(S.currentSession);
+  document.getElementById('ls-done').textContent=done;
+  document.getElementById('ls-left').textContent=Math.max(0,40-done);
+  document.getElementById('ls-week').textContent=wk;
+  document.getElementById('hbadge').textContent=done+' / 40';
 }
-
-function renderLog() {
+function renderLog(){
   renderLogSummary();
-
-  // Dot grid
-  const dg = document.getElementById('dot-grid');
-  dg.innerHTML = '';
-  for (let i = 1; i <= 40; i++) {
-    const d = document.createElement('div');
-    const isDone = S.completedSessions.has(i);
-    const isCur = i === S.currentSession;
-    d.className = 'dot' + (isDone ? ' done' : '') + (isCur && !isDone ? ' current' : '');
-    d.textContent = i;
-    d.onclick = () => { S.currentSession = i; saveState(); renderToday(); renderLog(); showPage('today', document.querySelector('.nav-item')); };
+  const dg=document.getElementById('dot-grid'); dg.innerHTML='';
+  for(let i=1;i<=40;i++){
+    const d=document.createElement('div');
+    const isDone=S.completed.has(i), isCur=i===S.currentSession&&!isDone;
+    d.className='dot'+(isDone?' done':'')+(isCur?' current':'');
+    d.textContent=i;
+    d.onclick=()=>jumpTo(i);
     dg.appendChild(d);
   }
-
-  // Week blocks
-  const wb = document.getElementById('week-blocks');
-  wb.innerHTML = '';
-  const days = ['Mon','Tue','Wed','Thu','Fri'];
-  for (let w = 1; w <= 8; w++) {
-    let tiles = '';
-    for (let d = 0; d < 5; d++) {
-      const n = (w-1)*5 + d + 1;
-      const isDone = S.completedSessions.has(n);
-      const isCur = n === S.currentSession && !isDone;
-      tiles += `<div class="wtile${isDone?' wdone':''}${isCur?' wcurrent':''}" onclick="jumpTo(${n})">
-        <div class="wday">${days[d]}</div>
-        <div class="wnum">${n}</div>
-        <div class="wchk"></div>
+  const wb=document.getElementById('week-blocks'); wb.innerHTML='';
+  const dl=['Mon','Tue','Wed','Thu','Fri'];
+  for(let w=1;w<=8;w++){
+    let t='';
+    for(let d=0;d<5;d++){
+      const n=(w-1)*5+d+1;
+      const isDone=S.completed.has(n), isCur=n===S.currentSession&&!isDone;
+      t+=`<div class="wtile${isDone?' wdone':''}${isCur?' wcurrent':''}" onclick="jumpTo(${n})">
+        <div class="wday">${dl[d]}</div><div class="wnum">${n}</div><div class="wchk"></div>
       </div>`;
     }
-    wb.innerHTML += `<div class="week-block"><div class="week-block-label">Week ${w}</div><div class="week-tiles">${tiles}</div></div>`;
+    wb.innerHTML+=`<div class="week-block"><div class="week-block-label">Week ${w}</div><div class="week-tiles">${t}</div></div>`;
   }
 }
-
-function jumpTo(n) {
-  S.currentSession = n;
-  S.swingCount = 0;
-  saveState();
-  renderToday();
-  renderLog();
-  showPage('today', document.querySelector('.nav-item'));
+function jumpTo(n){
+  S.currentSession=n; S.swingCount=0;
+  saveState(); renderToday(); renderLog();
+  showPage('today',document.querySelector('.nav-item'));
+}
+function resetAll(){
+  if(!confirm('Reset all progress? This cannot be undone.'))return;
+  S.currentSession=1; S.completed.clear(); S.exDone={}; S.swingCount=0;
+  saveState(); renderToday(); renderLog(); showToast('Progress reset');
 }
 
-function resetAll() {
-  if (!confirm('Reset all progress? This cannot be undone.')) return;
-  S.currentSession = 1;
-  S.completedSessions.clear();
-  S.exDone = {};
-  S.swingCount = 0;
-  saveState();
-  renderToday();
-  renderLog();
-  showToast('Progress reset');
-}
-
-// ════════════════════════════
+// ══════════════════════════════
 // WEIGHTS
-// ════════════════════════════
-
-function renderWeights() {
-  const container = document.getElementById('weights-container');
-  container.innerHTML = '';
-  const hasAny = LIFTS.filter(l => l.hasWeight && l.step > 0).some(l => {
-    const v = S.weights[l.id + '_w1'];
-    return v !== undefined && v !== '';
+// ══════════════════════════════
+function renderWeights(){
+  const c=document.getElementById('weights-container'); c.innerHTML='';
+  const ha=LIFTS.filter(l=>l.hasWeight&&l.step>0).some(l=>{
+    const v=S.weights[l.id+'_w1']; return v!==undefined&&v!=='';
   });
-  document.getElementById('proj-legend').style.display = hasAny ? 'block' : 'none';
-
-  LIFTS.filter(l => l.hasWeight && l.step > 0).forEach(lift => {
-    const proj = projectWeights(lift.id);
-    const card = document.createElement('div');
-    card.className = 'lift-card';
-    card.id = 'lc-' + lift.id;
-
-    const tagClass = lift.type === 'swing' ? 'lt-swing' : lift.type === 'carry' ? 'lt-carry' : 'lt-main';
-
-    let weeksHTML = '';
-    for (let w = 1; w <= 8; w++) {
-      const mk = lift.id + '_w' + w;
-      const manual = S.weights[mk];
-      const pv = proj[w-1];
-      const isProj = (w > 1) && (manual === undefined || manual === '') && pv !== null;
-      const displayVal = (manual !== undefined && manual !== '') ? manual : (isProj ? pv : '');
-      const feel = S.feels[lift.id + '_w' + w] || '';
-
-      weeksHTML += `<div class="week-entry">
+  document.getElementById('proj-legend').style.display=ha?'block':'none';
+  LIFTS.filter(l=>l.hasWeight&&l.step>0).forEach(lift=>{
+    const proj=projWeights(lift.id);
+    const card=document.createElement('div');
+    card.className='lift-card'; card.id='lc-'+lift.id;
+    const tc=lift.type==='swing'?'lt-swing':lift.type==='carry'?'lt-carry':'lt-main';
+    let wh='';
+    for(let w=1;w<=8;w++){
+      const m=S.weights[lift.id+'_w'+w], pv=proj[w-1];
+      const isp=(w>1)&&(m===undefined||m==='')&&pv!==null;
+      const dv=(m!==undefined&&m!=='')?m:(isp?pv:'');
+      const feel=S.feels[lift.id+'_w'+w]||'';
+      wh+=`<div class="week-entry">
         <div class="week-entry-top">
-          <span class="week-entry-label${isProj?' proj':''}">Wk ${w}${isProj?' ↗':''}</span>
-          <input class="weight-input${isProj?' is-proj':''}" type="number" inputmode="decimal"
-            placeholder="${isProj ? pv : (w===1?'Enter':'—')}"
-            value="${displayVal}"
+          <span class="week-entry-label${isp?' proj':''}">Wk ${w}${isp?' ↗':''}</span>
+          <input class="weight-input${isp?' is-proj':''}" type="number" inputmode="decimal"
+            placeholder="${isp?pv:(w===1?'Enter':'—')}" value="${dv}"
             onchange="setWeight('${lift.id}',${w},this.value)"
             onfocus="this.classList.remove('is-proj');this.select()">
           <span class="week-unit">${lift.unit}</span>
@@ -1467,45 +1169,327 @@ function renderWeights() {
         </div>
       </div>`;
     }
+    card.innerHTML=`<div class="lift-card-header" onclick="toggleLift('lc-${lift.id}')">
+      <span class="lift-card-name">${lift.name}</span>
+      <span class="lift-tag ${tc}">${lift.type}</span>
+      <span class="lift-chevron">▾</span>
+    </div>
+    <div class="lift-card-body">
+      ${lift.id==='pul'?'<p style="font-size:0.73rem;color:var(--text2);margin-bottom:11px">Enter 0 for bodyweight. Positive = kg added via belt/vest.</p>':''}
+      ${wh}
+    </div>`;
+    c.appendChild(card);
+  });
+}
+function toggleLift(id){document.getElementById(id).classList.toggle('open');}
+function setWeight(lid,w,v){S.weights[lid+'_w'+w]=v===''?'':parseFloat(v);saveState();renderWeights();renderToday();}
+function setFeel(lid,w,f){const k=lid+'_w'+w;S.feels[k]=S.feels[k]===f?'':f;saveState();renderWeights();renderToday();}
 
-    card.innerHTML = `
-      <div class="lift-card-header" onclick="toggleLift('lc-${lift.id}')">
-        <span class="lift-card-name">${lift.name}</span>
-        <span class="lift-tag ${tagClass}">${lift.type}</span>
-        <span class="lift-chevron">▾</span>
-      </div>
-      <div class="lift-card-body">
-        ${lift.id === 'pul' ? '<p style="font-size:0.75rem;color:var(--text2);margin-bottom:12px">Enter 0 for bodyweight. Positive number = kg added via belt.</p>' : ''}
-        ${weeksHTML}
+// ══════════════════════════════
+// PR TRACKER
+// ══════════════════════════════
+function today(){
+  const d=new Date(); return d.toISOString().split('T')[0];
+}
+function savePR(){
+  const ex=document.getElementById('pr-exercise').value.trim();
+  const wt=document.getElementById('pr-weight').value;
+  const rp=document.getElementById('pr-reps').value;
+  const dt=document.getElementById('pr-date').value||today();
+  const nt=document.getElementById('pr-notes').value.trim();
+  if(!ex||!wt||!rp){showToast('Fill in exercise, weight and reps');return;}
+  S.prs.push({id:Date.now(),exercise:ex,weight:parseFloat(wt),reps:parseInt(rp),date:dt,notes:nt});
+  saveState(); renderPRs();
+  document.getElementById('pr-exercise').value='';
+  document.getElementById('pr-weight').value='';
+  document.getElementById('pr-reps').value='';
+  document.getElementById('pr-date').value='';
+  document.getElementById('pr-notes').value='';
+  showToast('PR logged 🏆');
+}
+function deletePR(id){
+  if(!confirm('Delete this entry?'))return;
+  S.prs=S.prs.filter(p=>p.id!==id);
+  saveState(); renderPRs();
+}
+function calcE1RM(w,r){ return r===1?w:Math.round(w*(1+r/30)); }
+function renderPRs(){
+  const container=document.getElementById('pr-list');
+  if(S.prs.length===0){
+    container.innerHTML=`<div class="pr-empty"><div class="pr-empty-icon">🏆</div><div>No PRs logged yet. Add your first one above.</div></div>`;
+    return;
+  }
+  // Group by exercise
+  const groups={};
+  S.prs.forEach(p=>{
+    if(!groups[p.exercise]) groups[p.exercise]=[];
+    groups[p.exercise].push(p);
+  });
+  container.innerHTML='';
+  Object.keys(groups).sort().forEach(ex=>{
+    const entries=groups[ex].sort((a,b)=>new Date(b.date)-new Date(a.date));
+    // Best = highest estimated 1RM
+    let bestIdx=0, bestE1RM=0;
+    entries.forEach((e,i)=>{
+      const e1=calcE1RM(e.weight,e.reps);
+      if(e1>bestE1RM){bestE1RM=e1;bestIdx=i;}
+    });
+    const best=entries[bestIdx];
+    const group=document.createElement('div');
+    group.className='pr-lift-group'; group.id='prg-'+ex.replace(/\s/g,'_');
+    let rows='';
+    entries.forEach(e=>{
+      const isBest=e.id===best.id;
+      const d=new Date(e.date+'T12:00:00');
+      const ds=d.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
+      rows+=`<div class="pr-entry${isBest?' is-best':''}">
+        <div class="pr-entry-left">
+          <div class="pr-entry-weight">${e.weight}kg${isBest?' <span class="pr-entry-badge">Best</span>':''}</div>
+          <div class="pr-entry-reps">${e.reps} rep${e.reps!==1?'s':''}${e.notes?' · '+e.notes:''}</div>
+        </div>
+        <div class="pr-entry-date">${ds}</div>
+        <button class="pr-delete-btn" onclick="deletePR(${e.id})">✕</button>
       </div>`;
-    container.appendChild(card);
+    });
+    group.innerHTML=`<div class="pr-lift-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="pr-lift-name">${ex}</div>
+      <div>
+        <div class="pr-best">${best.weight}kg × ${best.reps}</div>
+        <div class="pr-best-label">Best</div>
+      </div>
+      <span class="pr-lift-chev">▾</span>
+    </div>
+    <div class="pr-lift-body">${rows}</div>`;
+    container.appendChild(group);
   });
 }
 
-function toggleLift(id) { document.getElementById(id).classList.toggle('open'); }
+// ══════════════════════════════
+// ANNA
+// ══════════════════════════════
 
-function setWeight(liftId, week, val) {
-  S.weights[liftId + '_w' + week] = val === '' ? '' : parseFloat(val);
-  saveState();
-  renderWeights();
-  renderToday();
+const ANNA_SESSIONS = [
+  {
+    name:'Session 1',
+    focus:'Push + Hinge',
+    exercises:[
+      {id:'a_pu',   name:'Push-ups',                    type:'pushup', sets:'3 sets', sub:'2 reps short of failure', note:'Knee or full — whatever you\'re on. Stop before failure every set.', hasWeight:false},
+      {id:'a_neg',  name:'Negative Push-ups',            type:'pushup', sets:'3 × 5',  sub:'4 sec down', note:'Lower yourself slowly over 4 seconds from toes. Come back up on knees. Builds pressing strength fast.', hasWeight:false},
+      {id:'a_ohp',  name:'Barbell Overhead Press',       type:'press',  sets:'3 × 5',  sub:'light weight', note:'Feet shoulder-width, brace your core, press straight up. Start light — technique first.', hasWeight:true, unit:'kg'},
+      {id:'a_row1', name:'KB Row',                       type:'pull',   sets:'3 × 10', sub:'each side', note:'One hand on bench or knee for support. Pull KB to hip, keep elbow close to body.', hasWeight:true, unit:'kg'},
+      {id:'a_rdl',  name:'KB Romanian Deadlift',         type:'lower',  sets:'3 × 10', sub:'controlled', note:'Soft knees, hinge at the hips, KB runs down your legs. Feel the hamstring stretch at the bottom.', hasWeight:true, unit:'kg'},
+    ]
+  },
+  {
+    name:'Session 2',
+    focus:'Push + Pull',
+    exercises:[
+      {id:'a_pu',   name:'Push-ups',                    type:'pushup', sets:'3 sets', sub:'2 reps short of failure', note:'Knee or full. Same as last time — try for one more rep per set.', hasWeight:false},
+      {id:'a_ohp',  name:'Barbell Overhead Press',       type:'press',  sets:'3 × 5',  sub:'same weight', note:'Same weight as Session 1. Focus on pressing smoothly — no leg drive yet.', hasWeight:true, unit:'kg'},
+      {id:'a_kbp',  name:'KB Single Arm Press',          type:'press',  sets:'3 × 8',  sub:'each side', note:'Stand tall, KB at shoulder in rack position. Press straight up. Light weight — this builds shoulder stability.', hasWeight:true, unit:'kg'},
+      {id:'a_row2', name:'KB Row',                       type:'pull',   sets:'3 × 10', sub:'each side', note:'Same as Session 1. Try to add a little weight or do reps more controlled.', hasWeight:true, unit:'kg'},
+      {id:'a_band', name:'Band Pull-Apart or KB Halo',   type:'pull',   sets:'3 × 15', sub:'light', note:'Pull-apart: hold band at shoulder width, pull arms apart keeping them straight. Halo: circle KB around your head slowly. Both strengthen the rear shoulders.', hasWeight:false},
+    ]
+  },
+  {
+    name:'Session 3',
+    focus:'Upper Strength + Conditioning',
+    exercises:[
+      {id:'a_pu',   name:'Push-ups',                    type:'pushup', sets:'3 sets', sub:'2 reps short of failure', note:'Knee or full. Three sessions in — you should be building. Note your reps.', hasWeight:false},
+      {id:'a_ohp',  name:'Barbell Overhead Press',       type:'press',  sets:'3 × 5',  sub:'add weight if easy', note:'If the last two sessions felt easy, add 2.5kg. Otherwise same weight. Never grind.', hasWeight:true, unit:'kg'},
+      {id:'a_row3', name:'KB Row',                       type:'pull',   sets:'3 × 10', sub:'each side', note:'Third row session this cycle. Keep adding weight when it feels comfortable.', hasWeight:true, unit:'kg'},
+      {id:'a_swg',  name:'KB Swing',                     type:'lower',  sets:'3 × 20', sub:'moderate weight', note:'Hip hinge — not a squat. Hike the bell back, snap hips forward, bell floats to shoulder height. Great for running fitness too.', hasWeight:true, unit:'kg'},
+      {id:'a_goblet',name:'Goblet Squat',                type:'lower',  sets:'3 × 10', sub:'KB at chest', note:'Hold KB at chest, sit between your knees. Chest tall. Good for running leg strength.', hasWeight:true, unit:'kg'},
+    ]
+  },
+];
+
+function loadAnnaState() {
+  try {
+    return {
+      sessionIndex:  parseInt(localStorage.getItem('anna_sess') || '0'),
+      totalDone:     parseInt(localStorage.getItem('anna_total') || '0'),
+      pushupMode:    localStorage.getItem('anna_pumode') || 'knee',
+      pushupHistory: JSON.parse(localStorage.getItem('anna_puhistory') || '[]'),
+      weights:       JSON.parse(localStorage.getItem('anna_weights') || '{}'),
+      exDone:        JSON.parse(localStorage.getItem('anna_exdone') || '{}'),
+      currentPushups:parseInt(localStorage.getItem('anna_curpu') || '0'),
+    };
+  } catch(e) {
+    return {sessionIndex:0,totalDone:0,pushupMode:'knee',pushupHistory:[],weights:{},exDone:{},currentPushups:0};
+  }
 }
 
-function setFeel(liftId, week, feel) {
-  const key = liftId + '_w' + week;
-  S.feels[key] = S.feels[key] === feel ? '' : feel;
-  saveState();
-  renderWeights();
-  renderToday();
+function saveAnnaState() {
+  try {
+    localStorage.setItem('anna_sess',      AS.sessionIndex);
+    localStorage.setItem('anna_total',     AS.totalDone);
+    localStorage.setItem('anna_pumode',    AS.pushupMode);
+    localStorage.setItem('anna_puhistory', JSON.stringify(AS.pushupHistory));
+    localStorage.setItem('anna_weights',   JSON.stringify(AS.weights));
+    localStorage.setItem('anna_exdone',    JSON.stringify(AS.exDone));
+    localStorage.setItem('anna_curpu',     AS.currentPushups);
+  } catch(e){}
 }
 
-// ════════════════════════════
+const AS = loadAnnaState();
+
+function setPushupMode(mode) {
+  AS.pushupMode = mode;
+  saveAnnaState();
+  renderAnna();
+}
+
+function addAnnaPushups(n) {
+  AS.currentPushups = Math.max(0, AS.currentPushups + n);
+  saveAnnaState();
+  renderAnna();
+}
+
+function resetAnnaPushups() {
+  AS.currentPushups = 0;
+  saveAnnaState();
+  renderAnna();
+}
+
+function toggleAnnaExDone(key) {
+  AS.exDone[key] = !AS.exDone[key];
+  saveAnnaState();
+  renderAnna();
+}
+
+function annaNextSession() {
+  // Save pushup count to history
+  if (AS.currentPushups > 0) {
+    AS.pushupHistory.unshift({
+      session: AS.totalDone + 1,
+      reps: AS.currentPushups,
+      mode: AS.pushupMode,
+      date: new Date().toLocaleDateString('en-AU', {day:'numeric',month:'short'})
+    });
+    if (AS.pushupHistory.length > 20) AS.pushupHistory = AS.pushupHistory.slice(0, 20);
+  }
+  AS.totalDone++;
+  AS.sessionIndex = (AS.sessionIndex + 1) % 3;
+  AS.currentPushups = 0;
+  AS.exDone = {};
+  saveAnnaState();
+  renderAnna();
+  showToast('Session complete 💪');
+  window.scrollTo(0, 0);
+}
+
+function renderAnna() {
+  const sess = ANNA_SESSIONS[AS.sessionIndex];
+  const bestPushup = AS.pushupHistory.length > 0
+    ? Math.max(...AS.pushupHistory.map(h => h.reps))
+    : null;
+
+  // Hero
+  document.getElementById('anna-session-name').textContent = sess.name;
+  document.getElementById('anna-session-sub').textContent = sess.focus;
+  document.getElementById('anna-count-pill').textContent = AS.totalDone + ' session' + (AS.totalDone !== 1 ? 's' : '') + ' done';
+  document.getElementById('anna-pushup-pill').textContent = bestPushup !== null ? 'Best: ' + bestPushup + ' push-ups' : 'No pushup record yet';
+
+  // Mode toggle
+  document.getElementById('mode-knee').className = 'pumode-btn' + (AS.pushupMode === 'knee' ? ' active-knee' : '');
+  document.getElementById('mode-full').className = 'pumode-btn' + (AS.pushupMode === 'full' ? ' active-full' : '');
+  const hint = document.getElementById('pushup-hint');
+  if (AS.pushupMode === 'knee') {
+    hint.innerHTML = 'Doing <strong>knee push-ups</strong>. Switch to full when you can do 5 clean reps from toes.';
+  } else {
+    hint.innerHTML = '💪 Doing <strong>full push-ups</strong>. Target: 15 before your PFA.';
+  }
+
+  // Exercises
+  const list = document.getElementById('anna-ex-list');
+  list.innerHTML = '';
+
+  sess.exercises.forEach((ex, i) => {
+    const key = 'a' + AS.sessionIndex + '_' + i;
+    const isDone = !!AS.exDone[key];
+    const isPushup = ex.type === 'pushup' && ex.id === 'a_pu';
+    const isNeg = ex.type === 'pushup' && ex.id === 'a_neg';
+
+    const borderClass = ex.type === 'pushup' ? 'is-pushup'
+      : ex.type === 'press' ? 'is-press'
+      : ex.type === 'pull' ? 'is-pull'
+      : 'is-lower';
+
+    const card = document.createElement('div');
+    card.className = 'anna-ex-card ' + borderClass + (isDone ? ' anna-done' : '');
+
+    // Push-up rep tracker (only for the main push-up exercise)
+    let extraHTML = '';
+    if (isPushup) {
+      extraHTML = `<div class="anna-pushup-tracker">
+        <div class="apt-top">
+          <span class="apt-label">Reps this session (best set)</span>
+          <span class="apt-display">${AS.currentPushups} <span class="apt-target">/ target 15</span></span>
+        </div>
+        <div class="apt-btns">
+          <button class="aptbtn" onclick="addAnnaPushups(-1)">−1</button>
+          <button class="aptbtn" onclick="addAnnaPushups(1)">+1</button>
+          <button class="aptbtn" onclick="addAnnaPushups(5)">+5</button>
+          <button class="aptbtn primary" onclick="addAnnaPushups(0);toggleAnnaExDone('${key}')">Log & Done</button>
+        </div>
+      </div>`;
+    } else if (ex.hasWeight) {
+      const lastWeight = AS.weights[key] || '';
+      extraHTML = `<div class="anna-weight-row">
+        <span class="anna-weight-label">Weight</span>
+        <input class="anna-weight-input" type="number" inputmode="decimal"
+          placeholder="kg" value="${lastWeight}"
+          onchange="AS.weights['${key}']=this.value;saveAnnaState()"
+          onfocus="this.select()">
+        <span class="anna-weight-unit">${ex.unit}</span>
+        ${lastWeight ? '<span class="anna-weight-last">Last: ' + lastWeight + 'kg</span>' : ''}
+      </div>`;
+    }
+
+    const exName = isPushup
+      ? (AS.pushupMode === 'knee' ? '🦵 Knee Push-ups' : '💪 Full Push-ups')
+      : ex.name;
+
+    card.innerHTML = `<div class="anna-ex-top">
+      <div class="anna-ex-info">
+        <div class="anna-ex-name">${exName}</div>
+        <div class="anna-ex-note">${ex.note}</div>
+      </div>
+      <div class="anna-ex-right">
+        <div class="anna-ex-sets">${ex.sets}</div>
+        <div class="anna-ex-sub">${ex.sub}</div>
+      </div>
+    </div>
+    ${extraHTML}
+    <button class="anna-done-btn" onclick="toggleAnnaExDone('${key}')">${isDone ? '✓ Done' : 'Mark Complete'}</button>`;
+    list.appendChild(card);
+  });
+
+  // Push-up history
+  const histList = document.getElementById('pushup-history-list');
+  if (AS.pushupHistory.length === 0) {
+    histList.innerHTML = '<div class="ph-empty">No sessions logged yet. Complete a session to start tracking.</div>';
+  } else {
+    histList.innerHTML = AS.pushupHistory.slice(0, 10).map(h =>
+      `<div class="ph-entry">
+        <span class="ph-session">Session ${h.session} · ${h.date}</span>
+        <span class="ph-reps">${h.reps} reps <span class="ph-mode">${h.mode === 'knee' ? 'knee' : 'full'}</span></span>
+      </div>`
+    ).join('');
+  }
+}
+
+// ══════════════════════════════
 // INIT
-// ════════════════════════════
-
+// ══════════════════════════════
+document.getElementById('pr-date').value=today();
 renderToday();
 renderLog();
 renderWeights();
+renderPRs();
+updateWuProgress();
+renderAnna();
 </script>
 </body>
 </html>
