@@ -154,52 +154,78 @@ const TEMPLATES = [
 {
   id:'armor-building', category:'strength', type:'program',
   name:'Armor Building Formula', source:'Geoff Neupert',
-  summary:'Double-KB program built on the Armor Building Complex — dense pressing, squatting and swings.',
+  summary:'4-week double-KB density wave on the Armor Building Complex. EMOM time climbs each week.',
   duration:30,
-  programType:'weekly',
+  programType:'progressive',
   warmupRef:'goblet-flow',
-  days:[
-    {label:'Day 1 — ABC Density', focus:'Complex · EMOM', dur:'~30 min', items:[
-      {name:'Armor Building Complex (2 clean · 1 press · 3 squat)', scheme:'EMOM 10–20 min', note:'One round per minute: two double cleans, one double press, three double front squats. Add rounds week to week.', track:true, ex:'KB Clean'},
+  weeks:[
+    {label:'Week 1', goal:'EMOM 10 min', progress:'Establish clean rounds at a pair you can press well. Run the ABC on days 1 & 3, swings + press on day 2.', items:[
+      {name:'Armor Building Complex — days 1 & 3', scheme:'EMOM 10 min', note:'1 round/min: 2 double cleans, 1 double press, 3 double front squats. Stop a round if the rack gets sloppy.', track:true, ex:'KB Clean'},
+      {name:'Double KB Swing — day 2', scheme:'10×10 EMOM', note:'Explosive hip snap, 10 swings on the minute.', track:true, ex:'KB Swing'},
+      {name:'Double KB Press — day 2', scheme:'5×5', note:'Strict, leave one in the tank.', track:true, ex:'KB Press'},
     ]},
-    {label:'Day 2 — Swings + Press', focus:'Power · Push', dur:'~25 min', items:[
-      {name:'Double KB Swing', scheme:'10×10 EMOM', note:'Explosive hip snap, 10 swings on the minute.', track:true, ex:'KB Swing'},
-      {name:'Double KB Press', scheme:'5×5', note:'Strict, clean reps. Leave one in the tank.', track:true, ex:'KB Press'},
+    {label:'Week 2', goal:'EMOM 12 min', progress:'+2 min of complex density vs week 1. Same bells — earn the time before adding load.', items:[
+      {name:'Armor Building Complex — days 1 & 3', scheme:'EMOM 12 min', note:'Two more rounds than last week. Quality first.', track:true, ex:'KB Clean'},
+      {name:'Double KB Swing — day 2', scheme:'10×10 EMOM', note:'Same crisp swings.', track:true, ex:'KB Swing'},
+      {name:'Double KB Press — day 2', scheme:'6×5', note:'One extra set vs week 1.', track:true, ex:'KB Press'},
     ]},
-    {label:'Day 3 — ABC Density', focus:'Complex · EMOM', dur:'~30 min', items:[
-      {name:'Armor Building Complex', scheme:'EMOM 10–20 min', note:'Same as Day 1. Match or beat last session\'s rounds with clean quality.', track:true, ex:'KB Clean'},
+    {label:'Week 3', goal:'EMOM 15 min', progress:'+3 min. If any round degrades, hold here rather than push. Bells unchanged.', items:[
+      {name:'Armor Building Complex — days 1 & 3', scheme:'EMOM 15 min', note:'15 clean rounds. This is real volume — fuel and sleep.', track:true, ex:'KB Clean'},
+      {name:'Double KB Swing — day 2', scheme:'10×10 EMOM', note:'Hold form under fatigue.', track:true, ex:'KB Swing'},
+      {name:'Double KB Press — day 2', scheme:'6×5', note:'Match week 2.', track:true, ex:'KB Press'},
+    ]},
+    {label:'Week 4', goal:'EMOM 20 min (peak)', progress:'Peak density. Next cycle: go up a bell size and restart at 10 min.', items:[
+      {name:'Armor Building Complex — days 1 & 3', scheme:'EMOM 20 min', note:'20 rounds = 40 cleans, 20 presses, 60 squats. The whole point of the block.', track:true, ex:'KB Clean'},
+      {name:'Double KB Swing — day 2', scheme:'10×10 EMOM', note:'Keep the engine going.', track:true, ex:'KB Swing'},
+      {name:'Double KB Press — day 2', scheme:'5×5', note:'Back off a set — the complex volume is high this week.', track:true, ex:'KB Press'},
     ]},
   ],
   rules:[
-    {title:'Density over load', body:'Progress by adding rounds/minutes at the same bells before reaching for heavier ones.'},
+    {title:'Density over load', body:'Add rounds/minutes at the same bells across the four weeks before reaching for heavier ones. Load goes up between cycles, not within.'},
     {title:'Quality reps only', body:'Stop a round when the rack gets sloppy or bar speed drops. The press is the limiter — pick bells you can press cleanly.'},
-    {title:'Three days a week', body:'Run it on non-consecutive days. The swing/press day breaks up the two complex days.'},
+    {title:'Three days a week', body:'ABC on days 1 & 3, swings + press on day 2, on non-consecutive days.'},
   ],
-  notes:'Built around the Armor Building Complex (also in the library as a standalone session). Start at ~10 rounds and build toward 20+ over the weeks. Double kettlebells throughout — match a pair you can press for clean reps.'
+  notes:'A 4-week density wave built on the Armor Building Complex (also a standalone session in the library). The complex EMOM time is the progressive-overload dial — it climbs 10 → 12 → 15 → 20 min, then you restart heavier. Tap a week to see its target.'
 },
 {
   id:'mass-made-simple', category:'strength', type:'program',
   name:'Mass Made Simple', source:'Dan John',
-  summary:'6-week mass program — the barbell complex paired with brutal 20-rep squats.',
+  summary:'6-week mass program — the barbell complex builds week to week, paired with 20-rep squats.',
   duration:35,
-  programType:'weekly',
+  programType:'progressive',
   warmupRef:'goblet-flow',
-  days:[
-    {label:'Day A — Complex + 20-rep Squat', focus:'Complex · Squat', dur:'~35 min', items:[
-      {name:'Barbell Complex (row · clean · front squat · press · back squat · good morning)', scheme:'1→5 complexes ×8', note:'8 reps of each lift back-to-back, bar never set down. Build from 1 complex up to 5 over the program.', track:false},
-      {name:'Back Squat', scheme:'1×20', note:'A weight you\'d normally do for ~10. Big breaths between reps near the end. No racking until 20. Add ~2.5kg each session.', track:true, ex:'Back Squat'},
+  weeks:[
+    {label:'Week 1', goal:'2 complexes', progress:'Start light — the complex humbles everyone. Squat ≈ your 10-rep-max weight.', items:[
+      {name:'Barbell Complex (row·clean·front squat·press·back squat·good morning)', scheme:'2 complexes ×8', note:'8 reps of each lift back-to-back, bar never set down. Two rounds, no rest within a round.', track:false},
+      {name:'Back Squat', scheme:'1×20', note:'~10RM weight. Big breaths near the end, no racking until 20. Log the working weight.', track:true, ex:'Back Squat'},
     ]},
-    {label:'Day B — Complex + 20-rep Squat', focus:'Complex · Squat', dur:'~35 min', items:[
-      {name:'Barbell Complex', scheme:'1→5 complexes ×8', note:'Same six-lift complex. Match or add a complex versus Day A.', track:false},
-      {name:'Back Squat', scheme:'1×20', note:'Progress the load from last session. Survive, breathe, grow.', track:true, ex:'Back Squat'},
+    {label:'Week 2', goal:'3 complexes', progress:'+1 complex vs week 1. Squat +2.5kg on last week.', items:[
+      {name:'Barbell Complex', scheme:'3 complexes ×8', note:'Three clean rounds. Same bar weight as week 1 if it was right.', track:false},
+      {name:'Back Squat', scheme:'1×20', note:'+2.5kg vs week 1. Still all 20 reps unbroken.', track:true, ex:'Back Squat'},
+    ]},
+    {label:'Week 3', goal:'3 complexes (heavier)', progress:'Hold 3 complexes, nudge the complex bar slightly. Squat +2.5kg again.', items:[
+      {name:'Barbell Complex', scheme:'3 complexes ×8', note:'Add a little to the bar if week 2 felt clean.', track:false},
+      {name:'Back Squat', scheme:'1×20', note:'+2.5kg vs week 2.', track:true, ex:'Back Squat'},
+    ]},
+    {label:'Week 4', goal:'4 complexes', progress:'+1 complex. Squat keeps climbing ~2.5kg — it should feel hard now.', items:[
+      {name:'Barbell Complex', scheme:'4 complexes ×8', note:'Four rounds. Brace and breathe.', track:false},
+      {name:'Back Squat', scheme:'1×20', note:'+2.5kg vs week 3.', track:true, ex:'Back Squat'},
+    ]},
+    {label:'Week 5', goal:'4–5 complexes', progress:'Peak volume building. Squat heavy but still 20 honest reps.', items:[
+      {name:'Barbell Complex', scheme:'4–5 complexes ×8', note:'Push to 5 if 4 is solid.', track:false},
+      {name:'Back Squat', scheme:'1×20', note:'+2.5kg vs week 4. This is the grind week.', track:true, ex:'Back Squat'},
+    ]},
+    {label:'Week 6', goal:'5 complexes + test', progress:'Top out at 5 complexes and a final hard 20-rep squat, then deload.', items:[
+      {name:'Barbell Complex', scheme:'5 complexes ×8', note:'The peak — 5 unbroken rounds.', track:false},
+      {name:'Back Squat', scheme:'1×20', note:'Final, heaviest 20. Then take an easy week.', track:true, ex:'Back Squat'},
     ]},
   ],
   rules:[
-    {title:'Build the complex', body:'Start at 1 complex (8 reps × six lifts, no rest) and add one as you adapt, up to 5. Start light — it humbles everyone.'},
-    {title:'Drive the squat', body:'The 20-rep back squat is the engine. Add ~2.5kg every session and log it so you can keep progressing.'},
+    {title:'Build the complex', body:'The number of complexes is the dial — 2 → 5 across the six weeks. Add a round only when the last is clean.'},
+    {title:'Drive the squat', body:'The 20-rep back squat is the engine. Add ~2.5kg each week and log it so the overload is visible in Lift Log.'},
     {title:'Eat and rest', body:'This is a mass program — train ~3 days/week, eat enough to grow, sleep hard.'},
   ],
-  notes:'~6 weeks. The barbell complex builds work capacity; the 20-rep squat builds size. Warm up thoroughly. Log the squat working weight so you can add to it every session.'
+  notes:'~6 weeks. The barbell complex builds work capacity (2 → 5 rounds) and the 20-rep squat builds size (+~2.5kg/week). Tap a week to see exactly that week\'s complexes and squat target. Warm up thoroughly.'
 },
 {
   id:'531-classic', category:'strength', type:'program',

@@ -19,6 +19,8 @@
   --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:5px;}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.001ms!important;animation-duration:.001ms!important;}}
 html,body{height:100%;}
 body{background:var(--bg);color:var(--ink);font-family:var(--font);font-weight:400;-webkit-font-smoothing:antialiased;font-feature-settings:'tnum';overflow-x:hidden;}
 
@@ -54,6 +56,26 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font);font-weight:4
 .card-sum{font-size:13px;color:var(--muted2);line-height:1.5;margin-top:7px;}
 .card-meta{font-size:11px;color:var(--muted);margin-top:10px;display:flex;gap:12px;}
 .card-meta b{font-weight:500;color:var(--muted2);}
+.card-badge.cur{background:var(--accent);color:#fff;}
+.run-banner{background:var(--accent);color:#fff;font-size:12px;font-weight:500;padding:9px 13px;border-radius:11px;margin-bottom:14px;letter-spacing:.2px;}
+
+/* current program panel */
+.cur-empty{font-size:13px;color:var(--muted);line-height:1.6;text-align:center;padding:22px 24px 18px;}
+.cur-empty b{color:var(--muted2);font-weight:600;}
+.cur-choose{display:flex;gap:8px;margin-top:12px;}
+.cur-choose .btn{padding:11px;}
+.cur-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px 18px;margin-bottom:12px;}
+.cur-badge{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.cur-name{font-size:21px;font-weight:600;letter-spacing:-0.4px;}
+.cur-src{font-size:12px;color:var(--muted);margin-top:3px;}
+.cur-stats{display:flex;gap:10px;margin:18px 0 14px;}
+.cur-cell{flex:1;background:var(--surface2);border-radius:13px;padding:13px 8px;text-align:center;}
+.cur-val{font-size:26px;font-weight:300;letter-spacing:-1px;line-height:1;}
+.cur-lbl{font-size:10px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-top:6px;}
+.cur-prog{font-size:12.5px;color:var(--accent);background:var(--accent-soft);border-radius:12px;padding:11px 13px;margin-bottom:14px;line-height:1.5;}
+.cur-actions{display:flex;gap:8px;justify-content:center;padding:4px 0 8px;}
+.cur-link{flex:1;background:none;border:1px solid var(--line2);color:var(--muted2);font-family:var(--font);font-size:13px;font-weight:500;padding:11px;border-radius:12px;cursor:pointer;}
+.cur-link.warn:active{color:var(--warn);border-color:var(--warn);}
 
 /* sheet (detail / runner) */
 .sheet{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;}
@@ -191,7 +213,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font);font-weight:4
 <!-- DETAIL / RUNNER SHEET -->
 <div class="sheet" id="sheet">
   <div class="sheet-hd">
-    <button class="x" onclick="closeSheet()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <button class="x" onclick="closeSheet()" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="sheet-title" id="sheet-title"></div>
   </div>
   <div class="sheet-body" id="sheet-body"></div>
@@ -224,29 +246,114 @@ function vibe(ms){if(navigator.vibrate)navigator.vibrate(ms);}
 function renderViewSeg(){
   const cnt=n=>TEMPLATES.filter(t=>n==='programs'?t.type==='program':t.type!=='program').length;
   document.getElementById('viewseg').innerHTML=
+    `<button class="${view==='current'?'on':''}" onclick="setView('current')">Current</button>`+
     `<button class="${view==='workouts'?'on':''}" onclick="setView('workouts')">Workouts <span style="opacity:.6">${cnt('workouts')}</span></button>`+
     `<button class="${view==='programs'?'on':''}" onclick="setView('programs')">Programs <span style="opacity:.6">${cnt('programs')}</span></button>`;
 }
 function setView(v){view=v;filter='all';renderChips();renderList();renderViewSeg();}
 function renderChips(){
   const c=document.getElementById('chips');
-  if(view==='programs'){c.style.display='none';c.innerHTML='';return;}
+  if(view!=='workouts'){c.style.display='none';c.innerHTML='';return;}
   c.style.display='flex';
   c.innerHTML=CATS.map(x=>`<button class="chip ${filter===x[0]?'on':''}" onclick="setFilter('${x[0]}')">${x[1]}</button>`).join('');
 }
 function setFilter(f){filter=f;renderChips();renderList();}
 function renderList(){
+  if(view==='current'){ return renderCurrent(); }
+  const ap=activeProg();
   let items;
   if(view==='programs'){ items=TEMPLATES.filter(t=>t.type==='program'); }
   else { items=TEMPLATES.filter(t=>t.type!=='program'&&(filter==='all'||t.category===filter)); }
   document.getElementById('list').innerHTML=items.map(t=>{
-    const badge=t.type==='program'?'<span class="card-badge prog">Program</span>':'';
-    return `<div class="card" onclick="openTemplate('${t.id}')">
+    const badge=(ap&&ap.id===t.id)?'<span class="card-badge cur">● Current</span>':(t.type==='program'?'<span class="card-badge prog">Program</span>':'');
+    return `<div class="card" role="button" tabindex="0" onclick="openTemplate('${t.id}')">
       <div class="card-top"><div class="card-name">${t.name}</div>${badge}</div>
       <div class="card-sum">${t.summary}</div>
       <div class="card-meta"><span><b>${t.source}</b></span><span>~${t.duration} min</span></div>
     </div>`;
   }).join('');
+}
+
+// ── CURRENT PROGRAM ──
+const ACTIVE_KEY='jvd_active_program';
+function activeProg(){try{return JSON.parse(localStorage.getItem(ACTIVE_KEY))||null;}catch(e){return null;}}
+function setActive(id){
+  const cur=activeProg();
+  const started=(cur&&cur.id===id&&cur.started)?cur.started:todayISO();
+  localStorage.setItem(ACTIVE_KEY,JSON.stringify({id,started}));
+  flash('Set as current program');
+}
+function endActive(){if(!confirm('End your current program? Your logged sessions are kept.'))return;localStorage.removeItem(ACTIVE_KEY);renderViewSeg();renderList();flash('Program ended');}
+function setActiveAndShow(id){setActive(id);view='current';renderViewSeg();renderChips();renderList();}
+function setActiveFromSheet(id){setActive(id);openTemplate(id);}
+function parseISODate(iso){const[y,m,d]=iso.split('-').map(Number);return new Date(y,m-1,d);}
+function fmtShort(iso){if(!iso)return'';const[y,m,d]=iso.split('-');return +d+' '+['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m-1];}
+function weekStartISO(){const d=new Date();const dow=(d.getDay()+6)%7;d.setDate(d.getDate()-dow);return todayISOfrom(d);}
+function todayISOfrom(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function progSessions(id){return (progDone()[id]||[]).slice().sort();}
+function progThisWeek(id){const ws=weekStartISO();return progSessions(id).filter(x=>x>=ws).length;}
+function weeksRunning(ap){if(!ap||!ap.started)return 0;return Math.floor((new Date()-parseISODate(ap.started))/86400000/7);}
+// shared: running banner + set-current button on every program view
+function runningBanner(t){
+  const ap=activeProg(); if(!ap||ap.id!==t.id) return '';
+  const n=progSessions(t.id).length;
+  let wktxt='';
+  if(t.programType==='progressive'&&t.weeks){const w=Math.min(weeksRunning(ap)+1,t.weeks.length);wktxt=`week ${w} of ${t.weeks.length} · `;}
+  else{wktxt=`week ${weeksRunning(ap)+1} · `;}
+  return `<div class="run-banner">● Running — ${wktxt}${n} session${n===1?'':'s'} · since ${fmtShort(ap.started)}</div>`;
+}
+function decorateProgram(t){
+  const body=document.getElementById('sheet-body'), foot=document.getElementById('sheet-foot');
+  const b=runningBanner(t); if(b) body.innerHTML = b + body.innerHTML;
+  const ap=activeProg(); const isCur=ap&&ap.id===t.id;
+  const setBtn=`<button class="btn ${isCur?'btn-soft':'btn-pri'}" onclick="setActiveFromSheet('${t.id}')">${isCur?'✓ Current program':'Set as current program'}</button>`;
+  foot.innerHTML = setBtn + (foot.innerHTML?'<div style="height:8px"></div>'+foot.innerHTML:'');
+}
+function logProgSession(id){const all=progDone();if(!all[id])all[id]=[];all[id].push(todayISO());localStorage.setItem(PROG_DONE_KEY,JSON.stringify(all));renderList();flash('Session logged');}
+function progReadout(t,n){
+  if(t.programType==='challenge'){const sw=t.swingsPerSession?` · ${(n*t.swingsPerSession).toLocaleString()} swings`:'';return `${n} / ${t.target} sessions${sw}`;}
+  if(t.programType==='progressive'&&t.weeks){const ap=activeProg();const w=(ap&&ap.id===t.id)?Math.min(weeksRunning(ap)+1,t.weeks.length):1;const wk=t.weeks[w-1];return `Week ${w} of ${t.weeks.length}${wk&&wk.goal?` — ${wk.goal}`:''}`;}
+  if(t.programType==='weekly'&&t.days){const d=t.days.length;return `Next up: week ${Math.floor(n/d)+1}, day ${(n%d)+1} of ${d}`;}
+  if(t.programType==='easy-strength'){return `${n} of ~40 sessions logged.`;}
+  if(t.programType==='531'){return `${n} sessions — bump your training max each completed 4-week cycle.`;}
+  return `${n} sessions logged.`;
+}
+function renderCurrent(){
+  const list=document.getElementById('list');
+  const ap=activeProg();
+  if(!ap||!TEMPLATES.find(t=>t.id===ap.id)){
+    list.innerHTML=`<div class="cur-empty">No program running yet.<br>Pick one below — tap <b>Set as current</b> and it'll live here so you can track and resume it.</div>`+
+      TEMPLATES.filter(t=>t.type==='program').map(t=>`
+        <div class="card">
+          <div class="card-top"><div class="card-name">${t.name}</div><span class="card-badge prog">Program</span></div>
+          <div class="card-sum">${t.summary}</div>
+          <div class="cur-choose"><button class="btn btn-pri" onclick="setActiveAndShow('${t.id}')">Set as current</button><button class="btn btn-soft" onclick="openTemplate('${t.id}')">Preview</button></div>
+        </div>`).join('');
+    return;
+  }
+  const t=TEMPLATES.find(x=>x.id===ap.id);
+  const dates=progSessions(t.id), n=dates.length;
+  const last=n?dates[n-1]:null;
+  const wkN=progThisWeek(t.id);
+  const daysIn=ap.started?Math.max(0,Math.floor((new Date()-parseISODate(ap.started))/86400000)):0;
+  list.innerHTML=`
+   <div class="cur-card">
+     <div class="cur-badge">● Current program</div>
+     <div class="cur-name">${t.name}</div>
+     <div class="cur-src">${t.source} · started ${fmtShort(ap.started)}</div>
+     <div class="cur-stats">
+       <div class="cur-cell"><div class="cur-val">${n}</div><div class="cur-lbl">Sessions</div></div>
+       <div class="cur-cell"><div class="cur-val">${wkN}</div><div class="cur-lbl">This week</div></div>
+       <div class="cur-cell"><div class="cur-val">${daysIn}</div><div class="cur-lbl">Days in</div></div>
+     </div>
+     <div class="cur-prog">${progReadout(t,n)}</div>
+     <button class="btn btn-pri" onclick="openTemplate('${t.id}')">Open program</button>
+     <button class="btn btn-soft" style="margin-top:8px" onclick="logProgSession('${t.id}')">＋ Log a session done${last?` · last ${fmtShort(last)}`:''}</button>
+   </div>
+   <div class="cur-actions">
+     <button class="cur-link" onclick="setView('programs')">Change program</button>
+     <button class="cur-link warn" onclick="endActive()">End program</button>
+   </div>`;
 }
 // warm-up block (collapsible) shown before the work in run views
 function warmupHTML(t){
@@ -274,6 +381,7 @@ function openTemplate(id){
   else if(mode==='timer'){ renderHiit(t,body,foot); }
   else if(mode==='holds'){ renderRecovery(t,body,foot); }
   else { renderStrength(t,body,foot); }
+  if(t.type==='program'){ decorateProgram(t); }
   document.getElementById('sheet').classList.add('on');
 }
 function closeSheet(){document.getElementById('sheet').classList.remove('on');}
@@ -340,6 +448,7 @@ function renderRecovery(t,body,foot){
 function renderProgram(t,body,foot){
   if(t.programType==='easy-strength'){ return renderEasyStrength(t,body,foot); }
   if(t.programType==='challenge'){ return renderChallenge(t,body,foot); }
+  if(t.programType==='progressive'){ return renderProgressive(t,body,foot); }
   if(t.programType==='weekly'){ return renderWeekly(t,body,foot); }
   runState.lift=runState.lift||t.lifts[0];
   runState.week=runState.week||0;
@@ -368,7 +477,7 @@ function setRowHTML(s,tm,amrap,logEx){
     <span class="set-wt">${wt}<small> kg</small></span>
   </div>`;
 }
-function progPick(kind,val,id){ runState[kind]=val; const t=TEMPLATES.find(x=>x.id===id); renderProgram(t,document.getElementById('sheet-body'),document.getElementById('sheet-foot')); }
+function progPick(kind,val,id){ runState[kind]=val; const t=TEMPLATES.find(x=>x.id===id); renderProgram(t,document.getElementById('sheet-body'),document.getElementById('sheet-foot')); decorateProgram(t); }
 function quickLog(ex,wt){
   const r=parseInt(prompt('Reps completed for '+ex+' @ '+wt+'kg?','5'));
   if(!r)return;
@@ -430,6 +539,33 @@ function wkSave(tag,ex){
   flash('Logged to Lift Log');
 }
 
+// PROGRAM — progressive (week-by-week prescription changes, e.g. Mass Made Simple, ABF)
+function renderProgressive(t,body,foot){
+  runState.progName=t.name;
+  const ap=activeProg();
+  const autoWk=(ap&&ap.id===t.id)?Math.min(weeksRunning(ap)+1,t.weeks.length):1;
+  if(runState.pweek===undefined||runState.pid!==t.id){ runState.pweek=autoWk; runState.pid=t.id; }
+  const wi=Math.max(0,Math.min(runState.pweek-1,t.weeks.length-1));
+  const wk=t.weeks[wi];
+  let html=`<div class="note">${t.notes}</div>${warmupHTML(t)}`;
+  html+=`<div class="sec">Week ${(ap&&ap.id===t.id)?'<span style="color:var(--muted);font-weight:400">· you\'re in week '+autoWk+'</span>':''}</div>`;
+  html+=`<div class="seg" style="flex-wrap:wrap">`+t.weeks.map((w,i)=>`<button class="${i===wi?'on':''}" onclick="pweekPick(${i+1},'${t.id}')">W${i+1}</button>`).join('')+`</div>`;
+  html+=`<div class="sec">${wk.label}${wk.goal?' · '+wk.goal:''}</div>`;
+  if(wk.progress){ html+=`<div class="cur-prog">▲ ${wk.progress}</div>`; }
+  html+=wk.items.map((it,ii)=>weeklyRow(it,'p',ii)).join('');
+  if(t.rules&&t.rules.length){
+    html+=`<div class="sec" style="margin-top:20px">Rules</div>`+
+      t.rules.map(r=>`<div class="item"><div class="item-row"><div class="item-main"><div class="item-name">${r.title}</div><div class="item-note">${r.body}</div></div></div></div>`).join('');
+  }
+  body.innerHTML=html; foot.innerHTML='';
+}
+function pweekPick(w,id){
+  runState.pweek=w;
+  const t=TEMPLATES.find(x=>x.id===id);
+  renderProgressive(t,document.getElementById('sheet-body'),document.getElementById('sheet-foot'));
+  decorateProgram(t);
+}
+
 // PROGRAM — Easy Strength (adaptable: movement slots + Omnibus presets)
 const ES_CFG_KEY='jvd_es_config';
 function esConfig(t){
@@ -481,6 +617,7 @@ function renderEasyStrength(t,body,foot){
 function esPick(key,val,id){
   const t=TEMPLATES.find(x=>x.id===id); const c=esConfig(t); c[key]=val; esSave(t,c);
   renderEasyStrength(t,document.getElementById('sheet-body'),document.getElementById('sheet-foot'));
+  decorateProgram(t);
 }
 
 // PROGRAM — challenge (repeatable workout + progress counter, e.g. 10k swings)
@@ -524,6 +661,7 @@ function chalDone(id){
   localStorage.setItem(PROG_DONE_KEY,JSON.stringify(all));
   const t=TEMPLATES.find(x=>x.id===id);
   renderChallenge(t,document.getElementById('sheet-body'),document.getElementById('sheet-foot'));
+  decorateProgram(t);
   flash('Session logged — '+(all[id].length)+' / '+t.target);
 }
 function chalUndo(id){
@@ -531,6 +669,7 @@ function chalUndo(id){
   localStorage.setItem(PROG_DONE_KEY,JSON.stringify(all));
   const t=TEMPLATES.find(x=>x.id===id);
   renderChallenge(t,document.getElementById('sheet-body'),document.getElementById('sheet-foot'));
+  decorateProgram(t);
 }
 
 // ── TIMER engine ──
@@ -596,6 +735,10 @@ function flash(m){
   el.textContent=m;el.style.opacity='1';clearTimeout(el._t);el._t=setTimeout(()=>el.style.opacity='0',1500);
 }
 
+document.addEventListener('keydown',e=>{
+  if((e.key==='Enter'||e.key===' ')&&document.activeElement&&document.activeElement.getAttribute('role')==='button'){e.preventDefault();document.activeElement.click();}
+});
+view=activeProg()?'current':'workouts';
 renderViewSeg();renderChips();renderList();
 </script>
 </body>

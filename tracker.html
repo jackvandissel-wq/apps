@@ -28,6 +28,8 @@
   --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:5px;}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.001ms!important;animation-duration:.001ms!important;}}
 html,body{height:100%;overflow:hidden;}
 body{background:var(--bg);color:var(--ink);font-family:var(--font);font-weight:400;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;font-feature-settings:'tnum';}
 
@@ -286,7 +288,7 @@ function delEntry(ex,i){if(!lifts[ex])return;lifts[ex].splice(i,1);if(!lifts[ex]
 function renderFeed(){
   const f=document.getElementById('feed'),all=allEntries().slice(0,30);
   if(!all.length){f.innerHTML='<div class="empty">No sets logged yet. Add your first one above — it becomes available to every workout in the library.</div>';return;}
-  f.innerHTML=all.map(e=>`<div class="feed-item"><div class="feed-main"><div class="feed-name">${e.ex}</div><div class="feed-meta">${fmtDate(e.date)} · ${e.reps} rep${e.reps==1?'':'s'}${e.note?' · '+e.note:''}</div></div><div class="feed-load">${e.weight}<small>kg</small></div><button class="feed-del" onclick="delEntry('${esc(e.ex)}',${e.i})">×</button></div>`).join('');
+  f.innerHTML=all.map(e=>`<div class="feed-item"><div class="feed-main"><div class="feed-name">${e.ex}</div><div class="feed-meta">${fmtDate(e.date)} · ${e.reps} rep${e.reps==1?'':'s'}${e.note?' · '+e.note:''}</div></div><div class="feed-load">${e.weight}<small>kg</small></div><button class="feed-del" onclick="delEntry('${esc(e.ex)}',${e.i})" aria-label="Delete set">×</button></div>`).join('');
 }
 
 // LIFTS
