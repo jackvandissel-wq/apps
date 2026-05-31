@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Activity">
+<meta name="theme-color" content="#faf9f6">
+<title>Activity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#faf9f6;--surface:#fff;--surface2:#f3f1ec;--line:#ece9e2;--line2:#e0ddd4;
+  --ink:#1c1b18;--muted:#9b968c;--muted2:#6f6b62;--accent:#5f7d6b;--accent-soft:#eef2ee;
+  --warn:#b5653f;
+  --safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-weight:400;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;font-feature-settings:'tnum';}
+
+.hd{padding:calc(var(--safe-top) + 22px) 22px 14px;flex-shrink:0;display:flex;align-items:baseline;gap:10px;}
+.hd-title{font-size:19px;font-weight:600;letter-spacing:-0.3px;}
+.hd-sub{font-size:12px;color:var(--muted);font-weight:400;}
+.appsw{margin-left:auto;display:flex;gap:5px;}
+.appsw a{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:11px;background:var(--surface2);transition:opacity .15s;text-decoration:none;}
+.appsw a:active{opacity:.5;}
+.appsw a svg{width:18px;height:18px;stroke:var(--muted2);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.appsw a.cur{background:var(--ink);}
+.appsw a.cur svg{stroke:#faf9f6;}
+.hd-count{margin-left:auto;font-size:12px;color:var(--muted);font-weight:500;}
+
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:calc(var(--safe-bot) + 88px);}
+
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(250,249,246,0.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line);display:flex;padding-bottom:var(--safe-bot);z-index:100;}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 4px 10px;border:none;background:none;cursor:pointer;transition:opacity .15s;}
+.nav button:active{opacity:.5;}
+.nav svg{width:21px;height:21px;stroke:var(--muted);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s;}
+.nav button.on svg{stroke:var(--ink);}
+.nav span{font-size:10px;letter-spacing:.2px;color:var(--muted);font-weight:500;transition:color .15s;}
+.nav button.on span{color:var(--ink);}
+
+.page{display:none;}
+.page.on{display:block;}
+.lbl{font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);font-weight:500;padding:22px 22px 10px;}
+.gap{height:18px;}
+.empty{margin:18px 22px;padding:30px 20px;text-align:center;color:var(--muted);font-size:13px;line-height:1.6;}
+
+/* quick-log tiles */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 18px 0;}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px 14px;cursor:pointer;text-align:left;transition:transform .1s,border-color .15s;display:flex;align-items:center;gap:12px;}
+.tile:active{transform:scale(.98);border-color:var(--accent);}
+.tile-ic{flex-shrink:0;width:38px;height:38px;border-radius:11px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;}
+.tile-ic svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.tile-name{font-size:14px;font-weight:600;letter-spacing:-0.2px;}
+.tile-def{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* quick entry (custom amount on tile tap) */
+.qe{margin:12px 18px 0;background:var(--surface);border:1px solid var(--accent);border-radius:14px;padding:11px 12px;display:flex;align-items:center;gap:10px;}
+.qe-ic{flex-shrink:0;width:32px;height:32px;border-radius:9px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;}
+.qe-ic svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.qe-name{font-size:14px;font-weight:600;}
+.qe-inp{width:74px;background:var(--surface2);border:1px solid transparent;border-radius:10px;color:var(--ink);font-family:var(--font);font-size:16px;font-weight:500;padding:9px 10px;outline:none;text-align:center;margin-left:auto;}
+.qe-inp:focus{border-color:var(--accent);background:#fff;}
+.qe-unit{font-size:12px;color:var(--muted);}
+.qe-go{background:var(--ink);color:var(--bg);border:none;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:600;padding:9px 14px;cursor:pointer;}
+.qe-x{background:none;border:none;color:var(--line2);font-size:20px;line-height:1;cursor:pointer;padding:2px 4px;}
+
+/* detail card */
+.card{margin:18px 18px 0;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;}
+.card h3{font-size:13px;font-weight:600;margin-bottom:12px;}
+.fr{margin-bottom:12px;}
+.flbl{font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:500;display:block;margin-bottom:7px;}
+.inp{width:100%;background:var(--surface2);border:1px solid transparent;border-radius:12px;color:var(--ink);font-family:var(--font);font-size:16px;padding:12px 14px;outline:none;transition:border-color .18s,background .18s;}
+.inp:focus{border-color:var(--accent);background:#fff;}
+.seg{display:flex;gap:6px;flex-wrap:wrap;}
+.seg button{border:1px solid var(--line2);background:none;color:var(--muted2);font-family:var(--font);font-size:12.5px;font-weight:500;padding:8px 12px;border-radius:10px;cursor:pointer;}
+.seg button.on{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.btn{width:100%;padding:14px;border-radius:13px;border:none;font-family:var(--font);font-size:14px;font-weight:600;letter-spacing:.2px;cursor:pointer;transition:transform .1s;}
+.btn:active{transform:scale(.985);}
+.btn-pri{background:var(--ink);color:#faf9f6;}
+.btn-soft{background:var(--surface2);color:var(--muted2);}
+.disc{margin:14px 22px 0;font-size:12px;color:var(--muted);line-height:1.55;text-align:center;}
+
+/* feed */
+.feed-item{margin:0 22px;padding:14px 0;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);}
+.feed-ic{flex-shrink:0;width:34px;height:34px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;}
+.feed-ic svg{width:18px;height:18px;stroke:var(--muted2);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.feed-main{flex:1;min-width:0;}
+.feed-name{font-size:15px;font-weight:500;letter-spacing:-0.2px;}
+.feed-meta{font-size:12px;color:var(--muted);margin-top:3px;}
+.feed-amt{font-size:18px;font-weight:300;letter-spacing:-0.5px;white-space:nowrap;}
+.feed-amt small{font-size:11px;color:var(--muted);font-weight:400;}
+.feed-del{background:none;border:none;color:var(--line2);font-size:20px;cursor:pointer;padding:4px;line-height:1;flex-shrink:0;}
+.feed-del:active{color:var(--warn);}
+
+/* balance */
+.streak{margin:18px 18px 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.scell{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 8px;text-align:center;}
+.sval{font-size:30px;font-weight:300;letter-spacing:-1px;line-height:1;}
+.sval small{font-size:13px;color:var(--muted);}
+.slbl{font-size:10px;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;margin-top:6px;font-weight:500;}
+.pil{margin:0 18px 10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 17px;}
+.pil.low{border-color:var(--warn);}
+.pil-top{display:flex;align-items:baseline;gap:8px;margin-bottom:10px;}
+.pil-name{font-size:14px;font-weight:600;letter-spacing:-0.2px;}
+.pil-cnt{margin-left:auto;font-size:13px;font-weight:500;color:var(--muted2);}
+.pil-cnt b{font-weight:600;color:var(--ink);font-size:18px;}
+.bar{height:8px;border-radius:5px;background:var(--surface2);overflow:hidden;}
+.bar i{display:block;height:100%;border-radius:5px;background:var(--accent);transition:width .4s;}
+.pil.low .bar i{background:var(--warn);}
+.pil-note{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+.focus{margin:18px 18px 4px;padding:15px 16px;background:var(--accent-soft);border-radius:14px;font-size:12.5px;color:var(--accent);line-height:1.6;}
+.focus strong{font-weight:600;}
+.focus.warn{background:#f6ece6;color:var(--warn);}
+
+/* coach card */
+.coach{margin:18px 18px 4px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 17px;}
+.coach-hd{font-size:13px;font-weight:600;letter-spacing:-0.2px;margin-bottom:4px;display:flex;align-items:center;gap:7px;}
+.coach-hd svg{width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.rec{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted2);line-height:1.55;}
+.rec:first-of-type{border-top:none;}
+.rec-dot{flex-shrink:0;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-top:5px;}
+.rec-dot.warn{background:var(--warn);}
+.rec b{color:var(--ink);font-weight:600;}
+.coach-good{font-size:12.5px;color:var(--accent);line-height:1.6;}
+
+/* trends */
+.tstat{margin:0 22px;padding:13px 0;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);}
+.tstat-name{flex:1;font-size:14px;font-weight:500;}
+.tstat-name.tot{color:var(--muted2);}
+.tstat-val{font-size:18px;font-weight:300;letter-spacing:-0.5px;white-space:nowrap;}
+.tstat-val small{font-size:11px;color:var(--muted);}
+.delta{font-size:11px;font-weight:600;padding:2px 7px;border-radius:8px;}
+.delta.up{color:var(--accent);background:var(--accent-soft);}
+.delta.down{color:var(--warn);background:#f6ece6;}
+.chart-cap{font-size:11px;color:var(--muted);text-align:center;margin-top:4px;}
+.barchart{width:100%;height:80px;display:block;}
+.barchart rect{fill:var(--accent);}
+.barlbl{font-size:8px;fill:var(--muted);}
+.reset-btn{display:block;margin:18px 18px 0;width:calc(100% - 36px);padding:14px;border-radius:13px;border:1px solid var(--line2);background:none;color:var(--muted2);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;}
+.reset-btn:active{border-color:var(--warn);color:var(--warn);}
+
+/* weekly check-in nudge (Log tab) */
+.nudge{margin:14px 18px 0;padding:13px 15px;border-radius:14px;background:var(--accent-soft);display:flex;align-items:center;gap:11px;cursor:pointer;transition:transform .1s;}
+.nudge:active{transform:scale(.99);}
+.nudge.warn{background:#f6ece6;}
+.nudge.good{background:var(--accent-soft);}
+.nudge-ic{flex-shrink:0;width:30px;height:30px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;}
+.nudge-ic svg{width:17px;height:17px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.nudge.warn .nudge-ic svg{stroke:var(--warn);}
+.nudge-txt{flex:1;font-size:12.5px;line-height:1.45;color:var(--accent);}
+.nudge.warn .nudge-txt{color:var(--warn);}
+.nudge-txt b{font-weight:600;}
+.nudge-chev{color:var(--accent);opacity:.6;}
+.nudge.warn .nudge-chev{color:var(--warn);}
+.nudge-chev svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block;}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--safe-bot) + 100px);background:var(--ink);color:#faf9f6;font-size:12px;font-weight:500;padding:11px 18px;border-radius:22px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:200;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-6px);}
+</style>
+</head>
+<body>
+
+<div class="hd">
+  <span class="hd-title">Activity</span>
+  <span class="hd-sub">holistic tracker</span>
+  <span class="hd-count" id="count"></span>
+  <div class="appsw">
+    <a href="index.html" aria-label="Home"><svg viewBox="0 0 24 24"><path d="M4 11l8-6 8 6M6 10v9h12v-9"/></svg></a>
+    <a href="tracker.html" aria-label="Lift Log"><svg viewBox="0 0 24 24"><path d="M6.5 7v10M3.5 9v6M17.5 7v10M20.5 9v6M6.5 12h11"/></svg></a>
+    <a href="workout-library.html" aria-label="Library"><svg viewBox="0 0 24 24"><path d="M5 4h6v16H5zM13 4h6v16h-6"/></svg></a>
+    <a href="activity.html" class="cur" aria-label="Activity"><svg viewBox="0 0 24 24"><path d="M3 12h3.5l2.5 6 4-13 2.5 7H21"/></svg></a>
+  </div>
+</div>
+
+<div class="scroll" id="scroll">
+
+<!-- LOG -->
+<div class="page on" id="page-log">
+  <div id="log-nudge"></div>
+  <div class="lbl">Quick log — tap to record</div>
+  <div class="tiles" id="tiles"></div>
+  <div id="qe"></div>
+  <div class="card">
+    <h3>Add with detail</h3>
+    <div class="fr"><label class="flbl">Activity</label><div class="seg" id="d-type"></div></div>
+    <div class="fr"><div class="row2">
+      <div><label class="flbl" id="d-amt-lbl">Amount</label><input class="inp" id="d-amt" type="number" inputmode="decimal" placeholder="0"></div>
+      <div><label class="flbl">Date</label><input class="inp" id="d-date" type="date" style="font-size:13px;"></div>
+    </div></div>
+    <div class="fr"><label class="flbl">Note (optional)</label><input class="inp" id="d-note" placeholder="How did it feel?"></div>
+    <button class="btn btn-pri" onclick="addDetail()">Log activity</button>
+  </div>
+  <div class="lbl">Recent</div>
+  <div id="feed"></div>
+  <div class="gap"></div>
+</div>
+
+<!-- BALANCE -->
+<div class="page" id="page-balance">
+  <div class="streak">
+    <div class="scell"><div class="sval" id="b-streak">0</div><div class="slbl">Day streak</div></div>
+    <div class="scell"><div class="sval" id="b-active">0<small>/7</small></div><div class="slbl">Active days</div></div>
+    <div class="scell"><div class="sval" id="b-total">0</div><div class="slbl">Wk entries</div></div>
+  </div>
+  <div id="focus-box"></div>
+  <div class="lbl">This week vs target</div>
+  <div id="pillars"></div>
+  <div class="gap"></div>
+</div>
+
+<!-- TRENDS -->
+<div class="page" id="page-trends">
+  <div class="lbl">This week vs last week</div>
+  <div id="t-week"></div>
+  <div class="lbl">Weekly distance · last 8 weeks</div>
+  <div class="card" style="margin-top:0;padding:16px 16px 12px"><div id="t-chart"></div><div class="chart-cap" id="t-chart-cap"></div></div>
+  <div class="lbl">This month</div>
+  <div id="t-month"></div>
+  <div class="lbl">Records</div>
+  <div id="t-records"></div>
+  <div class="lbl">All-time totals</div>
+  <div id="t-all"></div>
+  <button class="reset-btn" onclick="wipeAll()">Clear all activity</button>
+  <div class="gap"></div>
+</div>
+
+</div>
+
+<nav class="nav">
+  <button class="on" onclick="showPage('log',this)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>Log</span></button>
+  <button onclick="showPage('balance',this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 12l4-2M12 12v-5"/></svg><span>Balance</span></button>
+  <button onclick="showPage('trends',this)"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 15l4-4 4 3 8-8"/></svg><span>Trends</span></button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══ SHARED-ORIGIN STORAGE ═══
+const ACT_KEY='jvd_activity';   // [{date,type,amount,unit,note}]
+function loadArr(k){try{return JSON.parse(localStorage.getItem(k))||[];}catch(e){return[];}}
+function saveArr(k,a){try{localStorage.setItem(k,JSON.stringify(a));}catch(e){}}
+let acts=loadArr(ACT_KEY);
+
+// icons
+const IC={
+  ride:'<path d="M5 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM5 15l4-7h5l2 4M9 8l1-3h3"/>',
+  run:'<path d="M13 4a1.5 1.5 0 1 0 0-.01M7 21l3-5 2-3 4 2 2 4M9 9l3-1 3 2 2 1M10 13l-2 2"/>',
+  walk:'<path d="M13 4a1.5 1.5 0 1 0 0-.01M9 21l2-6 2-3M11 12l3 2 1 5M11 9l-3 1-1 4"/>',
+  strength:'<path d="M5 19V11M10.3 19V6M15.7 19v-5M21 19V9"/>',
+  power:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+  grip:'<path d="M8 11V6a1.5 1.5 0 0 1 3 0M11 11V5a1.5 1.5 0 0 1 3 0v6M14 11V6a1.5 1.5 0 0 1 3 0v7a5 5 0 0 1-5 5h-1a5 5 0 0 1-4-2l-3-4 1.5-1.3L8 12"/>',
+  hiit:'<path d="M12 2v4M12 18v4M4 12H2M22 12h-2M6 6L4.5 4.5M18 18l1.5 1.5M6 18l-1.5 1.5M18 6l1.5-1.5M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/>',
+  mobility:'<path d="M12 5a8 8 0 0 1 8 8M12 5a8 8 0 0 0-8 8M4 13c0 3 3 6 8 6s8-3 8-6"/>'
+};
+// activity config — pillar maps each to a health dimension
+const ACTS=[
+  {id:'ride',     name:'Ride',     unit:'km',  quick:7.5, pillar:'zone2'},
+  {id:'walk',     name:'Walk',     unit:'km',  quick:2,   pillar:'zone2'},
+  {id:'run',      name:'Run',      unit:'km',  quick:5,   pillar:'intense'},
+  {id:'hiit',     name:'HIIT',     unit:'min', quick:10,  pillar:'intense'},
+  {id:'strength', name:'Strength', unit:'session', quick:1, pillar:'strength'},
+  {id:'power',    name:'Power',    unit:'session', quick:1, pillar:'intense'},
+  {id:'grip',     name:'Grip',     unit:'session', quick:1, pillar:'strength'},
+  {id:'mobility', name:'Mobility', unit:'min', quick:15,  pillar:'mobility'},
+];
+function actCfg(id){return ACTS.find(a=>a.id===id)||{id,name:id,unit:'',pillar:'zone2'};}
+
+// pillars — weekly session-count targets for a balanced cycle
+const PILLARS=[
+  {id:'zone2',    name:'Aerobic base (Zone 2)', target:4, note:'Easy rides & walks. Your 7.5 km commute is the engine here — aim for most days.'},
+  {id:'intense',  name:'High intensity',        target:3, note:'Runs, HIIT, power work. Hard but brief — pushes VO₂ and power.'},
+  {id:'strength', name:'Strength & grip',       target:3, note:'Lifting and grip sessions. Keep the muscle and bone under load.'},
+  {id:'mobility', name:'Mobility & recovery',   target:2, note:'Stretch / mobility sessions. Protects everything else.'},
+];
+
+// dates
+function todayISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function fmtDate(iso){if(!iso)return'';const[y,m,d]=iso.split('-');return d+' '+['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m-1];}
+function parseISO(iso){const[y,m,d]=iso.split('-').map(Number);return new Date(y,m-1,d);}
+function weekStartISO(){const d=new Date();const dow=(d.getDay()+6)%7;d.setDate(d.getDate()-dow);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function thisWeek(){const ws=weekStartISO();return acts.filter(a=>a.date>=ws);}
+function num(v){const n=parseFloat(v);return isNaN(n)?0:n;}
+function buzz(){if(navigator.vibrate)navigator.vibrate(12);}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1500);}
+function esc(s){return String(s).replace(/'/g,"\\'");}
+
+function showPage(name,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('on'));
+  document.getElementById('page-'+name).classList.add('on');btn.classList.add('on');
+  document.getElementById('scroll').scrollTop=0;
+  if(name==='balance')renderBalance();
+  if(name==='trends')renderTrends();
+}
+
+// ═══ LOG ═══
+let detailType='ride';
+function renderTiles(){
+  document.getElementById('tiles').innerHTML=ACTS.map(a=>{
+    const q=a.unit==='session'?'tap = 1 session':'tap = '+a.quick+' '+a.unit;
+    return `<button class="tile" onclick="quickLog('${a.id}')">
+      <span class="tile-ic"><svg viewBox="0 0 24 24">${IC[a.id]||''}</svg></span>
+      <span><span class="tile-name">${a.name}</span><span class="tile-def" style="display:block">${q}</span></span>
+    </button>`;
+  }).join('');
+}
+function renderTypeSeg(){
+  document.getElementById('d-type').innerHTML=ACTS.map(a=>`<button class="${detailType===a.id?'on':''}" onclick="pickType('${a.id}')">${a.name}</button>`).join('');
+  const c=actCfg(detailType);
+  document.getElementById('d-amt-lbl').textContent=c.unit==='session'?'Sessions':'Amount ('+c.unit+')';
+  document.getElementById('d-amt').placeholder=c.quick;
+}
+function pickType(id){detailType=id;renderTypeSeg();}
+function quickLog(id){
+  const c=actCfg(id);
+  if(c.unit==='session'){ logNow(id,1); return; }   // sessions = instant
+  openQuick(id);                                      // distance/time = enter your own
+}
+function openQuick(id){
+  const c=actCfg(id);
+  document.getElementById('qe').innerHTML=`<div class="qe">
+    <span class="qe-ic"><svg viewBox="0 0 24 24">${IC[id]||''}</svg></span>
+    <span class="qe-name">${c.name}</span>
+    <input class="qe-inp" id="qe-amt" type="number" inputmode="decimal" value="${c.quick}">
+    <span class="qe-unit">${c.unit}</span>
+    <button class="qe-go" onclick="qeSave('${id}')">Log</button>
+    <button class="qe-x" onclick="document.getElementById('qe').innerHTML=''" aria-label="Cancel">×</button>
+  </div>`;
+  const inp=document.getElementById('qe-amt'); inp.focus(); inp.select();
+  inp.onkeydown=e=>{if(e.key==='Enter')qeSave(id);};
+}
+function qeSave(id){
+  const amt=num(document.getElementById('qe-amt').value);
+  if(!amt){toast('Enter an amount');return;}
+  logNow(id,amt);
+}
+function logNow(id,amt){
+  const c=actCfg(id);
+  acts.push({date:todayISO(),type:id,amount:amt,unit:c.unit,note:''});
+  saveArr(ACT_KEY,acts);buzz();
+  document.getElementById('qe').innerHTML='';
+  renderFeed();renderCount();
+  toast(c.name+' · '+(c.unit==='session'?'logged':amt+' '+c.unit));
+}
+function addDetail(){
+  const c=actCfg(detailType);
+  const amt=num(document.getElementById('d-amt').value)||c.quick;
+  const date=document.getElementById('d-date').value||todayISO();
+  const note=document.getElementById('d-note').value.trim();
+  acts.push({date,type:detailType,amount:amt,unit:c.unit,note});
+  saveArr(ACT_KEY,acts);buzz();
+  document.getElementById('d-amt').value='';document.getElementById('d-note').value='';
+  renderFeed();renderCount();toast('Logged');
+}
+function delAct(idx){acts.splice(idx,1);saveArr(ACT_KEY,acts);renderFeed();renderCount();}
+function sortedIdx(){return acts.map((a,i)=>({a,i})).sort((x,y)=>(y.a.date||'').localeCompare(x.a.date||'')||y.i-x.i);}
+function renderFeed(){
+  const f=document.getElementById('feed');
+  if(!acts.length){f.innerHTML='<div class="empty">Nothing logged yet. Tap a tile above to record your first activity — a commute ride, a lift, a walk.</div>';return;}
+  f.innerHTML=sortedIdx().slice(0,30).map(({a,i})=>{
+    const c=actCfg(a.type);
+    const amtTxt=a.unit==='session'?'session':a.amount+' '+a.unit;
+    return `<div class="feed-item">
+      <span class="feed-ic"><svg viewBox="0 0 24 24">${IC[a.type]||''}</svg></span>
+      <div class="feed-main"><div class="feed-name">${c.name}</div><div class="feed-meta">${fmtDate(a.date)}${a.note?' · '+a.note:''}</div></div>
+      <div class="feed-amt">${a.unit==='session'?'✓':a.amount}<small>${a.unit==='session'?'':' '+a.unit}</small></div>
+      <button class="feed-del" onclick="delAct(${i})">×</button>
+    </div>`;
+  }).join('');
+}
+function renderCount(){const n=thisWeek().length;document.getElementById('count').textContent=n+' this week';renderNudge();}
+function goBalance(){const b=document.querySelectorAll('.nav button')[1];if(b)showPage('balance',b);}
+function renderNudge(){
+  const el=document.getElementById('log-nudge');if(!el)return;
+  const wk=thisWeek();const counts=pillarCounts(wk);
+  const chev='<span class="nudge-chev"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>';
+  if(!wk.length){
+    el.innerHTML=`<div class="nudge" onclick="goBalance()"><span class="nudge-ic"><svg viewBox="0 0 24 24"><path d="M12 8v8M8 12h8M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z"/></svg></span><span class="nudge-txt"><b>New week.</b> Nothing logged yet — a commute ride, lift or walk gets you started.</span>${chev}</div>`;
+    return;
+  }
+  const gaps=PILLARS.map(p=>({p,gap:p.target-(counts[p.id]||0)})).filter(x=>x.gap>0).sort((a,b)=>b.gap-a.gap);
+  if(!gaps.length){
+    el.innerHTML=`<div class="nudge good" onclick="goBalance()"><span class="nudge-ic"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></span><span class="nudge-txt"><b>Balanced week.</b> All four pillars on target — see the breakdown.</span>${chev}</div>`;
+  }else{
+    const top=gaps[0];
+    el.innerHTML=`<div class="nudge warn" onclick="goBalance()"><span class="nudge-ic"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></span><span class="nudge-txt">This week’s gap: <b>${top.p.name}</b> — ${top.gap} to go. Tap for what to improve.</span>${chev}</div>`;
+  }
+}
+
+// ═══ WEEK / STATS HELPERS ═══
+function isoOf(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function weekStartDate(offset){const d=new Date();const dow=(d.getDay()+6)%7;d.setDate(d.getDate()-dow-(offset||0)*7);d.setHours(0,0,0,0);return d;}
+function weekActs(offset){const s=weekStartDate(offset);const e=new Date(s);e.setDate(e.getDate()+7);const si=isoOf(s),ei=isoOf(e);return acts.filter(a=>a.date>=si&&a.date<ei);}
+function sumDist(list,type){return list.filter(a=>a.type===type).reduce((s,a)=>s+num(a.amount),0);}
+function monthActs(){const d=new Date();const si=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-01';return acts.filter(a=>a.date>=si);}
+function longest(type){return acts.filter(a=>a.type===type).reduce((m,a)=>Math.max(m,num(a.amount)),0);}
+function weekDistSeries(n){const arr=[];for(let i=n-1;i>=0;i--){const w=weekActs(i);arr.push(['ride','run','walk'].reduce((s,t)=>s+sumDist(w,t),0));}return arr;}
+function bestStreak(){
+  if(!acts.length)return 0;
+  const days=[...new Set(acts.map(a=>a.date))].sort();
+  let best=1,cur=1;
+  for(let i=1;i<days.length;i++){
+    const diff=Math.round((parseISO(days[i])-parseISO(days[i-1]))/86400000);
+    if(diff===1){cur++;best=Math.max(best,cur);}else if(diff!==0){cur=1;}
+  }
+  return best;
+}
+function r1(n){return Math.round(n*10)/10;}
+
+// ═══ BALANCE ═══
+function pillarCounts(list){
+  const c={zone2:0,intense:0,strength:0,mobility:0};
+  list.forEach(a=>{const p=actCfg(a.type).pillar;if(c[p]!==undefined)c[p]++;});
+  return c;
+}
+function activeDays(list){return new Set(list.map(a=>a.date)).size;}
+function currentStreak(){
+  if(!acts.length)return 0;
+  const days=new Set(acts.map(a=>a.date));
+  let streak=0;const d=new Date();
+  // allow today to be empty without breaking (count back from yesterday if today blank)
+  let iso=todayISO();
+  if(!days.has(iso)){d.setDate(d.getDate()-1);}
+  for(;;){
+    const cur=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    if(days.has(cur)){streak++;d.setDate(d.getDate()-1);}else break;
+  }
+  return streak;
+}
+function renderBalance(){
+  const wk=thisWeek();
+  const counts=pillarCounts(wk);
+  document.getElementById('b-streak').textContent=currentStreak();
+  document.getElementById('b-active').innerHTML=activeDays(wk)+'<small>/7</small>';
+  document.getElementById('b-total').textContent=wk.length;
+  // pillars
+  let lowest=null,lowestGap=-1;
+  document.getElementById('pillars').innerHTML=PILLARS.map(p=>{
+    const got=counts[p.id]||0,pct=Math.min(100,Math.round(got/p.target*100));
+    const low=got<p.target;
+    const gap=p.target-got;
+    if(gap>lowestGap){lowestGap=gap;lowest=p;}
+    return `<div class="pil${low?' low':''}">
+      <div class="pil-top"><span class="pil-name">${p.name}</span><span class="pil-cnt"><b>${got}</b> / ${p.target}</span></div>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <div class="pil-note">${p.note}</div>
+    </div>`;
+  }).join('');
+  // coach — concrete recommendations
+  renderCoach(counts,wk);
+}
+const REC={
+  zone2:g=>`<b>${g} more easy session${g>1?'s':''}</b> for your aerobic base. Your 7.5 km commute counts — ride or walk most days.`,
+  intense:g=>`<b>${g} high-intensity session${g>1?'s':''}</b> to go. Slot an Assault-bike HIIT or a run — short and hard.`,
+  strength:g=>`<b>${g} more strength/grip session${g>1?'s':''}</b>. Run a library program day or a grip finisher.`,
+  mobility:g=>`<b>${g} mobility session${g>1?'s':''}</b> left. A TV-time recovery flow counts — easy and protective.`
+};
+function renderCoach(counts,wk){
+  const fb=document.getElementById('focus-box');
+  const gaps=PILLARS.map(p=>({p,gap:p.target-(counts[p.id]||0)})).filter(x=>x.gap>0).sort((a,b)=>b.gap-a.gap);
+  // volume vs last week (distance)
+  const cur=['ride','run','walk'].reduce((s,t)=>s+sumDist(wk,t),0);
+  const prev=['ride','run','walk'].reduce((s,t)=>s+sumDist(weekActs(1),t),0);
+  let recs=gaps.map(({p,gap},i)=>`<div class="rec"><span class="rec-dot${i===0?' warn':''}"></span><span>${REC[p.id](gap)}</span></div>`);
+  // intensity-balance flags
+  if((counts.intense||0)>0 && (counts.zone2||0)===0){
+    recs.push(`<div class="rec"><span class="rec-dot warn"></span><span>All intensity, no easy work — add some <b>Zone 2</b> so the hard sessions actually recover.</span></div>`);
+  }
+  if(recs.length===0){
+    fb.innerHTML=`<div class="coach"><div class="coach-hd"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Coach</div><div class="coach-good"><strong>Balanced week.</strong> Every pillar hit its target — aerobic, intensity, strength and mobility all covered.${prev>0?` Distance ${cur>=prev?'up':'down'} on last week (${r1(cur)} vs ${r1(prev)} km).`:''} Keep it rolling.</div></div>`;
+    return;
+  }
+  if(prev>0){
+    const pct=Math.round((cur-prev)/prev*100);
+    recs.unshift(`<div class="rec"><span class="rec-dot"></span><span>Distance is <b>${pct>=0?'up '+pct+'%':'down '+Math.abs(pct)+'%'}</b> vs last week (${r1(cur)} vs ${r1(prev)} km).</span></div>`);
+  }
+  fb.innerHTML=`<div class="coach"><div class="coach-hd"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 4 12.7V17H8v-2.3A7 7 0 0 1 12 2zM9 21h6M10 18v3M14 18v3"/></svg>Coach — what to improve</div>${recs.slice(0,4).join('')}</div>`;
+}
+
+// ═══ TRENDS ═══
+function distRow(name,cur,prev,unit,tot){
+  let delta='';
+  if(prev>0){const pct=Math.round((cur-prev)/prev*100);delta=`<span class="delta ${pct>=0?'up':'down'}">${pct>=0?'▲':'▼'} ${Math.abs(pct)}%</span>`;}
+  else if(cur>0){delta=`<span class="delta up">new</span>`;}
+  return `<div class="tstat"><span class="tstat-name${tot?' tot':''}">${name}</span>${delta}<span class="tstat-val">${r1(cur)}<small> ${unit}</small></span></div>`;
+}
+function barChart(vals){
+  const W=300,H=64,n=vals.length,gap=W/n,bw=gap*0.58,max=Math.max(1,...vals);
+  let bars='';
+  vals.forEach((v,i)=>{
+    const h=Math.max(v>0?3:0,v/max*H), x=i*gap+(gap-bw)/2, y=H-h;
+    bars+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="2" opacity="${i===n-1?1:0.45}"/>`;
+  });
+  bars+=`<text class="barlbl" x="${(gap*0.5).toFixed(1)}" y="${H+11}" text-anchor="middle">8w ago</text>`;
+  bars+=`<text class="barlbl" x="${(W-gap*0.5).toFixed(1)}" y="${H+11}" text-anchor="middle">this wk</text>`;
+  return `<svg class="barchart" viewBox="0 0 ${W} ${H+14}">${bars}</svg>`;
+}
+function renderTrends(){
+  const tw=weekActs(0),lw=weekActs(1);
+  // this week vs last week
+  let wk=[['ride','Riding'],['run','Running'],['walk','Walking']]
+    .map(([t,n])=>distRow(n,sumDist(tw,t),sumDist(lw,t),'km')).join('');
+  const totCur=['ride','run','walk'].reduce((s,t)=>s+sumDist(tw,t),0);
+  const totPrev=['ride','run','walk'].reduce((s,t)=>s+sumDist(lw,t),0);
+  wk+=distRow('Total distance',totCur,totPrev,'km',true);
+  document.getElementById('t-week').innerHTML=wk;
+  // 8-week chart
+  const series=weekDistSeries(8);
+  const avg=r1(series.reduce((a,b)=>a+b,0)/series.length);
+  document.getElementById('t-chart').innerHTML=barChart(series);
+  document.getElementById('t-chart-cap').textContent='Avg '+avg+' km/week · '+r1(series.reduce((a,b)=>a+b,0))+' km over 8 weeks';
+  // this month
+  const mo=monthActs();
+  const moKm=['ride','run','walk'].reduce((s,t)=>s+sumDist(mo,t),0);
+  document.getElementById('t-month').innerHTML=
+    `<div class="tstat"><span class="tstat-name">Sessions</span><span class="tstat-val">${mo.length}</span></div>`+
+    `<div class="tstat"><span class="tstat-name">Active days</span><span class="tstat-val">${new Set(mo.map(a=>a.date)).size}</span></div>`+
+    `<div class="tstat"><span class="tstat-name">Distance</span><span class="tstat-val">${r1(moKm)}<small> km</small></span></div>`;
+  // records
+  const recs=[['Longest ride',longest('ride'),'km'],['Longest run',longest('run'),'km'],['Longest walk',longest('walk'),'km'],
+    ['Biggest week',Math.max(0,...weekDistSeries(52)),'km'],['Best day streak',bestStreak(),'days']].filter(([n,v])=>v>0);
+  document.getElementById('t-records').innerHTML=recs.length
+    ? recs.map(([n,v,u])=>`<div class="tstat"><span class="tstat-name">${n}</span><span class="tstat-val">${r1(v)}<small> ${u}</small></span></div>`).join('')
+    : '<div class="empty">Log a few sessions to start setting records.</div>';
+  // all-time by activity
+  const counts={},dist={};
+  acts.forEach(a=>{counts[a.type]=(counts[a.type]||0)+1;if(a.unit==='km')dist[a.type]=(dist[a.type]||0)+num(a.amount);});
+  const rows=ACTS.filter(a=>counts[a.id]).map(a=>{
+    const extra=a.unit==='km'?` · ${Math.round(dist[a.id]||0)} km`:'';
+    return `<div class="tstat"><span class="tstat-name">${a.name}</span><span class="tstat-val">${counts[a.id]}<small> ×${extra}</small></span></div>`;
+  }).join('');
+  document.getElementById('t-all').innerHTML=rows||'<div class="empty">No activity logged yet.</div>';
+}
+
+function wipeAll(){if(!confirm('Delete ALL logged activity on this device?'))return;acts=[];saveArr(ACT_KEY,acts);renderFeed();renderCount();renderBalance();renderTrends();toast('Cleared');}
+
+// ═══ INIT ═══
+document.getElementById('d-date').value=todayISO();
+renderTiles();renderTypeSeg();renderFeed();renderCount();
+</script>
+</body>
+</html>

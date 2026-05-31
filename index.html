@@ -2,110 +2,104 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#3B6E52">
-<title>JV — Apps</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Training">
+<meta name="theme-color" content="#faf9f6">
+<title>Training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #FAF7F2; --surface: #FFF; --surface2: #F5F0E8; --border: #E8E2D8;
-    --text: #1C1917; --text2: #78716C; --text3: #A8A29E;
-    --green: #3B6E52; --green-light: #EBF4EE;
-    --terra: #C4622D; --terra-light: #FBF0E9;
-    --gold: #B07D2A; --gold-light: #FBF5E6;
-    --shadow: 0 2px 12px rgba(28,25,23,0.07);
-    --shadow-lg: 0 8px 32px rgba(28,25,23,0.13);
-    --radius: 12px; --radius-sm: 8px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Lato', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 0 0 60px; }
-
-  header { background: var(--green); padding: 32px 24px 28px; }
-  .header-eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 8px; }
-  header h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #fff; font-weight: 700; line-height: 1.1; margin-bottom: 6px; }
-  header p { font-size: 0.8rem; color: rgba(255,255,255,0.6); font-weight: 300; letter-spacing: 0.5px; }
-
-  .wrap { max-width: 600px; margin: 0 auto; padding: 28px 20px; }
-
-  .section-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text3); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-
-  .app-card {
-    display: block;
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    text-decoration: none;
-    color: inherit;
-    margin-bottom: 12px;
-    box-shadow: var(--shadow);
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-  .app-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); border-color: var(--green); }
-  .app-card::after { content: '→'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; color: var(--text3); transition: all 0.2s; }
-  .app-card:hover::after { color: var(--green); transform: translateY(-50%) translateX(-3px); }
-
-  .app-tag { display: inline-block; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 20px; margin-bottom: 8px; }
-  .tag-fitness { background: var(--terra-light); color: var(--terra); }
-  .tag-kitchen { background: var(--green-light); color: var(--green); }
-  .tag-tool    { background: var(--gold-light); color: var(--gold); }
-
-  .app-name { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--text); margin-bottom: 5px; padding-right: 32px; }
-  .app-desc { font-size: 0.8rem; color: var(--text2); line-height: 1.55; padding-right: 32px; }
-
-  .coming-card {
-    background: var(--surface2);
-    border: 1.5px dashed var(--border);
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    margin-bottom: 12px;
-  }
-  .coming-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 5px; }
-  .coming-text { font-size: 0.8rem; color: var(--text3); }
-
-  footer { border-top: 1px solid var(--border); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-  .footer-l { font-size: 0.72rem; color: var(--text3); font-weight: 700; }
-  .footer-l span { color: var(--green); }
-  .footer-r { font-size: 0.72rem; color: var(--border); }
+:root{
+  --bg:#faf9f6;--surface:#ffffff;--surface2:#f3f1ec;--line:#ece9e2;--line2:#e0ddd4;
+  --ink:#1c1b18;--muted:#9b968c;--muted2:#6f6b62;--accent:#5f7d6b;--accent-soft:#eef2ee;
+  --safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-weight:400;-webkit-font-smoothing:antialiased;font-feature-settings:'tnum';min-height:100%;}
+.wrap{max-width:520px;margin:0 auto;padding:calc(var(--safe-top) + 40px) 22px calc(var(--safe-bot) + 40px);}
+.hd-title{font-size:28px;font-weight:300;letter-spacing:-1px;}
+.hd-sub{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5;}
+.lbl{font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);font-weight:500;margin:36px 4px 14px;}
+.stat-row{display:flex;gap:10px;margin-top:24px;}
+.stat{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 10px;text-align:center;}
+.stat-val{font-size:28px;font-weight:300;letter-spacing:-1px;line-height:1;}
+.stat-lbl{font-size:10px;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;margin-top:6px;font-weight:500;}
+.app{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:12px;text-decoration:none;color:inherit;transition:border-color .18s,transform .1s;}
+.app:active{transform:scale(.99);}
+.app:hover{border-color:var(--line2);}
+.app-icon{flex-shrink:0;width:46px;height:46px;border-radius:13px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;}
+.app-icon svg{width:23px;height:23px;stroke:var(--accent);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.app-body{flex:1;min-width:0;}
+.app-name{font-size:16px;font-weight:600;letter-spacing:-0.3px;}
+.app-desc{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.45;}
+.app-arrow{flex-shrink:0;color:var(--line2);}
+.app-arrow svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;display:block;}
+.today{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:13px;color:var(--muted2);line-height:1.5;display:flex;align-items:center;gap:10px;}
+.today svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+.today b{color:var(--ink);font-weight:600;}
+.foot{margin-top:36px;font-size:11.5px;color:var(--muted);line-height:1.6;text-align:center;}
 </style>
 </head>
 <body>
-
-<header>
-  <div class="header-eyebrow">Personal Apps</div>
-  <h1>JV Apps</h1>
-  <p>Built with Claude · Hosted on GitHub Pages</p>
-</header>
-
 <div class="wrap">
-  <div class="section-label" style="margin-bottom:14px">Active Apps</div>
+  <div class="hd-title">Training</div>
+  <div class="hd-sub">Your home-gym suite — one shared lift history across every app.</div>
 
-  <a class="app-card" href="easy-strength-swings_2.html">
-    <span class="app-tag tag-fitness">Fitness</span>
-    <div class="app-name">Easy Strength + Swings</div>
-    <div class="app-desc">Dan John's Easy Strength — 40 sessions, 5 lifts, 75 swings daily. Weight tracking with auto-projection and session log.</div>
-  </a>
-
-  <a class="app-card" href="my-kitchen-v2.html">
-    <span class="app-tag tag-kitchen">Kitchen</span>
-    <div class="app-name">My Kitchen</div>
-    <div class="app-desc">Personal recipe manager. Save, search, and scale recipes. Shopping list and meal planning.</div>
-  </a>
-
-  <div class="section-label" style="margin-top:24px;margin-bottom:14px">Coming Soon</div>
-  <div class="coming-card">
-    <div class="coming-label">Next App</div>
-    <div class="coming-text">Describe what you want to Claude — it gets built and uploaded here.</div>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-val" id="s-sets">0</div><div class="stat-lbl">Sets logged</div></div>
+    <div class="stat"><div class="stat-val" id="s-lifts">0</div><div class="stat-lbl">Lifts</div></div>
+    <div class="stat"><div class="stat-val" id="s-act">0</div><div class="stat-lbl">Activities</div></div>
   </div>
 
-  <footer>
-    <div class="footer-l"><span>jackvandissel-wq</span>.github.io/apps</div>
-    <div class="footer-r">Built with Claude</div>
-  </footer>
+  <div class="today" id="today"></div>
+
+  <div class="lbl">Apps</div>
+
+  <a class="app" href="tracker.html">
+    <div class="app-icon"><svg viewBox="0 0 24 24"><path d="M5 19V11M10.3 19V6M15.7 19v-5M21 19V9"/></svg></div>
+    <div class="app-body"><div class="app-name">Lift Log</div><div class="app-desc">Log every working set. PRs, est 1RM, trends and training maxes — the shared source of truth.</div></div>
+    <span class="app-arrow"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+  </a>
+
+  <a class="app" href="workout-library.html">
+    <div class="app-icon"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM19 17H6a2 2 0 0 0-2 2"/></svg></div>
+    <div class="app-body"><div class="app-name">Workout Library</div><div class="app-desc">Browse and run sessions — Dan John, 5/3/1, power, grip, assault-bike HIIT, warm-ups, recovery, ADF.</div></div>
+    <span class="app-arrow"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+  </a>
+
+  <a class="app" href="activity.html">
+    <div class="app-icon"><svg viewBox="0 0 24 24"><path d="M3 12h3.5l2.5 6 4-13 2.5 7H21"/></svg></div>
+    <div class="app-body"><div class="app-name">Activity</div><div class="app-desc">Holistic tracker — riding, walks, runs, strength, power, grip, HIIT and mobility. See where your week is thin.</div></div>
+    <span class="app-arrow"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+  </a>
+
+  <div class="foot">Data lives in this browser only.<br>Back up from Lift Log → Data before clearing it.</div>
 </div>
 
+<script>
+function loadJSON(k,f){try{return JSON.parse(localStorage.getItem(k))||f;}catch(e){return f;}}
+const lifts=loadJSON('jvd_lifts',{});
+const acts=loadJSON('jvd_activity',[]);
+let sets=0,names=0;
+for(const ex in lifts){names++;sets+=(lifts[ex]||[]).length;}
+document.getElementById('s-sets').textContent=sets;
+document.getElementById('s-lifts').textContent=names;
+document.getElementById('s-act').textContent=acts.length;
+
+// Today summary
+const d=new Date();
+const today=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+let tSets=0;for(const ex in lifts){tSets+=(lifts[ex]||[]).filter(e=>e.date===today).length;}
+const tActs=acts.filter(a=>a.date===today).length;
+const parts=[];
+if(tSets)parts.push('<b>'+tSets+'</b> set'+(tSets>1?'s':'')+' logged');
+if(tActs)parts.push('<b>'+tActs+'</b> activit'+(tActs>1?'ies':'y'));
+const txt=parts.length?('Today: '+parts.join(' · ')+'.'):'Nothing logged today yet — open an app to get started.';
+document.getElementById('today').innerHTML='<svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 9h18M5 4h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg><span>'+txt+'</span>';
+</script>
 </body>
 </html>
