@@ -603,9 +603,8 @@ function goLib(cat){view='workouts';filter=cat;switchApp('library');}
 function pillarRoute(id){if(id==='strength')goLib('strength');else if(id==='mobility')goLib('recovery');else switchApp('activity');}
 function renderHome(){
   // current program resume card
-  const ap=activeProg();let curHtml='';
-  if(ap){const t=TEMPLATES.find(x=>x.id===ap.id);if(t){const n=progSessions(t.id).length;curHtml=`<div class="hcur" role="button" tabindex="0" onclick="resumeProgram('${t.id}')"><div class="hcur-lbl">● Current program</div><div class="hcur-name">${t.name}</div><div class="hcur-sub">${progReadout(t,n)}</div><div class="hcur-go">Continue →</div></div>`;}}
-  document.getElementById('h-current').innerHTML=curHtml;
+  const aps=activePrograms().filter(p=>TEMPLATES.find(t=>t.id===p.id));
+  document.getElementById('h-current').innerHTML=aps.map(p=>{const t=TEMPLATES.find(x=>x.id===p.id);const n=progSessions(t.id).length;return `<div class="hcur" role="button" tabindex="0" onclick="resumeProgram('${t.id}')"><div class="hcur-lbl">● Current program</div><div class="hcur-name">${t.name}</div><div class="hcur-sub">${progReadout(t,n)}</div><div class="hcur-go">Continue →</div></div>`;}).join('');
   document.getElementById('h-sets').textContent=allEntries().length;
   document.getElementById('h-lifts').textContent=exNames().length;
   const wk=thisWeek();
@@ -741,24 +740,26 @@ const ACTS=[
   {id:'walk',name:'Walk',unit:'km',quick:2,pillar:'zone2'},
   {id:'run',name:'Run',unit:'km',quick:5,pillar:'intense'},
   {id:'hiit',name:'HIIT',unit:'min',quick:10,pillar:'intense'},
-  {id:'boxing',name:'Boxing',unit:'session',quick:1,pillar:'intense'},
+  {id:'boxing',name:'Boxing',unit:'session',quick:1,pillar:'power'},
   {id:'strength',name:'Strength',unit:'session',quick:1,pillar:'strength'},
-  {id:'power',name:'Power',unit:'session',quick:1,pillar:'intense'},
-  {id:'grip',name:'Grip',unit:'session',quick:1,pillar:'strength'},
+  {id:'power',name:'Power',unit:'session',quick:1,pillar:'power'},
+  {id:'grip',name:'Grip',unit:'session',quick:1,pillar:'grip'},
   {id:'mobility',name:'Mobility',unit:'min',quick:15,pillar:'mobility'},
 ];
-// completed library workout → activity session type (by category)
-const CAT2ACT={strength:'strength',grip:'grip',power:'power',hiit:'hiit',boxing:'boxing',adf:'hiit',recovery:'mobility'};
+// completed library workout → activity session type. t.actType overrides the category map.
+const CAT2ACT={strength:'strength',grip:'grip',power:'power',hiit:'hiit',boxing:'power',adf:'intense',recovery:'mobility',running:'run'};
 function recordWorkoutActivity(t){
-  const type=CAT2ACT[t.category]; if(!type)return;
+  const type=t.actType||CAT2ACT[t.category]; if(!type)return;
   acts=loadArr(ACT_KEY); acts.push({date:todayISO(),type,amount:1,unit:'session',note:t.name}); saveArr(ACT_KEY,acts);
 }
 function actCfg(id){return ACTS.find(a=>a.id===id)||{id,name:id,unit:'',pillar:'zone2'};}
 const PILLARS=[
-  {id:'zone2',name:'Aerobic base (Zone 2)',target:4,note:'Easy rides & walks. Your 7.5 km commute is the engine here — aim for most days.'},
-  {id:'intense',name:'High intensity',target:3,note:'Runs, HIIT, power, boxing. Hard but brief — pushes VO₂ and power.'},
-  {id:'strength',name:'Strength & grip',target:3,note:'Lifting and grip sessions. Keep the muscle and bone under load.'},
-  {id:'mobility',name:'Mobility & recovery',target:2,note:'Stretch / mobility sessions. Protects everything else.'},
+  {id:'strength',name:'Strength',target:4,note:'Lifting sessions. Your 4-a-week anchor — main program plus the weekend Mass Made Simple.'},
+  {id:'power',name:'Power / explosive',target:2,note:'Jumps, throws, KB ballistics, Olympic lifts and boxing — fast and crisp, not fatiguing.'},
+  {id:'intense',name:'Intensity (heart rate)',target:2,note:'Runs and Assault-bike HIIT — raise the heart rate. Two runs a week is the target.'},
+  {id:'zone2',name:'Aerobic base (Zone 2)',target:4,note:'Easy rides & walks. Your 7.5 km commute is the engine — most days.'},
+  {id:'grip',name:'Grip',target:1,note:'A dedicated grip session each week — carries, holds, pinches.'},
+  {id:'mobility',name:'Recovery & mobility',target:4,note:'Stretch / mobility / recovery sessions. Four a week keeps everything moving well.'},
 ];
 function thisWeek(){const ws=weekStartISO();return acts.filter(a=>a.date>=ws);}
 let actSub='log';
@@ -823,7 +824,7 @@ function bestStreak(){
   return best;
 }
 function r1(n){return Math.round(n*10)/10;}
-function pillarCounts(list){const c={zone2:0,intense:0,strength:0,mobility:0};list.forEach(a=>{const p=actCfg(a.type).pillar;if(c[p]!==undefined)c[p]++;});return c;}
+function pillarCounts(list){const c={};PILLARS.forEach(p=>c[p.id]=0);list.forEach(a=>{const p=actCfg(a.type).pillar;if(c[p]!==undefined)c[p]++;});return c;}
 function activeDays(list){return new Set(list.map(a=>a.date)).size;}
 function currentStreak(){
   if(!acts.length)return 0;
@@ -845,9 +846,11 @@ function renderBalance(){
 }
 const REC={
   zone2:g=>`<b>${g} more easy session${g>1?'s':''}</b> for your aerobic base. Your 7.5 km commute counts — ride or walk most days.`,
-  intense:g=>`<b>${g} high-intensity session${g>1?'s':''}</b> to go. A HIIT, run or boxing round — short and hard.`,
-  strength:g=>`<b>${g} more strength/grip session${g>1?'s':''}</b>. Run a library program day or a grip finisher.`,
-  mobility:g=>`<b>${g} mobility session${g>1?'s':''}</b> left. A recovery flow counts — easy and protective.`
+  intense:g=>`<b>${g} more run/HIIT session${g>1?'s':''}</b> to raise the heart rate — get those runs in.`,
+  power:g=>`<b>${g} power session${g>1?'s':''}</b> to go — jumps, throws, KB ballistics or boxing. Crisp and explosive.`,
+  strength:g=>`<b>${g} more strength session${g>1?'s':''}</b>. Run a program day — main lift or the weekend Mass Made Simple.`,
+  grip:g=>`<b>${g} grip session${g>1?'s':''}</b> to go — a grip builder or finisher.`,
+  mobility:g=>`<b>${g} recovery session${g>1?'s':''}</b> left. A mobility flow or the Mobility Check counts.`
 };
 function renderCoach(counts,wk){
   const fb=document.getElementById('focus-box');
@@ -895,7 +898,7 @@ function renderTrends(){
 }
 function actWipe(){if(!confirm('Delete ALL logged activity?'))return;acts=[];saveArr(ACT_KEY,acts);actFeed();actCount();renderBalance();renderTrends();toast('Cleared');}
 // ═══ LIBRARY ═══
-const CATS=[['all','All'],['strength','Strength'],['power','Power'],['boxing','Boxing'],['hiit','Assault Bike'],['grip','Grip'],['adf','ADF'],['warmup','Warm-ups'],['recovery','Recovery']];
+const CATS=[['all','All'],['strength','Strength'],['power','Power'],['boxing','Boxing'],['hiit','HIIT / circuits'],['grip','Grip'],['adf','ADF'],['warmup','Warm-ups'],['recovery','Recovery']];
 let filter='all', view='workouts';
 function renderViewSeg(){
   const cnt=n=>TEMPLATES.filter(t=>n==='programs'?t.type==='program':t.type!=='program').length;
@@ -914,34 +917,52 @@ function renderChips(){
 function setFilter(f){filter=f;renderChips();renderList();}
 function renderList(){
   if(view==='current'){ return renderCurrent(); }
-  const ap=activeProg();
   let items;
   if(view==='programs'){ items=TEMPLATES.filter(t=>t.type==='program'); }
   else { items=TEMPLATES.filter(t=>t.type!=='program'&&(filter==='all'||t.category===filter)); }
   document.getElementById('list').innerHTML=items.map(t=>{
-    const badge=(ap&&ap.id===t.id)?'<span class="card-badge cur">● Current</span>':(t.type==='program'?'<span class="card-badge prog">Program</span>':'');
+    const badge=isActive(t.id)?'<span class="card-badge cur">● Current</span>':(t.type==='program'?'<span class="card-badge prog">Program</span>':'');
     return `<div class="lcard" role="button" tabindex="0" onclick="openTemplate('${t.id}')"><div class="card-top"><div class="card-name">${t.name}</div>${badge}</div><div class="card-sum">${t.summary}</div><div class="card-meta"><span><b>${t.source}</b></span><span>~${t.duration} min</span></div></div>`;
   }).join('');
 }
-function activeProg(){try{return JSON.parse(localStorage.getItem(ACTIVE_KEY))||null;}catch(e){return null;}}
-function setActive(id){const cur=activeProg();const started=(cur&&cur.id===id&&cur.started)?cur.started:todayISO();localStorage.setItem(ACTIVE_KEY,JSON.stringify({id,started}));flash('Set as current program');}
-function endActive(){if(!confirm('End your current program? Your logged sessions are kept.'))return;localStorage.removeItem(ACTIVE_KEY);renderViewSeg();renderList();flash('Program ended');}
+// up to TWO concurrent programs (e.g. a weekday main + a weekend session)
+function activePrograms(){let v;try{v=JSON.parse(localStorage.getItem(ACTIVE_KEY));}catch(e){v=null;}if(!v)return [];if(Array.isArray(v))return v;if(v.id)return [v];return [];}
+function isActive(id){return activePrograms().some(p=>p.id===id);}
+function activeStart(id){const p=activePrograms().find(x=>x.id===id);return p?p.started:null;}
+function setActive(id){
+  let arr=activePrograms();
+  if(arr.some(p=>p.id===id)){flash('Already a current program');return;}
+  arr.push({id,started:todayISO()});
+  localStorage.setItem(ACTIVE_KEY,JSON.stringify(arr));
+  flash(arr.length>1?'Added — '+arr.length+' programs running':'Set as current program');
+}
+// current stage: by calendar week, or by sessions done if program sets paceBy:'sessions'
+function stageOf(t){
+  if(t.paceBy==='sessions'){const per=t.perStage||3;return Math.min(Math.floor(progSessions(t.id).length/per)+1,(t.weeks||[1]).length);}
+  const st=activeStart(t.id);return st?Math.min(weeksSince(st)+1,(t.weeks||[1]).length):1;
+}
+function endActive(id){
+  const arr=activePrograms().filter(p=>p.id!==id);
+  localStorage.setItem(ACTIVE_KEY,JSON.stringify(arr));
+  renderViewSeg();renderList();flash('Program ended');
+}
 function setActiveAndShow(id){setActive(id);view='current';renderViewSeg();renderChips();renderList();}
 function setActiveFromSheet(id){setActive(id);openTemplate(id);}
+function weeksSince(started){if(!started)return 0;return Math.floor((new Date()-parseISODate(started))/86400000/7);}
 function progDone(){try{return JSON.parse(localStorage.getItem(PROG_DONE_KEY))||{};}catch(e){return{};}}
 function progSessions(id){return (progDone()[id]||[]).slice().sort();}
 function progThisWeek(id){const ws=weekStartISO();return progSessions(id).filter(x=>x>=ws).length;}
-function weeksRunning(ap){if(!ap||!ap.started)return 0;return Math.floor((new Date()-parseISODate(ap.started))/86400000/7);}
 function runningBanner(t){
-  const ap=activeProg(); if(!ap||ap.id!==t.id) return '';
-  const n=progSessions(t.id).length;
-  let wktxt=(t.programType==='progressive'&&t.weeks)?`week ${Math.min(weeksRunning(ap)+1,t.weeks.length)} of ${t.weeks.length} · `:`week ${weeksRunning(ap)+1} · `;
-  return `<div class="run-banner">● Running — ${wktxt}${n} session${n===1?'':'s'} · since ${fmtShort(ap.started)}</div>`;
+  if(!isActive(t.id))return '';
+  const st=activeStart(t.id);const n=progSessions(t.id).length;
+  const word=t.paceBy==='sessions'?'stage':'week';
+  let wktxt=(t.programType==='progressive'&&t.weeks)?`${word} ${stageOf(t)} of ${t.weeks.length} · `:`week ${weeksSince(st)+1} · `;
+  return `<div class="run-banner">● Running — ${wktxt}${n} session${n===1?'':'s'} · since ${fmtShort(st)}</div>`;
 }
 function decorateProgram(t){
   const body=document.getElementById('sheet-body'),foot=document.getElementById('sheet-foot');
   const b=runningBanner(t); if(b) body.innerHTML=b+body.innerHTML;
-  const ap=activeProg();const isCur=ap&&ap.id===t.id;
+  const isCur=isActive(t.id);
   const setBtn=`<button class="btn ${isCur?'btn-soft':'btn-pri'}" onclick="setActiveFromSheet('${t.id}')">${isCur?'✓ Current program':'Set as current program'}</button>`;
   foot.innerHTML=setBtn+(foot.innerHTML?'<div style="height:8px"></div>'+foot.innerHTML:'');
   appendFinish(t);
@@ -949,22 +970,26 @@ function decorateProgram(t){
 function logProgSession(id){const all=progDone();if(!all[id])all[id]=[];all[id].push(todayISO());localStorage.setItem(PROG_DONE_KEY,JSON.stringify(all));const t=TEMPLATES.find(x=>x.id===id);if(t)recordWorkoutActivity(t);renderList();flash('Session logged');}
 function progReadout(t,n){
   if(t.programType==='challenge'){const sw=t.swingsPerSession?` · ${(n*t.swingsPerSession).toLocaleString()} swings`:'';return `${n} / ${t.target} sessions${sw}`;}
-  if(t.programType==='progressive'&&t.weeks){const ap=activeProg();const w=(ap&&ap.id===t.id)?Math.min(weeksRunning(ap)+1,t.weeks.length):1;const wk=t.weeks[w-1];return `Week ${w} of ${t.weeks.length}${wk&&wk.goal?` — ${wk.goal}`:''}`;}
+  if(t.programType==='progressive'&&t.weeks){const w=stageOf(t);const wk=t.weeks[w-1];const word=t.paceBy==='sessions'?'Stage':'Week';return `${word} ${w} of ${t.weeks.length}${wk&&wk.goal?` — ${wk.goal}`:''}`;}
   if(t.programType==='weekly'&&t.days){const d=t.days.length;return `Next up: week ${Math.floor(n/d)+1}, day ${(n%d)+1} of ${d}`;}
   if(t.programType==='easy-strength'){return `${n} of ~40 sessions logged.`;}
   if(t.programType==='531'){return `${n} sessions — bump your training max each completed 4-week cycle.`;}
   return `${n} sessions logged.`;
 }
+function curCard(t){
+  const st=activeStart(t.id);const dates=progSessions(t.id),n=dates.length;const last=n?dates[n-1]:null;
+  const wkN=progThisWeek(t.id);const daysIn=st?Math.max(0,Math.floor((new Date()-parseISODate(st))/86400000)):0;
+  return `<div class="cur-card"><div class="cur-badge">● Current program</div><div class="cur-name">${t.name}</div><div class="cur-src">${t.source} · started ${fmtShort(st)}</div><div class="cur-stats"><div class="cur-cell"><div class="cur-val">${n}</div><div class="cur-lbl">Sessions</div></div><div class="cur-cell"><div class="cur-val">${wkN}</div><div class="cur-lbl">This week</div></div><div class="cur-cell"><div class="cur-val">${daysIn}</div><div class="cur-lbl">Days in</div></div></div><div class="cur-prog">${progReadout(t,n)}</div><button class="btn btn-pri" onclick="openTemplate('${t.id}')">Open program</button><button class="btn btn-soft" style="margin-top:8px" onclick="logProgSession('${t.id}')">＋ Log a session done${last?` · last ${fmtShort(last)}`:''}</button><button class="cur-link warn" style="margin-top:10px;width:100%" onclick="endActive('${t.id}')">End this program</button></div>`;
+}
 function renderCurrent(){
-  const list=document.getElementById('list');const ap=activeProg();
-  if(!ap||!TEMPLATES.find(t=>t.id===ap.id)){
-    list.innerHTML=`<div class="cur-empty">No program running yet.<br>Pick one below — tap <b>Set as current</b> and it'll live here so you can track and resume it.</div>`+
-      TEMPLATES.filter(t=>t.type==='program').map(t=>`<div class="lcard"><div class="card-top"><div class="card-name">${t.name}</div><span class="card-badge prog">Program</span></div><div class="card-sum">${t.summary}</div><div class="cur-choose"><button class="btn btn-pri" onclick="setActiveAndShow('${t.id}')">Set as current</button><button class="btn btn-soft" onclick="openTemplate('${t.id}')">Preview</button></div></div>`).join('');
-    return;
+  const list=document.getElementById('list');
+  const aps=activePrograms().filter(p=>TEMPLATES.find(t=>t.id===p.id));
+  let html=aps.map(p=>curCard(TEMPLATES.find(t=>t.id===p.id))).join('');
+  if(aps.length<2){
+    html+=`<div class="cur-empty">${aps.length?'Run a second program alongside it — e.g. a weekend Mass Made Simple:':'No program running yet. Pick one — tap <b>Set as current</b> and it lives here so you can track and resume it.'}</div>`+
+      TEMPLATES.filter(t=>t.type==='program'&&!aps.some(a=>a.id===t.id)).map(t=>`<div class="lcard"><div class="card-top"><div class="card-name">${t.name}</div><span class="card-badge prog">Program</span></div><div class="card-sum">${t.summary}</div><div class="cur-choose"><button class="btn btn-pri" onclick="setActiveAndShow('${t.id}')">Set as current</button><button class="btn btn-soft" onclick="openTemplate('${t.id}')">Preview</button></div></div>`).join('');
   }
-  const t=TEMPLATES.find(x=>x.id===ap.id);const dates=progSessions(t.id),n=dates.length;const last=n?dates[n-1]:null;
-  const wkN=progThisWeek(t.id);const daysIn=ap.started?Math.max(0,Math.floor((new Date()-parseISODate(ap.started))/86400000)):0;
-  list.innerHTML=`<div class="cur-card"><div class="cur-badge">● Current program</div><div class="cur-name">${t.name}</div><div class="cur-src">${t.source} · started ${fmtShort(ap.started)}</div><div class="cur-stats"><div class="cur-cell"><div class="cur-val">${n}</div><div class="cur-lbl">Sessions</div></div><div class="cur-cell"><div class="cur-val">${wkN}</div><div class="cur-lbl">This week</div></div><div class="cur-cell"><div class="cur-val">${daysIn}</div><div class="cur-lbl">Days in</div></div></div><div class="cur-prog">${progReadout(t,n)}</div><button class="btn btn-pri" onclick="openTemplate('${t.id}')">Open program</button><button class="btn btn-soft" style="margin-top:8px" onclick="logProgSession('${t.id}')">＋ Log a session done${last?` · last ${fmtShort(last)}`:''}</button></div><div class="cur-actions"><button class="cur-link" onclick="setView('programs')">Change program</button><button class="cur-link warn" onclick="endActive()">End program</button></div>`;
+  list.innerHTML=html||'<div class="cur-empty">No programs available.</div>';
 }
 function warmupHTML(t){
   if(!t.warmupRef)return '';
@@ -972,10 +997,10 @@ function warmupHTML(t){
   if(!w||!w.items)return '';
   return `<div class="warm open" id="warmblk"><div class="warm-hd" onclick="document.getElementById('warmblk').classList.toggle('open')"><div class="wt">Warm-up <small>· ${w.name} · ~${w.duration} min · tap to tick off</small></div><span class="warm-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></div><div class="warm-body">${w.items.map((it,i)=>`<div class="wrow" onclick="this.classList.toggle('done')"><div class="wrow-l"><div class="wchk"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></div><div><div class="wrow-name">${it.name}</div>${it.note?`<div class="wrow-note">${it.note}</div>`:''}</div></div>${it.scheme?`<div class="wrow-scheme">${it.scheme}</div>`:''}</div>`).join('')}</div></div>`;
 }
-let runState={};
+let runState={}, openTpl=null;
 function openTemplate(id){
   const t=TEMPLATES.find(x=>x.id===id); if(!t)return;
-  runState={done:{}};
+  runState={done:{}}; openTpl=t;
   document.getElementById('sheet-title').innerHTML=`${t.name}<small>${t.source} · ~${t.duration} min</small>`;
   const body=document.getElementById('sheet-body'),foot=document.getElementById('sheet-foot');
   const mode=t.run||(t.type==='program'?'program':t.category==='hiit'?'timer':t.category==='recovery'?'holds':'checklist');
@@ -985,7 +1010,7 @@ function openTemplate(id){
   else if(mode==='holds'){renderRecovery(t,body,foot);}
   else{renderStrength(t,body,foot);}
   if(t.type==='program'){decorateProgram(t);}
-  else if(t.category!=='warmup'&&t.run!=='assess'){appendFinish(t);}
+  else if(mode==='checklist'&&t.category!=='warmup'){appendFinish(t);}
   document.getElementById('sheet').classList.add('on');
 }
 function appendFinish(t){
@@ -1125,12 +1150,13 @@ function wkSave(tag,ex){
 }
 function renderProgressive(t,body,foot){
   runState.progName=t.name;runState.logfields=[];
-  const ap=activeProg();const autoWk=(ap&&ap.id===t.id)?Math.min(weeksRunning(ap)+1,t.weeks.length):1;
+  const word=t.paceBy==='sessions'?'stage':'week';const Word=word.charAt(0).toUpperCase()+word.slice(1);
+  const autoWk=stageOf(t);
   if(runState.pweek===undefined||runState.pid!==t.id){runState.pweek=autoWk;runState.pid=t.id;}
   const wi=Math.max(0,Math.min(runState.pweek-1,t.weeks.length-1));const wk=t.weeks[wi];
   let html=`<div class="note">${t.notes}</div>${warmupHTML(t)}`;
-  html+=`<div class="sec">Week ${(ap&&ap.id===t.id)?'<span style="color:var(--muted);font-weight:400">· you\'re in week '+autoWk+'</span>':''}</div>`;
-  html+=`<div class="seg" style="flex-wrap:wrap">`+t.weeks.map((w,i)=>`<button class="${i===wi?'on':''}" onclick="pweekPick(${i+1},'${t.id}')">W${i+1}</button>`).join('')+`</div>`;
+  html+=`<div class="sec">${Word} ${isActive(t.id)?`<span style="color:var(--muted);font-weight:400">· you're on ${word} ${autoWk}</span>`:''}</div>`;
+  html+=`<div class="seg" style="flex-wrap:wrap">`+t.weeks.map((w,i)=>`<button class="${i===wi?'on':''}" onclick="pweekPick(${i+1},'${t.id}')">${word.charAt(0).toUpperCase()}${i+1}</button>`).join('')+`</div>`;
   html+=`<div class="sec">${wk.label}${wk.goal?' · '+wk.goal:''}</div>`;
   if(wk.progress){html+=`<div class="cur-prog">▲ ${wk.progress}</div>`;}
   html+=wk.items.map((it,ii)=>weeklyRow(it,'p',ii)).join('');
@@ -1176,14 +1202,31 @@ function chalUndo(id){const all=progDone();if(all[id]&&all[id].length)all[id].po
 let tState=null,tInt=null;
 function buildTimer(phases,title){tState={phases,idx:0,left:phases[0].dur,title,paused:false};document.getElementById('timer').classList.add('on');paintTimer();clearInterval(tInt);tInt=setInterval(tick,1000);}
 function startHiit(tm,name){closeSheet();const ph=[];if(tm.prep)ph.push({kind:'prep',label:'Get ready',dur:tm.prep});for(let r=1;r<=tm.rounds;r++){ph.push({kind:'work',label:'Work',dur:tm.work,round:r,total:tm.rounds});if(r<tm.rounds&&tm.rest)ph.push({kind:'rest',label:'Rest',dur:tm.rest,round:r,total:tm.rounds});}buildTimer(ph,name);}
-function startHolds(holds,name){closeSheet();const ph=holds.map(h=>({kind:'hold',label:'Hold',dur:h.seconds,name:h.name,sub:h.note}));buildTimer(ph,name);}
+function startHolds(holds,name){
+  closeSheet();
+  const ph=[];const n=holds.length;
+  holds.forEach((h,i)=>{
+    const perSide=h.perSide||/per side|\/\s?side|each side/i.test(h.note||'');
+    const tag=`${i+1} / ${n}`;
+    if(perSide){
+      ph.push({kind:'prep',label:'Left side · get set',dur:5,name:h.name,sub:tag});
+      ph.push({kind:'hold',label:'Hold — left',dur:h.seconds,name:h.name,sub:h.note});
+      ph.push({kind:'prep',label:'Switch → right',dur:5,name:h.name,sub:tag});
+      ph.push({kind:'hold',label:'Hold — right',dur:h.seconds,name:h.name,sub:h.note});
+    }else{
+      ph.push({kind:'prep',label:'Get set',dur:5,name:h.name,sub:tag});
+      ph.push({kind:'hold',label:'Hold',dur:h.seconds,name:h.name,sub:h.note});
+    }
+  });
+  buildTimer(ph,name);
+}
 function tick(){if(tState.paused)return;tState.left--;if(tState.left<=0){vibe(60);tState.idx++;if(tState.idx>=tState.phases.length){return finishTimer();}tState.left=tState.phases[tState.idx].dur;}paintTimer();}
 function paintTimer(){
   const t=document.getElementById('timer');const p=tState.phases[tState.idx];
   t.className='timer on '+p.kind;
   document.getElementById('t-phase').textContent=p.label;
   document.getElementById('t-count').textContent=tState.left;
-  document.getElementById('t-round').textContent=p.round?`Round ${p.round} / ${p.total}`:(p.kind==='hold'?`${tState.idx+1} / ${tState.phases.length}`:'');
+  document.getElementById('t-round').textContent=p.round?`Round ${p.round} / ${p.total}`:'';
   document.getElementById('t-name').textContent=p.name||'';
   document.getElementById('t-sub').textContent=p.sub||'';
   document.getElementById('t-ctrl').innerHTML=`<button class="t-btn" onclick="togglePause(this)">${tState.paused?'Resume':'Pause'}</button><button class="t-btn" onclick="exitTimer()">End</button>`;
@@ -1191,11 +1234,19 @@ function paintTimer(){
 function togglePause(btn){tState.paused=!tState.paused;btn.textContent=tState.paused?'Resume':'Pause';}
 function finishTimer(){
   clearInterval(tInt);vibe([80,60,80]);
+  // record the session (HIIT / recovery completed via the timer)
+  let logged='';
+  if(openTpl){
+    recordWorkoutActivity(openTpl);
+    if(openTpl.type==='program'){const all=progDone();if(!all[openTpl.id])all[openTpl.id]=[];all[openTpl.id].push(todayISO());localStorage.setItem(PROG_DONE_KEY,JSON.stringify(all));}
+    const ty=openTpl.actType||CAT2ACT[openTpl.category];
+    if(ty)logged=' · logged to Activity';
+  }
   const t=document.getElementById('timer');t.className='timer on done';
   document.getElementById('t-phase').textContent='';
   document.getElementById('t-count').innerHTML='<span class="t-done-txt">Done</span>';
   document.getElementById('t-round').textContent='';
-  document.getElementById('t-name').innerHTML=`<span class="t-done-sub">${tState.title} complete</span>`;
+  document.getElementById('t-name').innerHTML=`<span class="t-done-sub">${tState.title} complete${logged}</span>`;
   document.getElementById('t-sub').textContent='';
   document.getElementById('t-ctrl').innerHTML=`<button class="t-btn" onclick="exitTimer()">Close</button>`;
 }
@@ -1203,7 +1254,7 @@ function exitTimer(){clearInterval(tInt);document.getElementById('timer').classL
 
 // ═══ INIT ═══ (v2 consolidation + inline logging)
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&document.activeElement&&document.activeElement.getAttribute('role')==='button'){e.preventDefault();document.activeElement.click();}});
-view=activeProg()?'current':'workouts';
+view=activePrograms().length?'current':'workouts';
 document.getElementById('f-date').value=todayISO();
 document.getElementById('d-date').value=todayISO();
 refreshDatalist();renderTypeSeg();

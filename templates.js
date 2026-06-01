@@ -250,6 +250,112 @@ const TEMPLATES = [
   ],
   notes:'Set training maxes in Lift Log (90% of est 1RM) — this template reads them to fill every set. Push the final "+" set for reps, leaving 1–2 in reserve. Add 2.5kg (upper) / 5kg (lower) to your TM each cycle.'
 },
+{
+  id:'power-fcm', category:'power', type:'program', programType:'progressive', warmupRef:'famous-five',
+  name:'French Contrast Power', source:'French Contrast Method',
+  summary:'6-week explosive block — heavy → plyo → weighted-explosive → assisted, twice a week.',
+  duration:35,
+  weeks:[
+    {label:'Week 1 — Learn the chain', goal:'Lower + upper, light', progress:'Learn the 4-exercise flow. Full rest between exercises — every rep fast and crisp.', items:[
+      {name:'Lower contrast: Back Squat ×3 → Box Jump ×3 → Jump Squat (light) ×3 → Band-assisted Jump ×3', scheme:'3 complexes', note:'Heavy squat, then jumps. Rest 15s within, 2–3 min between complexes. Log the squat.', track:true, ex:'Back Squat'},
+      {name:'Upper contrast: Bench ×3 → Plyo Push-up ×3 → Med-ball Chest Pass ×5', scheme:'3 complexes', note:'Strong press then explosive. Log the bench.', track:true, ex:'Bench Press'},
+    ]},
+    {label:'Week 2 — Add intent', goal:'Same chain, sharper', progress:'Same structure, push speed. Maybe nudge the heavy lift up slightly if bar speed stays high.', items:[
+      {name:'Lower contrast (squat → box jump → jump squat → assisted jump)', scheme:'4 complexes', note:'+1 complex vs week 1.', track:true, ex:'Back Squat'},
+      {name:'Upper contrast (bench → plyo push-up → chest pass)', scheme:'4 complexes', note:'Crisp and fast.', track:true, ex:'Bench Press'},
+    ]},
+    {label:'Week 3 — Build', goal:'More contrast volume', progress:'Hold 4–5 complexes. The heavy lift can creep up; the jumps must stay snappy.', items:[
+      {name:'Lower contrast', scheme:'4–5 complexes', note:'Stop if jumps lose height — that\'s the cue to end.', track:true, ex:'Back Squat'},
+      {name:'Upper contrast', scheme:'4 complexes', note:'Speed first.', track:true, ex:'Bench Press'},
+    ]},
+    {label:'Week 4 — Peak intent', goal:'Heaviest primer, fastest jumps', progress:'Heaviest the primer lifts get. Maximum speed on the explosive moves.', items:[
+      {name:'Lower contrast', scheme:'5 complexes', note:'Top of the block. Full recovery between.', track:true, ex:'Back Squat'},
+      {name:'Upper contrast', scheme:'4–5 complexes', note:'Explosive, clean.', track:true, ex:'Bench Press'},
+    ]},
+    {label:'Week 5 — Maintain', goal:'Pull volume back, keep speed', progress:'Slightly less volume, same intent. You should feel springy, not beaten up.', items:[
+      {name:'Lower contrast', scheme:'4 complexes', note:'Quality reps.', track:true, ex:'Back Squat'},
+      {name:'Upper contrast', scheme:'3–4 complexes', note:'Fast.', track:true, ex:'Bench Press'},
+    ]},
+    {label:'Week 6 — Express & deload', goal:'Feel the pop, then rest', progress:'Low volume, max speed — test how explosive you feel. Then take an easy week.', items:[
+      {name:'Lower contrast (light primer, max jump)', scheme:'3 complexes', note:'Light heavy lift, highest jumps of the block.', track:true, ex:'Back Squat'},
+      {name:'Upper contrast', scheme:'3 complexes', note:'Sharp and done.', track:false},
+    ]},
+  ],
+  rules:[
+    {title:'Speed is everything', body:'Every explosive rep at maximum intent. The instant bar/jump speed drops, the set is over — power training is about quality, never fatigue.'},
+    {title:'Full recovery', body:'Rest 2–3 min between complexes. This is the opposite of conditioning — you want to be fresh for each effort.'},
+    {title:'Twice a week, fresh', body:'Run it on non-consecutive days when you\'re not wrecked. Pairs well alongside your strength program.'},
+  ],
+  notes:'The French Contrast Method: a heavy lift, a plyometric, a weighted-explosive move, then an assisted/accelerated jump — training the whole force-velocity curve in one chain. Proven over 6–8 weeks for explosive power. Log the heavy primer lifts; the jumps are about speed, not load.'
+},
+{
+  id:'run-5k', category:'running', type:'program', programType:'progressive', warmupRef:'famous-five',
+  name:'5K Builder', source:'Run — couch to 5K style',
+  summary:'8-week run/walk progression from nothing to a continuous 5K. Two runs a week.',
+  duration:30,
+  weeks:[
+    {label:'Week 1', goal:'Run/walk intervals', progress:'Ease in — keep the runs easy enough to hold a conversation.', items:[
+      {name:'Run 1 min / walk 90s', scheme:'× 8', note:'~20 min total. Easy effort on the runs.', track:false},
+    ]},
+    {label:'Week 2', goal:'Longer runs', progress:'Run intervals get longer, walks shorter.', items:[
+      {name:'Run 90s / walk 90s', scheme:'× 7', note:'Still easy. Land soft, relax the shoulders.', track:false},
+    ]},
+    {label:'Week 3', goal:'Build', progress:'More continuous running.', items:[
+      {name:'Run 3 min / walk 90s', scheme:'× 5', note:'Settle into a rhythm.', track:false},
+    ]},
+    {label:'Week 4', goal:'Halfway', progress:'Runs now clearly outweigh the walks.', items:[
+      {name:'Run 5 min / walk 2 min', scheme:'× 4', note:'Find a sustainable easy pace.', track:false},
+    ]},
+    {label:'Week 5', goal:'Longer blocks', progress:'Fewer, longer run blocks.', items:[
+      {name:'Run 8 min / walk 2 min', scheme:'× 3', note:'Breathing controlled, conversational.', track:false},
+    ]},
+    {label:'Week 6', goal:'Mostly running', progress:'Just one or two short walk breaks.', items:[
+      {name:'Run 12 min / walk 2 min', scheme:'× 2', note:'~28 min of mostly running.', track:false},
+    ]},
+    {label:'Week 7', goal:'Nearly continuous', progress:'One walk break, then push on.', items:[
+      {name:'Run 20 min / walk 2 / run 8 min', scheme:'1 round', note:'You\'re basically running now.', track:false},
+    ]},
+    {label:'Week 8', goal:'Continuous 5K', progress:'Run the whole thing easy — distance is the goal, not speed.', items:[
+      {name:'Continuous run', scheme:'~30 min / 5K', note:'Easy, unbroken. You did it. Log the distance in Activity.', track:false},
+    ]},
+  ],
+  rules:[
+    {title:'Easy means easy', body:'These runs should feel conversational. If you\'re gasping, slow down — the engine is built at easy effort.'},
+    {title:'Two a week', body:'Run on non-consecutive days. The walk/ride days in between keep the aerobic base topping up.'},
+    {title:'Log the run', body:'Finishing a session counts as an intensity session; log the actual distance in Activity if you want it on your distance trends.'},
+  ],
+  notes:'A gentle 8-week build to a continuous 5K. Feeds your Intensity pillar (two runs a week). Progresses by calendar week — repeat any week that still feels hard before moving on.'
+},
+{
+  id:'run-intervals', category:'running', type:'program', programType:'progressive', warmupRef:'famous-five',
+  name:'Run Intervals', source:'Run — speed / threshold',
+  summary:'4-week interval block for when you can already run 5K — build speed and threshold.',
+  duration:30,
+  weeks:[
+    {label:'Week 1 — Strides', goal:'Wake up the legs', progress:'Easy run with short pickups. Re-introduce faster running gently.', items:[
+      {name:'Easy run', scheme:'15 min', note:'Conversational warm-up pace.', track:false},
+      {name:'Strides', scheme:'6 × 20s', note:'Build to ~85% over 20s, full walk-back recovery. Smooth, not a sprint.', track:false},
+    ]},
+    {label:'Week 2 — Short intervals', goal:'VO₂ touches', progress:'Hard but controlled efforts with full recovery.', items:[
+      {name:'Intervals', scheme:'6 × 1 min hard / 2 min easy', note:'Strong, repeatable pace — not all-out. Easy jog between.', track:false},
+      {name:'Easy cool-down', scheme:'5 min', note:'Bring it down gently.', track:false},
+    ]},
+    {label:'Week 3 — Threshold', goal:'Comfortably hard', progress:'Longer reps at a pace you could hold ~1 hr in a race.', items:[
+      {name:'Tempo intervals', scheme:'3 × 5 min @ threshold / 90s easy', note:'"Comfortably hard" — controlled breathing, strong but sustainable.', track:false},
+      {name:'Easy cool-down', scheme:'5 min', note:'Relax.', track:false},
+    ]},
+    {label:'Week 4 — Mixed', goal:'Put it together', progress:'Blend speed and threshold, then back off next week.', items:[
+      {name:'Pyramid: 1-2-3-2-1 min hard', scheme:'equal easy between', note:'Build up and back down. Strong efforts, full recovery on the easy bits.', track:false},
+      {name:'Easy cool-down', scheme:'5–10 min', note:'Done — ease off next week.', track:false},
+    ]},
+  ],
+  rules:[
+    {title:'Warm up first', body:'Always 10 min easy before the hard stuff. Cold intervals are how you get hurt.'},
+    {title:'Controlled, not maximal', body:'Intervals should be repeatable — the last rep looks like the first. Save all-out for race day.'},
+    {title:'One hard, one easy', body:'Pair this with one easy run or ride a week so you\'re recovered for the intervals.'},
+  ],
+  notes:'A 4-week speed/threshold block for when continuous 5K is comfortable. Feeds your Intensity pillar. Repeat the block, a little faster, after a recovery week.'
+},
 
 /* ───────────── POWER / EXPLOSIVE (beginner-safe, no technical Oly) ───────────── */
 {
@@ -289,6 +395,45 @@ const TEMPLATES = [
     {name:'Plyo Push-up (knee or full)', scheme:'3×4', note:'Push hard enough to leave the floor. Scale to knees if needed.', track:false},
   ],
   notes:'Contrast training: a heavy explosive press primes the nervous system for a faster jump. Full rest, low reps, maximum intent every rep.'
+},
+{
+  id:'power-contrast', category:'power', type:'session', warmupRef:'famous-five',
+  name:'Contrast Power Pairs', source:'Complex / PAP training',
+  summary:'Heavy lift then matched explosive move — post-activation potentiation.',
+  duration:30,
+  items:[
+    {name:'Back Squat (heavy)', scheme:'3×3 @ 80–85%', note:'Heavy but fast, leave 2 in the tank. The primer.', track:true, ex:'Back Squat'},
+    {name:'Box Jump (after each squat set)', scheme:'3×3', note:'Rest 15–30s after squatting, then jump. Heavy lift wakes up the fast-twitch for a higher jump.', track:false},
+    {name:'Bench / Overhead Press (heavy)', scheme:'3×3', note:'Same idea up top — strong, crisp reps.', track:true, ex:'Bench Press'},
+    {name:'Plyo Push-up (after each press set)', scheme:'3×3', note:'Explode off the floor. Knees if needed.', track:false},
+  ],
+  notes:'Complex/contrast training (post-activation potentiation): a heavy strength lift primes the nervous system so the paired explosive move is sharper. Full rest between pairs — this is about speed, not fatigue.'
+},
+{
+  id:'power-plyo', category:'power', type:'session', warmupRef:'famous-five',
+  name:'Plyometric Ladder', source:'Plyometrics',
+  summary:'Low-to-high impact jumps — build elastic, reactive power.',
+  duration:20,
+  items:[
+    {name:'Pogo hops', scheme:'3×10', note:'Stiff ankles, minimal knee bend, quick off the floor. Teaches elastic bounce.', track:false},
+    {name:'Broad jump', scheme:'5×3', note:'Stick the landing, soft and quiet. Walk back, full rest.', track:false},
+    {name:'Box jump', scheme:'5×3', note:'Step down every rep. Height that lets you land soft, not max height.', track:false},
+    {name:'Depth jump (low box)', scheme:'4×3', note:'Step off a low box, land and rebound up fast. Advanced — keep ground contact short. Skip if joints are cranky.', track:false},
+  ],
+  notes:'Plyometrics build the stretch-shortening cycle — your elastic, reactive power. Quality over quantity: rest fully, stop the moment jumps lose snap. Land soft. Build from pogos before depth jumps.'
+},
+{
+  id:'power-medball', category:'power', type:'session', warmupRef:'famous-five',
+  name:'Med-Ball Power', source:'Throws',
+  summary:'Slams and throws — full-body explosive output, easy to recover from.',
+  duration:18,
+  items:[
+    {name:'Overhead slam', scheme:'5×5', note:'Whole body, drive the ball into the floor. Max intent each rep.', track:false},
+    {name:'Rotational wall throw', scheme:'4×5 / side', note:'Pivot the back foot, throw through the hips into a wall. Rotational power.', track:false},
+    {name:'Chest pass (explosive)', scheme:'4×5', note:'Push the ball away hard, like a fast bench. Upper-body speed.', track:false},
+    {name:'Standing broad throw', scheme:'4×3', note:'Hinge and launch the ball forward for distance. Triple extension.', track:false},
+  ],
+  notes:'Throws let you express maximum speed with no need to decelerate — pure intent, low joint cost. Great as a standalone power day or a primer before lifting.'
 },
 
 /* ───────────── GRIP STRENGTH ───────────── */
@@ -340,6 +485,34 @@ const TEMPLATES = [
   timer:{prep:15, work:60, rest:60, rounds:10, cooldown:0},
   items:[{name:'20m shuttle run', note:'On each 60s work block, run controlled 20m shuttles at goal pace (turn on the line). Easy walk/jog on the 60s rest. The general-entry beep-test target sits around level 5–6 — build the engine to hold pace without redlining early.'}],
   notes:'Interval substitute when you cannot run the full beep test. IMPORTANT: the exact required level varies by service, role, age and sex — confirm Anna\'s current target on defencejobs.gov.au. Progress by adding rounds or trimming rest before chasing more speed. Pair with the PFA Strength Builder 2–3× a week.'
+},
+
+/* ───────────── HIIT / CIRCUITS ───────────── */
+{
+  id:'circuit-carry-slam', category:'hiit', type:'session', run:'checklist', warmupRef:'famous-five',
+  name:'Carry & Slam Circuit', source:'Loaded conditioning',
+  summary:'Heavy carries + explosive slams + swings — strength-conditioning.',
+  duration:20,
+  items:[
+    {name:'Farmer Carry', scheme:'40 m', note:'Heavy. Walk tall, grip hard. Set down only if it slips.', track:true, ex:'Farmer Carry'},
+    {name:'KB Swing', scheme:'15 reps', note:'Explosive hip snap, float the bell.', track:true, ex:'KB Swing'},
+    {name:'Med-Ball Slam', scheme:'10 reps', note:'Overhead, whole body, drive it down.', track:false},
+    {name:'Rest', scheme:'60–90 s', note:'Walk it off, breathe. Then go again.', track:false},
+  ],
+  notes:'5 rounds for time, or as many quality rounds in 20 min. The carry builds grip and trunk; the swings and slams keep the heart rate up. Loaded conditioning — raises HR, counts as an intensity session.'
+},
+{
+  id:'circuit-farmer-jump', category:'hiit', type:'session', run:'checklist', warmupRef:'famous-five',
+  name:'Carry & Jump Conditioner', source:'Loaded conditioning',
+  summary:'Carries paired with jumps and a sprint — power-endurance.',
+  duration:18,
+  items:[
+    {name:'Suitcase Carry', scheme:'30 m / side', note:'One bell, resist the lean. Switch hands halfway.', track:true, ex:'Suitcase Carry'},
+    {name:'Broad Jump', scheme:'5 reps', note:'Stick each landing, reset between. Explosive but controlled.', track:false},
+    {name:'KB Swing or Assault-bike sprint', scheme:'20 reps / 30 s', note:'Pick one — keep the engine going.', track:true, ex:'KB Swing'},
+    {name:'Rest', scheme:'60 s', note:'Recover, then repeat.', track:false},
+  ],
+  notes:'4–5 rounds. Mixes loaded carries with explosive jumps for power-endurance. No bodyweight filler — everything is loaded or explosive. Counts as an intensity session.'
 },
 
 /* ───────────── ASSAULT BIKE HIIT ───────────── */
@@ -467,13 +640,52 @@ const TEMPLATES = [
   notes:'2-minute rounds, 1-minute rest. Wrap your wrists and start light — bag work is hard on untrained hands and shoulders. Stop a round if your form gets sloppy.'
 },
 {
-  id:'box-hiit', category:'boxing', type:'session', run:'timer', warmupRef:'famous-five',
+  id:'box-hiit', category:'boxing', type:'session', run:'timer', warmupRef:'famous-five', actType:'hiit',
   name:'Bag HIIT Finisher', source:'Boxing — conditioning',
   summary:'30s hard / 30s easy on the bag × 8. Conditioning blast.',
   duration:9,
   timer:{prep:10, work:30, rest:30, rounds:8, cooldown:0},
   items:[{name:'Hard combos / light recovery', note:'Work block: non-stop punches in combos at a strong pace. Rest block: keep moving and throw light jabs to stay loose, don\'t stop dead. A conditioning finisher, not a technique session.'}],
   notes:'Tack onto the end of a session or run solo for a quick sweat. Pace the first couple of rounds — the short rest catches up fast.'
+},
+{
+  id:'box-program', category:'boxing', type:'program', programType:'progressive', paceBy:'sessions', perStage:4, warmupRef:'famous-five',
+  name:'Boxing — Slow Build', source:'Beginner boxing path',
+  summary:'A patient skill ladder — advances every few sessions, not by the calendar.',
+  duration:20,
+  weeks:[
+    {label:'Stage 1 — Stance & movement', goal:'Own the basics', progress:'Just stance and footwork. No rush — this stage is the foundation everything sits on.', items:[
+      {name:'Stance holds & guard', scheme:'3 × 1 min', note:'Feet shoulder-width, lead foot forward, hands up, chin down. Get comfortable just standing in it.', track:false},
+      {name:'Footwork — step & pivot', scheme:'3 × 2 min', note:'Step forward/back/side keeping the stance. Pivot off the lead foot. Stay light.', track:false},
+      {name:'Shadow — movement only', scheme:'2 × 2 min', note:'Move around, no punches yet. Relax the shoulders.', track:false},
+    ]},
+    {label:'Stage 2 — Jab & cross', goal:'The 1-2', progress:'Add the two straight punches. Hands always return to guard.', items:[
+      {name:'Jab (1)', scheme:'3 × 2 min', note:'Lead hand, snap out and back. Exhale on contact. Don\'t drop the rear hand.', track:false},
+      {name:'Cross (2)', scheme:'3 × 2 min', note:'Rear hand, rotate the hips and rear foot. Power comes from the ground up.', track:false},
+      {name:'Shadow — 1, 1-2', scheme:'3 × 2 min', note:'Mix jab and jab-cross with movement.', track:false},
+    ]},
+    {label:'Stage 3 — Hook & combos', goal:'3-punch combos', progress:'Add the lead hook and start linking punches.', items:[
+      {name:'Lead hook (3)', scheme:'3 × 2 min', note:'Elbow up, rotate, short arc. Don\'t wind up.', track:false},
+      {name:'Combos 1-2, 1-2-3', scheme:'4 × 2 min', note:'Shadow or light bag. Reset stance after each combo.', track:false},
+      {name:'Light bag rounds', scheme:'3 × 2 min', note:'Wrap hands. Technical, controlled — not for power yet.', track:true, ex:'KB Swing'},
+    ]},
+    {label:'Stage 4 — Defense', goal:'Add slips & rolls', progress:'Now learn not to get hit — defense layered onto your combos.', items:[
+      {name:'Slips (side to side)', scheme:'3 × 2 min', note:'Small head movement off-line. Stay balanced.', track:false},
+      {name:'Roll under', scheme:'3 × 2 min', note:'Bend knees, roll under an imaginary hook, come up in stance.', track:false},
+      {name:'Combo + defense on bag', scheme:'4 × 2 min', note:'Punch, then slip/roll, then reset. Controlled.', track:false},
+    ]},
+    {label:'Stage 5 — Put it together', goal:'Flow rounds', progress:'Free rounds blending everything, plus some conditioning.', items:[
+      {name:'Free shadow rounds', scheme:'3 × 3 min', note:'Move, punch, defend — your own flow. Stay relaxed and crisp.', track:false},
+      {name:'Bag rounds', scheme:'4 × 2 min', note:'Combos with intent now. Wrap up, controlled power.', track:false},
+      {name:'Bag conditioning finisher', scheme:'30/30 × 6', note:'Hard combos / light recovery. Raise the heart rate to finish.', track:false},
+    ]},
+  ],
+  rules:[
+    {title:'Advance by sessions, not weeks', body:'This program moves to the next stage every 4 logged sessions — so it waits for you. Train it whenever it fits; it won\'t skip ahead on the calendar.'},
+    {title:'Skill before power', body:'Boxing is technical. Stay relaxed, hands back to guard every time, breathe out on punches. Speed and snap beat trying to hit hard.'},
+    {title:'Mind the hands', body:'Wrap your wrists for bag work and start light — untrained hands, wrists and shoulders need easing in.'},
+  ],
+  notes:'A patient beginner path that evolves every 4 sessions rather than by the calendar — ideal since you won\'t box every week. Counts as power work. Tap a stage to look ahead, but the banner tracks where your logged sessions have you.'
 },
 
 /* ───────────── RECOVERY / STRETCHING ───────────── */
