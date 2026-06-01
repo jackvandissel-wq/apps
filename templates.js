@@ -431,6 +431,50 @@ const TEMPLATES = [
   ],
   notes:'One round of each movement pattern before the main work.'
 },
+{
+  id:'broomstick', category:'warmup', type:'session',
+  name:'Broomstick Complex', source:'Technical primer',
+  summary:'Light barbell/broomstick flow to groove the patterns before loading.',
+  duration:6,
+  items:[
+    {name:'Pass-throughs', scheme:'10 reps', note:'Wide grip, straight arms, take the stick from front to overhead to behind. Narrow the grip as the shoulders open.', track:false},
+    {name:'Overhead squat', scheme:'8 reps', note:'Stick locked overhead, sit straight down. Grooves the bottom position and ankle/hip mobility.', track:false},
+    {name:'Good morning', scheme:'8 reps', note:'Stick on the back, soft knees, hinge with a flat back. Wakes up the posterior chain.', track:false},
+    {name:'Strict press', scheme:'8 reps', note:'Stick from the rack to overhead. Brace, no leg drive — pure shoulder pattern.', track:false},
+    {name:'Front-rack squat', scheme:'8 reps', note:'Stick in the front rack, elbows high. Rehearses clean/front-squat posture.', track:false},
+    {name:'Bent-over row', scheme:'10 reps', note:'Hinge, pull the stick to the belt, squeeze the upper back.', track:false},
+  ],
+  notes:'A no-load technical warm-up before barbell or Olympic-style work. Move slowly and own each position — the point is groove and mobility, not fatigue.'
+},
+
+/* ───────────── BOXING (heavy bag + shadow, beginner) ───────────── */
+{
+  id:'box-shadow', category:'boxing', type:'session', run:'timer', warmupRef:'famous-five',
+  name:'Shadowboxing Basics', source:'Boxing — beginner',
+  summary:'3 rounds of footwork and the core punches — no equipment.',
+  duration:12,
+  timer:{prep:10, work:180, rest:60, rounds:3, cooldown:0},
+  items:[{name:'Stance · jab · cross · footwork', note:'Round 1: stance + movement (step, pivot, stay light). Round 2: jab and cross, return hands to guard every time. Round 3: put it together — jab, cross, move. Breathe out on every punch, stay relaxed.'}],
+  notes:'The best place to start — learn to move and punch with no impact. Keep your guard up, chin down, and shoulders loose. Quality of movement over speed.'
+},
+{
+  id:'box-bag', category:'boxing', type:'session', run:'timer', warmupRef:'famous-five',
+  name:'Heavy Bag — Beginner Rounds', source:'Boxing — heavy bag',
+  summary:'5 rounds on the bag: simple combos, controlled power.',
+  duration:20,
+  timer:{prep:15, work:120, rest:60, rounds:5, cooldown:0},
+  items:[{name:'Jab · cross · hook combos', note:'Wrap your hands. Work simple combos: 1 (jab), 1-2 (jab-cross), 1-2-3 (add lead hook). Reset your stance between combos, hands back to guard. Don\'t headhunt for power — crisp, relaxed, technical. Move around the bag.'}],
+  notes:'2-minute rounds, 1-minute rest. Wrap your wrists and start light — bag work is hard on untrained hands and shoulders. Stop a round if your form gets sloppy.'
+},
+{
+  id:'box-hiit', category:'boxing', type:'session', run:'timer', warmupRef:'famous-five',
+  name:'Bag HIIT Finisher', source:'Boxing — conditioning',
+  summary:'30s hard / 30s easy on the bag × 8. Conditioning blast.',
+  duration:9,
+  timer:{prep:10, work:30, rest:30, rounds:8, cooldown:0},
+  items:[{name:'Hard combos / light recovery', note:'Work block: non-stop punches in combos at a strong pace. Rest block: keep moving and throw light jabs to stay loose, don\'t stop dead. A conditioning finisher, not a technique session.'}],
+  notes:'Tack onto the end of a session or run solo for a quick sweat. Pace the first couple of rounds — the short rest catches up fast.'
+},
 
 /* ───────────── RECOVERY / STRETCHING ───────────── */
 {
@@ -504,6 +548,63 @@ const TEMPLATES = [
     {name:'Legs up the wall', seconds:120, note:'Drain the legs after riding. Slow breathing, eyes closed.'},
   ],
   notes:'A no-equipment mobility session for rest nights. Tailored to undo a lot of riding and desk time. Keep everything easy and breath-led.'
+},
+{
+  id:'mob-hips', category:'recovery', type:'session',
+  name:'Hips & Hamstrings (post-ride)', source:'Mobility — targeted',
+  summary:'Open the hip flexors, hamstrings and ankles after riding or sitting.',
+  duration:12,
+  areas:['hips','hamstrings','ankles'],
+  holds:[
+    {name:'Couch stretch', seconds:60, note:'Per side. Rear foot up a wall/couch, tall torso, tuck the pelvis. The big one for cyclists and desk workers.'},
+    {name:'Half-kneeling hip flexor', seconds:45, note:'Per side. Squeeze the rear glute, gently shift forward. Don\'t arch the low back.'},
+    {name:'Pigeon', seconds:60, note:'Per side. Front shin angled, fold forward slowly. Deep glute and hip.'},
+    {name:'Standing hamstring (foot elevated)', seconds:45, note:'Per side. Hinge from the hip, flat back, soft knee.'},
+    {name:'Wall ankle rock', seconds:45, note:'Per side. Knee over toes to the wall, heel down. Restores dorsiflexion.'},
+    {name:'90/90 hip switch hold', seconds:45, note:'Per side. Sit tall, both sit-bones down, lean over the front shin.'},
+  ],
+  notes:'Built for after the commute or a long sit. Breathe into each hold and exhale to settle deeper. Per-side holds repeat for the other side.'
+},
+{
+  id:'mob-tspine', category:'recovery', type:'session',
+  name:'T-Spine & Shoulders (post-press / desk)', source:'Mobility — targeted',
+  summary:'Restore thoracic rotation and shoulder space after pressing or screen time.',
+  duration:11,
+  areas:['tspine','shoulders'],
+  holds:[
+    {name:'Thoracic extension over edge', seconds:45, note:'Hands behind head, drape the upper back over a bench/foam roller. Open the mid-back.'},
+    {name:'Open-book rotation', seconds:45, note:'Per side. On your side, knees bent, rotate the top arm open and follow with the eyes.'},
+    {name:'Thread the needle', seconds:45, note:'Per side. On all fours, reach the arm under and through.'},
+    {name:'Doorway pec stretch', seconds:45, note:'Per side. Forearm on the frame, rotate away gently.'},
+    {name:'Lat stretch (hang or kneel)', seconds:45, note:'Per side. Reach long, sink the armpit toward the floor.'},
+    {name:'Neck — upper trap', seconds:30, note:'Per side. Ear to shoulder, light hand assist. Undo the desk hunch.'},
+  ],
+  notes:'For after pressing days or a long stint at the desk. Keep every hold gentle — mobility, not a max stretch.'
+},
+{
+  id:'mob-daily8', category:'recovery', type:'session',
+  name:'Full-Body Daily 8', source:'Mobility — daily',
+  summary:'Eight positions covering the whole body — a GOWOD-style daily reset.',
+  duration:14,
+  areas:['hips','tspine','shoulders','ankles','hamstrings'],
+  holds:[
+    {name:'Deep squat sit', seconds:60, note:'Heels down, pry the knees out with the elbows. The foundational position.'},
+    {name:'Couch stretch', seconds:45, note:'Per side. Hip flexor opener.'},
+    {name:'90/90 hip', seconds:45, note:'Per side. Sit tall, lean over the front shin.'},
+    {name:'Wall ankle rock', seconds:30, note:'Per side. Knee to wall, heel down.'},
+    {name:'Standing hamstring', seconds:30, note:'Per side. Hinge, flat back.'},
+    {name:'Thoracic extension', seconds:45, note:'Over a roller or hands-behind-head reach back.'},
+    {name:'Open-book rotation', seconds:30, note:'Per side. Rotate and breathe.'},
+    {name:'Shoulder pass-through (band/towel)', seconds:45, note:'Wide grip, take it front to back. Open the shoulders.'},
+  ],
+  notes:'A balanced daily run-through hitting every tight area for a cyclist/lifter. Do it most days; it pairs well with the mobility check.'
+},
+{
+  id:'mob-assess', category:'recovery', type:'session', run:'assess',
+  name:'Mobility Check', source:'Self-assessment',
+  summary:'Rate your tight spots and get a targeted routine.',
+  duration:2,
+  notes:'A 30-second self-check. Rate how each area feels today, then get the routine that targets your tightest spots. Re-check weekly to see what\'s improving.'
 },
 
 ];
