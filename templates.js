@@ -52,16 +52,7 @@ const TEMPLATES = [
       {name:'Sandbag Carry (bear-hug)', scheme:'3 trips', note:'Hug it high, walk tall, breathe behind the brace. The deadlift can wait for the next block.', track:true, ex:'Sandbag Carry'},
       {name:'KB Swing — hard', scheme:'3×10', note:'Explosive finisher. Float the bell.', track:true, ex:'KB Swing'},
     ]},
-    {label:'Day 2 — Press volume + pull', focus:'OHP top set · back · sandbag', dur:'~40 min', items:[
-      {name:'Warm-up circuit', scheme:'2 rounds', note:'Assault bike 90s easy → push-ups → ab wheel.', track:false},
-      {name:'Push-ups (circuit)', scheme:'2× sub-max', note:'Same drill — log the bigger set.', track:true, ex:'Push-up'},
-      {name:'Ab Wheel (circuit)', scheme:'2×8–10', note:'Quality reps.', track:true, ex:'Ab Wheel'},
-      {name:'Overhead Press — ramp to top set', scheme:'top 3–5', note:'Slightly higher reps than Day 1. Heavy but clean — still the only heavy lift today.', track:true, ex:'Overhead Press'},
-      {name:'Overhead Press — backoffs', scheme:'2×5 @ ~85%', note:'Two fives off today\'s top set.', track:true, ex:'Overhead Press'},
-      {name:'Pull-up', scheme:'3×5–8', note:'Balance the pressing. Add weight when 8 is easy.', track:true, ex:'Pull-up'},
-      {name:'Sandbag Clean (to shoulder or chest)', scheme:'4×5', note:'Explosive hips, lap it, pop it up. Crisp reps, never grindy.', track:true, ex:'Sandbag Clean'},
-    ]},
-    {label:'Day 3 — Engine', focus:'Assault bike · sandbag · explosive', dur:'~30 min', items:[
+    {label:'Day 2 — Engine', focus:'Assault bike · sandbag · explosive', dur:'~30 min', items:[
       {name:'Warm-up circuit', scheme:'2 rounds', note:'Assault bike 90s easy → push-ups → ab wheel. Easier pace today — the work below is the conditioning.', track:false},
       {name:'Push-ups (circuit)', scheme:'2× easy', note:'Sub-max, just greasing the pattern before the engine work.', track:true, ex:'Push-up'},
       {name:'Ab Wheel (circuit)', scheme:'2×8', note:'Controlled.', track:true, ex:'Ab Wheel'},
@@ -70,6 +61,15 @@ const TEMPLATES = [
       {name:'KB Swing (in rounds)', scheme:'15 / round', note:'Full hip snap even when breathing hard — quality is the cap.', track:true, ex:'KB Swing'},
       {name:'Finisher — med-ball slams or broad jumps', scheme:'3×5', note:'Optional. Max intent, full rest, done.', track:false},
     ]},
+    {label:'Day 3 — Press volume + pull', focus:'OHP top set · back · sandbag', dur:'~40 min', items:[
+      {name:'Warm-up circuit', scheme:'2 rounds', note:'Assault bike 90s easy → push-ups → ab wheel.', track:false},
+      {name:'Push-ups (circuit)', scheme:'2× sub-max', note:'Same drill — log the bigger set.', track:true, ex:'Push-up'},
+      {name:'Ab Wheel (circuit)', scheme:'2×8–10', note:'Quality reps.', track:true, ex:'Ab Wheel'},
+      {name:'Overhead Press — ramp to top set', scheme:'top 3–5', note:'Slightly higher reps than Day 1. Heavy but clean — still the only heavy lift today.', track:true, ex:'Overhead Press'},
+      {name:'Overhead Press — backoffs', scheme:'2×5 @ ~85%', note:'Two fives off today\'s top set.', track:true, ex:'Overhead Press'},
+      {name:'Pull-up', scheme:'3×5–8', note:'Balance the pressing. Add weight when 8 is easy.', track:true, ex:'Pull-up'},
+      {name:'Sandbag Clean (to shoulder or chest)', scheme:'4×5', note:'Explosive hips, lap it, pop it up. Crisp reps, never grindy.', track:true, ex:'Sandbag Clean'},
+    ]},
     {label:'Day 4 — Mass Made Simple (Sat or Sun)', focus:'Dan John, unadapted', dur:'~35 min', items:[
       {name:'Warm-up circuit', scheme:'2 easy rounds', note:'Bike → push-ups → ab wheel, light — the complex is its own warm-up escalation.', track:false},
       {name:'Barbell Complex', scheme:'2–5 complexes ×8', note:'Row · clean · front squat · military press · back squat · good morning — 8 reps each, bar never set down. Start at 2 complexes, add one when all rounds are clean. Log the bar weight.', track:true, ex:'BB Complex'},
@@ -77,7 +77,8 @@ const TEMPLATES = [
     ]},
   ],
   rules:[
-    {title:'One heavy lift a day', body:'Each session has exactly one heavy barbell focus — OHP, OHP, nothing, 20-rep squat. Everything else is sandbag, explosive or circuit work that doesn\'t compete with it.'},
+    {title:'One heavy lift a day', body:'Each session has exactly one heavy barbell focus — OHP, nothing, OHP, 20-rep squat. Everything else is sandbag, explosive or circuit work that doesn\'t compete with it.'},
+    {title:'Engine sits between the presses', body:'Run the week in order: Press heavy → Engine → Press volume → MMS. That keeps 48h+ between press sessions and the conditioning never steals from the bar.'},
     {title:'Top set by feel', body:'Ramp in small jumps; the top set is the heaviest clean set of the day — no misses, no grinders. Some days that\'s a PR, some days it isn\'t. Log it either way.'},
     {title:'Circuit before the work', body:'Every session opens with the movements, then 2 rounds of bike → push-ups → ab wheel. Log the push-up sets — they\'re your road to 50 straight.'},
     {title:'MMS stays pure', body:'Day 4 is Dan John\'s Mass Made Simple as written: complexes 2→5, military press in the complex, then one all-out set of 20 squats. Don\'t tinker with it.'},

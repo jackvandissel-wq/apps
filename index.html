@@ -1098,7 +1098,7 @@ function decorateProgram(t){
   const isCur=isActive(t.id);
   const setBtn=`<button class="btn ${isCur?'btn-soft':'btn-pri'}" onclick="setActiveFromSheet('${t.id}')">${isCur?'✓ Current program':'Set as current program'}</button>`;
   foot.innerHTML=setBtn+(foot.innerHTML?'<div style="height:8px"></div>'+foot.innerHTML:'');
-  appendFinish(t);
+  if(t.programType!=='weekly')appendFinish(t);   // weekly programs finish per-day, inside each day
 }
 function logProgSession(id){const all=progDone();if(!all[id])all[id]=[];all[id].push(todayISO());localStorage.setItem(PROG_DONE_KEY,JSON.stringify(all));const t=TEMPLATES.find(x=>x.id===id);if(t)recordWorkoutActivity(t);renderList();flash('Session logged');}
 function progReadout(t,n){
@@ -1178,10 +1178,10 @@ function lastSetsText(ex){
   return 'Last ('+fmtShort(d)+'): '+sets.map(s=>`${s.weight}×${s.reps}`).join(', ');
 }
 // inline kg/reps fields for a tracked exercise; registers into runState.logfields for Finish
-function logFieldsHTML(ex){
+function logFieldsHTML(ex,day){
   if(!runState.logfields)runState.logfields=[];
   const tag='lf'+runState.logfields.length;
-  runState.logfields.push({tag,ex});
+  runState.logfields.push({tag,ex,day});
   const e=lastEntryFresh(ex);const lw=e&&e.weight?e.weight:'';const lr=e&&e.reps?e.reps:'';
   const last=lastSetsText(ex);
   return `${last?`<div class="last-sets">${last}</div>`:''}<div class="item-log"><input class="mini" id="w-${tag}" type="number" inputmode="decimal" placeholder="kg" value="${lw}"><input class="mini" id="r-${tag}" type="number" inputmode="numeric" placeholder="reps" value="${lr}"></div>`;
@@ -1199,6 +1199,22 @@ function finishWorkout(id){
   if(t.type==='program'){const all=progDone();if(!all[t.id])all[t.id]=[];all[t.id].push(todayISO());localStorage.setItem(PROG_DONE_KEY,JSON.stringify(all));}
   closeSheet();
   toast(logged?('Done · '+logged+' set'+(logged==1?'':'s')+' logged'):'Session logged ✓');
+}
+// finish ONE day of a weekly program: logs only that day's filled sets, counts one session
+function finishDay(id,di){
+  const t=TEMPLATES.find(x=>x.id===id); if(!t)return;
+  let logged=0;
+  (runState.logfields||[]).forEach(f=>{
+    if(f.day!==di)return;
+    const we=document.getElementById('w-'+f.tag),re=document.getElementById('r-'+f.tag);
+    if(!re)return;
+    const w=parseFloat(we&&we.value)||0,r=parseInt(re.value)||0;
+    if(r){const L=load(LIFTS_KEY);if(!L[f.ex])L[f.ex]=[];L[f.ex].push({date:todayISO(),weight:w,reps:r,note:t.name});save(LIFTS_KEY,L);logged++;}
+  });
+  recordWorkoutActivity(t);
+  if(t.type==='program'){const all=progDone();if(!all[t.id])all[t.id]=[];all[t.id].push(todayISO());localStorage.setItem(PROG_DONE_KEY,JSON.stringify(all));}
+  closeSheet();
+  toast(logged?('Day done · '+logged+' set'+(logged==1?'':'s')+' logged'):'Day logged ✓');
 }
 function toggleLog(i,ex){
   const box=document.getElementById('logbox-'+i);
@@ -1268,13 +1284,13 @@ function tmQuickLog(ex,wt){
 function renderWeekly(t,body,foot){
   runState.progName=t.name;runState.logfields=[];
   let html=`<div class="note">${t.notes}</div>${warmupHTML(t)}<div class="sec">The Week</div>`;
-  html+=t.days.map((d,di)=>`<div class="day${di===0?' open':''}" id="day-${di}"><div class="day-hd" onclick="document.getElementById('day-${di}').classList.toggle('open')"><div style="flex:1"><div class="day-title">${d.label}</div><div class="day-focus">${d.focus}</div></div><span class="day-dur">${d.dur}</span><span class="day-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></div><div class="day-body">${d.items.map((it,ii)=>weeklyRow(it,di,ii)).join('')}</div></div>`).join('');
+  html+=t.days.map((d,di)=>`<div class="day${di===0?' open':''}" id="day-${di}"><div class="day-hd" onclick="document.getElementById('day-${di}').classList.toggle('open')"><div style="flex:1"><div class="day-title">${d.label}</div><div class="day-focus">${d.focus}</div></div><span class="day-dur">${d.dur}</span><span class="day-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></div><div class="day-body">${d.items.map((it,ii)=>weeklyRow(it,di,ii)).join('')}<div style="padding:12px 14px"><button class="btn btn-pri" onclick="finishDay('${t.id}',${di})">Finish ${d.label.split('—')[0].trim()} ✓</button></div></div></div>`).join('');
   if(t.rules&&t.rules.length){html+=`<div class="sec" style="margin-top:20px">Rules</div>`+t.rules.map(r=>`<div class="item"><div class="item-row"><div class="item-main"><div class="item-name">${r.title}</div><div class="item-note">${r.body}</div></div></div></div>`).join('');}
   body.innerHTML=html;foot.innerHTML='';
 }
 function weeklyRow(it,di,ii){
   const tag=di+'-'+ii;
-  return `<div class="item" id="wk-${tag}" style="border:none;border-bottom:1px solid var(--line);border-radius:0;margin:0"><div class="item-row">${it.track?`<div class="chk" onclick="wkTick('${tag}')"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></div>`:'<div style="width:24px;flex-shrink:0"></div>'}<div class="item-main"><div class="item-name">${it.name}</div>${it.note?`<div class="item-note">${it.note}</div>`:''}${it.track?logFieldsHTML(it.ex||it.name):''}</div>${it.scheme?`<div class="item-scheme">${it.scheme}</div>`:''}</div></div>`;
+  return `<div class="item" id="wk-${tag}" style="border:none;border-bottom:1px solid var(--line);border-radius:0;margin:0"><div class="item-row">${it.track?`<div class="chk" onclick="wkTick('${tag}')"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></div>`:'<div style="width:24px;flex-shrink:0"></div>'}<div class="item-main"><div class="item-name">${it.name}</div>${it.note?`<div class="item-note">${it.note}</div>`:''}${it.track?logFieldsHTML(it.ex||it.name,di):''}</div>${it.scheme?`<div class="item-scheme">${it.scheme}</div>`:''}</div></div>`;
 }
 function wkTick(tag){document.getElementById('wk-'+tag).classList.toggle('done');}
 function wkLogToggle(tag,ex){
