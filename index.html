@@ -114,8 +114,6 @@ input[type=date]{font-family:var(--font);}
 .feed-meta{font-size:12px;color:var(--muted);margin-top:3px;}
 .feed-load{font-size:22px;font-weight:300;letter-spacing:-0.5px;white-space:nowrap;}
 .feed-load small{font-size:12px;color:var(--muted);font-weight:400;margin-left:1px;}
-.feed-del{background:none;border:none;color:var(--line2);font-size:20px;cursor:pointer;padding:4px;line-height:1;flex-shrink:0;}
-.feed-del:active{color:var(--warn);}
 .lift{margin:0 18px 12px;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;}
 .lift-top{display:flex;align-items:center;gap:10px;padding:17px 18px;cursor:pointer;}
 .lift-name{font-size:16px;font-weight:600;letter-spacing:-0.3px;flex:1;}
@@ -445,7 +443,6 @@ select.inp{height:48px;}
   <div class="subnav">
     <button data-sub="log" class="on" onclick="logTab('log')">Log</button>
     <button data-sub="lifts" onclick="logTab('lifts')">Lifts</button>
-    <button data-sub="maxes" onclick="logTab('maxes')">Maxes</button>
     <button data-sub="data" onclick="logTab('data')">Data</button>
   </div>
   <div class="lgpage on" id="lg-log">
@@ -468,21 +465,13 @@ select.inp{height:48px;}
     <div class="gap"></div>
   </div>
   <div class="lgpage" id="lg-lifts"><div id="lifts-container"></div><div class="gap"></div></div>
-  <div class="lgpage" id="lg-maxes">
-    <div class="intro"><strong>Training maxes</strong> feed percentage programs like 5/3/1. Convention: 90% of your estimated 1-rep max. Tap <strong>set</strong> to fill from your best logged set, or type your own.</div>
-    <div class="lbl">Per lift</div><div id="maxes-container"></div><div class="gap"></div>
-  </div>
   <div class="lgpage" id="lg-data">
     <div class="dcard"><h3>Backup — whole suite</h3>
-      <p>Everything lives in this browser. This backs up it all in one file: lift history, training maxes, activity log, Easy Strength setup, program progress and your current program. Export before clearing your browser, or to move devices.</p>
+      <p>Everything lives in this browser. This backs up it all in one file: lift history, activity log, goals, block ledger and your current program. Export regularly — it's the only way back if the browser data is lost.</p>
       <button class="btn btn-pri" onclick="exportData()">Export backup</button>
       <button class="btn btn-soft" onclick="document.getElementById('import-file').click()">Import backup</button>
       <input type="file" id="import-file" accept="application/json" onchange="importData(this)">
     </div>
-    <div class="dcard"><h3>Quick start</h3><p>Seed the exercise suggestions with common home-gym lifts. You can still type any name.</p>
-      <button class="btn btn-soft" onclick="seedExercises()">Add suggested exercises</button></div>
-    <div class="dcard"><h3>Reset</h3><p>Wipe all logged sets and training maxes. Export first if unsure.</p>
-      <button class="btn btn-soft" onclick="logWipe()">Clear lift data</button></div>
     <div class="gap"></div>
   </div>
 </section>
@@ -622,7 +611,7 @@ function switchApp(name,btn){
   (btn||document.querySelector('.nav button[data-app="'+name+'"]')).classList.add('on');
   document.getElementById('scroll').scrollTop=0;
   if(name==='home')renderHome();
-  else if(name==='log'){buildExSelect();logFeed();logCount();if(logSub==='lifts')renderLifts();if(logSub==='maxes')renderMaxes();}
+  else if(name==='log'){buildExSelect();logFeed();logCount();if(logSub==='lifts')renderLifts();}
   else if(name==='library'){renderViewSeg();renderChips();renderList();}
   else if(name==='activity'){actFeed();actCount();if(actSub==='balance')renderBalance();if(actSub==='trends')renderTrends();}
 }
@@ -761,10 +750,9 @@ function logTab(name){
   document.querySelectorAll('#app-log .subnav button').forEach(b=>b.classList.toggle('on',b.dataset.sub===name));
   document.getElementById('scroll').scrollTop=0;
   if(name==='lifts')renderLifts();
-  if(name==='maxes')renderMaxes();
 }
 function exNames(){return Object.keys(lifts).sort((a,b)=>a.localeCompare(b));}
-function allEntries(){const o=[];for(const ex in lifts)lifts[ex].forEach((e,i)=>o.push({ex,i,...e}));return o.sort((a,b)=>(b.date||'').localeCompare(a.date||'')||b.weight-a.weight);}
+function allEntries(){const o=[];for(const ex in lifts)lifts[ex].forEach((e,i)=>o.push({ex,i,...e}));return o.sort((a,b)=>(b.date||'').localeCompare(a.date||'')||b.i-a.i);}
 function bestEntry(ex){const a=lifts[ex]||[];return a.length?a.reduce((m,e)=>epley(e.weight,e.reps)>epley(m.weight,m.reps)?e:m):null;}
 function latestEntry(ex){const a=(lifts[ex]||[]).slice().sort((x,y)=>(x.date||'').localeCompare(y.date||''));return a.length?a[a.length-1]:null;}
 // linked exercise dropdown: My Block lifts first, then your history — no free text drift
@@ -772,7 +760,9 @@ function blockExs(){const t=myBlockTpl();if(!t||!t.days)return[];const s=[];t.da
 function buildExSelect(){
   const sel=document.getElementById('f-ex');if(!sel)return;
   const prev=sel.value;
-  const blk=blockExs();const mine=exNames().filter(x=>!blk.includes(x));
+  const blk=blockExs();
+  const mine=exNames().filter(x=>!blk.includes(x)&&(lifts[x]||[]).length)
+    .sort((a,b)=>{const la=latestEntry(a),lb=latestEntry(b);return (((lb&&lb.date)||'')).localeCompare(((la&&la.date)||''));});
   let html='';
   if(blk.length)html+='<optgroup label="My Block">'+blk.map(o=>`<option>${o}</option>`).join('')+'</optgroup>';
   if(mine.length)html+='<optgroup label="Your lifts">'+mine.map(o=>`<option>${o}</option>`).join('')+'</optgroup>';
@@ -802,11 +792,10 @@ function addEntry(){
   if(wasNew){document.getElementById('f-ex').value=ex;document.getElementById('f-ex-new').value='';syncExNew();}
   refreshDatalist();logFeed();logCount();toast('Logged');
 }
-function delEntry(ex,i){if(!lifts[ex])return;lifts[ex].splice(i,1);if(!lifts[ex].length)delete lifts[ex];save(LIFTS_KEY,lifts);logFeed();logCount();refreshDatalist();buildExSelect();}
 function logFeed(){
   const f=document.getElementById('log-feed'),all=allEntries().slice(0,30);
   if(!all.length){f.innerHTML='<div class="empty">No sets logged yet. Add your first one above — it becomes available to every workout in the library.</div>';return;}
-  f.innerHTML=all.map(e=>`<div class="feed-item"><div class="feed-main"><div class="feed-name">${e.ex}</div><div class="feed-meta">${fmtDate(e.date)} · ${e.reps} rep${e.reps==1?'':'s'}${e.note?' · '+e.note:''}</div></div><div class="feed-load">${e.weight}<small>kg</small></div><button class="feed-del" onclick="delEntry('${esc(e.ex)}',${e.i})" aria-label="Delete set">×</button></div>`).join('');
+  f.innerHTML=all.map(e=>`<div class="feed-item"><div class="feed-main"><div class="feed-name">${e.ex}</div><div class="feed-meta">${fmtDate(e.date)} · ${e.reps} rep${e.reps==1?'':'s'}${e.note?' · '+e.note:''}</div></div><div class="feed-load">${e.weight}<small>kg</small></div></div>`).join('');
 }
 function logCount(){const n=allEntries().length;document.getElementById('log-count').textContent=n+' set'+(n==1?'':'s');}
 function sparkline(entries){
@@ -819,7 +808,10 @@ function sparkline(entries){
   return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${area}" fill="rgba(95,125,107,0.10)"/><path d="${path}" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="2.8" fill="var(--accent)"/></svg>`;
 }
 function renderLifts(){
-  const c=document.getElementById('lifts-container'),names=exNames();
+  const c=document.getElementById('lifts-container');
+  // only exercises with actual logged sets, most recently trained first
+  const names=exNames().filter(ex=>(lifts[ex]||[]).length)
+    .sort((a,b)=>{const la=latestEntry(a),lb=latestEntry(b);return (((lb&&lb.date)||'')).localeCompare(((la&&la.date)||''));});
   if(!names.length){c.innerHTML='<div class="empty">No lifts tracked yet. Log a few sets and they\'ll appear here with PRs and trends.</div>';return;}
   c.innerHTML=names.map(ex=>{
     const arr=lifts[ex],latest=latestEntry(ex),best=bestEntry(ex),e1rm=best?epley(best.weight,best.reps):0;
@@ -835,19 +827,10 @@ function renderLifts(){
         <div><div class="lstat-val">${best?best.weight:'—'}<small> ×${best?best.reps:''}</small></div><div class="lstat-lbl">Best set</div></div>
       </div>
       <div class="spark">${sparkline(arr)}</div>
-      <div class="hist">${hist.map(e=>`<div class="hist-row"><span class="hist-date">${fmtDate(e.date)}</span><span class="hist-load">${e.weight} kg × ${e.reps}</span>${e.note?`<span class="hist-note">${e.note}</span>`:''}</div>`).join('')}</div>
+      <div class="hist">${hist.map(e=>`<div class="hist-row"><span class="hist-date">${fmtDate(e.date)}</span><span class="hist-load">${e.weight} kg × ${e.reps}</span><span class="hist-note">≈${epley(e.weight,e.reps)} kg${e.note?' · '+e.note:''}</span></div>`).join('')}</div>
     </div>`;
   }).join('');
 }
-function renderMaxes(){
-  const c=document.getElementById('maxes-container'),names=new Set([...exNames(),...Object.keys(tms)]);
-  if(!names.size){c.innerHTML='<div class="empty">Log some sets first, then set training maxes here for percentage-based programs.</div>';return;}
-  c.innerHTML=[...names].sort((a,b)=>a.localeCompare(b)).map(ex=>{
-    const best=bestEntry(ex),est=best?Math.round(epley(best.weight,best.reps)*0.9):0,cur=tms[ex]!==undefined?tms[ex]:'';
-    return `<div class="tm"><div style="flex:1;min-width:0"><div class="tm-name">${ex}</div><div class="tm-sub">${best?'≈ '+est+' kg (90% est 1RM)':'no logged sets'}</div></div><input class="tm-input" type="number" inputmode="decimal" value="${cur}" placeholder="—" onchange="setTM('${esc(ex)}',this.value)">${est?`<button class="tm-set" onclick="setTM('${esc(ex)}',${est});renderMaxes()">set</button>`:''}</div>`;
-  }).join('');
-}
-function setTM(ex,val){const n=parseFloat(val);if(isNaN(n)||val===''){delete tms[ex];}else{tms[ex]=n;}save(TM_KEY,tms);toast('Max saved');}
 function exportData(){
   const out={app:'jvd-training-suite',exported:new Date().toISOString()};
   BACKUP_KEYS.forEach(k=>{const v=localStorage.getItem(k);if(v!==null){try{out[k]=JSON.parse(v);}catch(e){}}});
@@ -860,13 +843,11 @@ function importData(input){
     const d=JSON.parse(r.result);let n=0;
     BACKUP_KEYS.forEach(k=>{if(d[k]!==undefined){localStorage.setItem(k,JSON.stringify(d[k]));n++;}});
     lifts=load(LIFTS_KEY);tms=load(TM_KEY);acts=loadArr(ACT_KEY);
-    refreshDatalist();buildExSelect();logFeed();logCount();renderLifts();renderMaxes();
+    refreshDatalist();buildExSelect();logFeed();logCount();renderLifts();
     toast(n?'Restored '+n+' data set'+(n>1?'s':''):'Nothing to import');
   }catch(e){toast('Invalid file');}};
   r.readAsText(file);input.value='';
 }
-function seedExercises(){SUGGESTED.forEach(n=>{if(!lifts[n])lifts[n]=[];});save(LIFTS_KEY,lifts);refreshDatalist();buildExSelect();logFeed();toast('Exercises added');}
-function logWipe(){if(!confirm('Delete ALL logged sets and training maxes?'))return;lifts={};tms={};save(LIFTS_KEY,lifts);save(TM_KEY,tms);refreshDatalist();buildExSelect();logFeed();logCount();renderLifts();renderMaxes();toast('Cleared');}
 function refreshDatalist(){const set=new Set([...exNames(),...SUGGESTED]);document.getElementById('ex-list').innerHTML=[...set].sort((a,b)=>a.localeCompare(b)).map(n=>`<option value="${n}">`).join('');}
 // ═══ ACTIVITY ═══
 const IC={
