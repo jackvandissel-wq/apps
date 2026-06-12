@@ -40,37 +40,48 @@ const TEMPLATES = [
   id:'my-block', category:'strength', type:'program', programType:'weekly', myblock:true,
   name:'My Block — OHP', source:'Tailored · rotating focus', blockLabel:'OHP Block 1',
   focus:'Overhead Press', goal:{ex:'Overhead Press', targetBW:1.0},
-  summary:'Current focus: drive the overhead press toward bodyweight (95 kg). Press three days, legs on the weekend, conditioning capped at 1× HIIT + 1× boxing.',
+  summary:'Current focus: drive the overhead press toward bodyweight (95 kg). Two press days, one engine day, one true Mass Made Simple day. One heavy lift a day, sandbag everywhere.',
   duration:40, warmupRef:'broomstick',
   days:[
-    {label:'Day 1 — Press heavy', focus:'OHP top set + hinge', dur:'~40 min', items:[
+    {label:'Day 1 — Press heavy', focus:'OHP top set · one heavy lift', dur:'~40 min', items:[
+      {name:'Warm-up circuit', scheme:'2 rounds', note:'Assault bike 90s easy → push-ups → ab wheel. Log the push-up and ab-wheel reps below.', track:false},
+      {name:'Push-ups (circuit)', scheme:'2× sub-max', note:'Crisp, full range, stop 2 shy of failure. Log your bigger set — 50 in a row is the standard you\'re chasing.', track:true, ex:'Push-up'},
+      {name:'Ab Wheel (circuit)', scheme:'2×8–10', note:'From knees, flat back, no sag. Log reps.', track:true, ex:'Ab Wheel'},
       {name:'Overhead Press — ramp to top set', scheme:'top 1–3', note:'Small jumps to the heaviest clean 1–3 of the day. By feel — the moment bar speed drops, that\'s the top. Log it.', track:true, ex:'Overhead Press'},
       {name:'Overhead Press — backoffs', scheme:'3×5 @ ~85%', note:'Drop ~15% off the top set, three crisp fives. This is where the volume lives.', track:true, ex:'Overhead Press'},
-      {name:'Trap Bar Deadlift', scheme:'2×5', note:'Heavy-ish but crisp, never a grind.', track:true, ex:'Trap Bar Deadlift'},
+      {name:'Sandbag Carry (bear-hug)', scheme:'3 trips', note:'Hug it high, walk tall, breathe behind the brace. The deadlift can wait for the next block.', track:true, ex:'Sandbag Carry'},
       {name:'KB Swing — hard', scheme:'3×10', note:'Explosive finisher. Float the bell.', track:true, ex:'KB Swing'},
     ]},
-    {label:'Day 2 — Press volume + pull', focus:'Pressing volume, back, carries', dur:'~40 min', items:[
-      {name:'Overhead Press — ramp to top set', scheme:'top 3–5', note:'Slightly higher reps than Day 1. Heavy but clean.', track:true, ex:'Overhead Press'},
+    {label:'Day 2 — Press volume + pull', focus:'OHP top set · back · sandbag', dur:'~40 min', items:[
+      {name:'Warm-up circuit', scheme:'2 rounds', note:'Assault bike 90s easy → push-ups → ab wheel.', track:false},
+      {name:'Push-ups (circuit)', scheme:'2× sub-max', note:'Same drill — log the bigger set.', track:true, ex:'Push-up'},
+      {name:'Ab Wheel (circuit)', scheme:'2×8–10', note:'Quality reps.', track:true, ex:'Ab Wheel'},
+      {name:'Overhead Press — ramp to top set', scheme:'top 3–5', note:'Slightly higher reps than Day 1. Heavy but clean — still the only heavy lift today.', track:true, ex:'Overhead Press'},
       {name:'Overhead Press — backoffs', scheme:'2×5 @ ~85%', note:'Two fives off today\'s top set.', track:true, ex:'Overhead Press'},
       {name:'Pull-up', scheme:'3×5–8', note:'Balance the pressing. Add weight when 8 is easy.', track:true, ex:'Pull-up'},
-      {name:'Sandbag / Farmer Carry', scheme:'3 trips', note:'Sandbag bear-hug or farmer carry — walk tall, grip hard.', track:true, ex:'Farmer Carry'},
+      {name:'Sandbag Clean (to shoulder or chest)', scheme:'4×5', note:'Explosive hips, lap it, pop it up. Crisp reps, never grindy.', track:true, ex:'Sandbag Clean'},
     ]},
-    {label:'Day 3 — Push press + explosive', focus:'Overload the press pattern', dur:'~35 min', items:[
-      {name:'Push Press — ramp to top set', scheme:'top 3–5', note:'Leg drive lets you handle more than strict — overload the pattern. Crisp lockouts.', track:true, ex:'Push Press'},
-      {name:'Overhead Press — light backoff', scheme:'2×5 light', note:'Strict, fast bar speed, groove the pattern. Well under Day 1 weights.', track:true, ex:'Overhead Press'},
-      {name:'Power Clean or KB Swing', scheme:'5×3 / 3×10', note:'Pick one. Maximum intent, full rest, nothing grindy.', track:true, ex:'Power Clean'},
+    {label:'Day 3 — Engine', focus:'Assault bike · sandbag · explosive', dur:'~30 min', items:[
+      {name:'Warm-up circuit', scheme:'2 rounds', note:'Assault bike 90s easy → push-ups → ab wheel. Easier pace today — the work below is the conditioning.', track:false},
+      {name:'Push-ups (circuit)', scheme:'2× easy', note:'Sub-max, just greasing the pattern before the engine work.', track:true, ex:'Push-up'},
+      {name:'Ab Wheel (circuit)', scheme:'2×8', note:'Controlled.', track:true, ex:'Ab Wheel'},
+      {name:'Engine rounds', scheme:'4–5 rounds', note:'12/10 cal assault bike hard → 6 sandbag-to-shoulder (alternate sides) → 15 KB swings → rest 60–90s. Repeatable pace: the last round should look like the first.', track:false},
+      {name:'Sandbag to Shoulder (in rounds)', scheme:'6 / round', note:'Log the bag weight once so progress is visible.', track:true, ex:'Sandbag to Shoulder'},
+      {name:'KB Swing (in rounds)', scheme:'15 / round', note:'Full hip snap even when breathing hard — quality is the cap.', track:true, ex:'KB Swing'},
+      {name:'Finisher — med-ball slams or broad jumps', scheme:'3×5', note:'Optional. Max intent, full rest, done.', track:false},
     ]},
-    {label:'Day 4 — MMS legs (Sat or Sun)', focus:'Lower body, minimalist', dur:'~25 min', items:[
-      {name:'BB Complex (with push press)', scheme:'3–5 rounds', note:'Row · clean · front squat · push press · back squat · good morning — 6 reps each, bar never set down. Log the bar weight.', track:true, ex:'BB Complex'},
-      {name:'Goblet or Sandbag Squat', scheme:'3×8–10', note:'Real sets — sit between the knees, drive up.', track:true, ex:'Goblet Squat'},
-      {name:'Romanian Deadlift or KB DL', scheme:'2×8', note:'Hinge volume to finish.', track:true, ex:'Romanian Deadlift'},
+    {label:'Day 4 — Mass Made Simple (Sat or Sun)', focus:'Dan John, unadapted', dur:'~35 min', items:[
+      {name:'Warm-up circuit', scheme:'2 easy rounds', note:'Bike → push-ups → ab wheel, light — the complex is its own warm-up escalation.', track:false},
+      {name:'Barbell Complex', scheme:'2–5 complexes ×8', note:'Row · clean · front squat · military press · back squat · good morning — 8 reps each, bar never set down. Start at 2 complexes, add one when all rounds are clean. Log the bar weight.', track:true, ex:'BB Complex'},
+      {name:'Back Squat', scheme:'1×20', note:'~10RM weight. Big breaths near the end, no racking until 20. Add ~2.5kg each week it\'s completed.', track:true, ex:'Back Squat'},
     ]},
   ],
   rules:[
-    {title:'The press leads', body:'Three pressing days a week, every week. Everything else supports it. If something has to give, it\'s never the press.'},
+    {title:'One heavy lift a day', body:'Each session has exactly one heavy barbell focus — OHP, OHP, nothing, 20-rep squat. Everything else is sandbag, explosive or circuit work that doesn\'t compete with it.'},
     {title:'Top set by feel', body:'Ramp in small jumps; the top set is the heaviest clean set of the day — no misses, no grinders. Some days that\'s a PR, some days it isn\'t. Log it either way.'},
-    {title:'Conditioning is capped', body:'1× assault-bike HIIT and 1× boxing a week, max. Rides and walks are recovery — as many as you like.'},
-    {title:'Push-ups are GTG', body:'Sets of 10–15 through the day, never to failure. Tracked on Home — 50 in a row is the target.'},
+    {title:'Circuit before the work', body:'Every session opens with the movements, then 2 rounds of bike → push-ups → ab wheel. Log the push-up sets — they\'re your road to 50 straight.'},
+    {title:'MMS stays pure', body:'Day 4 is Dan John\'s Mass Made Simple as written: complexes 2→5, military press in the complex, then one all-out set of 20 squats. Don\'t tinker with it.'},
+    {title:'Conditioning is capped', body:'The engine day is the hard conditioning. Boxing 1× if you want it. Rides and walks are recovery — unlimited.'},
   ],
   notes:'Your one program. When the press goal is hit (or goes stale), tell Claude to refocus — this block gets archived to your ledger and a new one takes its place. Your lift history carries over untouched.'
 },
@@ -739,7 +750,7 @@ const TEMPLATES = [
 
 /* ───────────── RECOVERY / STRETCHING ───────────── */
 {
-  id:'lower-unwind', category:'recovery', type:'session',
+  id:'lower-unwind', category:'recovery', type:'session', archived:true,
   name:'Lower Body Unwind', source:'Recovery',
   summary:'Hips, quads, hamstrings, calves after leg work.',
   duration:11,
@@ -753,7 +764,7 @@ const TEMPLATES = [
   notes:'Breathe into each hold, exhale to settle deeper. Per-side timer counts one side — repeat for the other.'
 },
 {
-  id:'upper-open', category:'recovery', type:'session',
+  id:'upper-open', category:'recovery', type:'session', archived:true,
   name:'Upper Body Open', source:'Recovery',
   summary:'Chest, shoulders, t-spine, neck after pressing.',
   duration:9,
@@ -767,7 +778,7 @@ const TEMPLATES = [
   notes:'Keep every hold gentle — recovery, not a max stretch. Per-side holds repeat for the other side.'
 },
 {
-  id:'full-reset', category:'recovery', type:'session',
+  id:'full-reset', category:'recovery', type:'session', archived:true,
   name:'Full Body Reset', source:'Recovery',
   summary:'Short whole-body down-regulation flow.',
   duration:8,
@@ -781,7 +792,7 @@ const TEMPLATES = [
   notes:'Good after any session or on a rest day. End on the breathing hold.'
 },
 {
-  id:'tv-floor', category:'recovery', type:'session',
+  id:'tv-floor', category:'recovery', type:'session', archived:true,
   name:'TV-Time Floor Flow', source:'Recovery — couch session',
   summary:'Long ground-based holds you can do in front of the TV.',
   duration:18,
@@ -796,7 +807,7 @@ const TEMPLATES = [
   notes:'Built for recovery evenings — get on the floor while you watch something and hold each position long. Great counter to a week of riding and sitting. Breathe slow, never force.'
 },
 {
-  id:'tv-mobility', category:'recovery', type:'session',
+  id:'tv-mobility', category:'recovery', type:'session', archived:true,
   name:'TV-Time Mobility Reset', source:'Recovery — couch session',
   summary:'Gentle whole-body mobility, all from the floor.',
   duration:16,
@@ -809,6 +820,60 @@ const TEMPLATES = [
     {name:'Legs up the wall', seconds:120, note:'Drain the legs after riding. Slow breathing, eyes closed.'},
   ],
   notes:'A no-equipment mobility session for rest nights. Tailored to undo a lot of riding and desk time. Keep everything easy and breath-led.'
+},
+{
+  id:'tv-long', category:'recovery', type:'session',
+  name:'TV Stretch — Long & Easy', source:'Recovery — couch session',
+  summary:'The big casual one — ~30 min of long, lazy holds on the floor while you watch something.',
+  duration:30,
+  areas:['hips','hamstrings'],
+  holds:[
+    {name:'Deep squat sit', seconds:120, note:'Heels down, sink in, rock around, pry the knees out. Settle — you\'re here a while.'},
+    {name:'Couch stretch', seconds:90, note:'Per side. Rear foot up the couch, kneel tall, squeeze the glute. The big one for riding and sitting.'},
+    {name:'Pigeon', seconds:90, note:'Per side. Front shin angled, fold forward slowly, breathe into the hip.'},
+    {name:'Seated straddle fold', seconds:90, note:'Legs wide, hinge from the hips, walk the hands out. No forcing — gravity and time.'},
+    {name:'90/90 hip sit', seconds:75, note:'Per side. Sit tall, then lean over the front shin.'},
+    {name:'Figure-4 glute (on back)', seconds:60, note:'Per side. Ankle over knee, draw the thigh in.'},
+    {name:'Lying spinal twist', seconds:60, note:'Per side. Knees over, shoulders flat, gaze away.'},
+    {name:'Happy baby', seconds:60, note:'Hold the feet, rock gently.'},
+    {name:'Legs up the wall', seconds:180, note:'Finish here. Eyes closed, long exhales, drain the legs.'},
+  ],
+  notes:'The long, easy, end-of-day session — get on the floor in front of the TV and let the holds do the work. Pause the timer any time (tap the screen) and pick it back up. Nothing here should feel like effort.'
+},
+{
+  id:'active-bands', category:'recovery', type:'session',
+  name:'Active Recovery — Bands & Roller', source:'Recovery — active',
+  summary:'Foam roller + band work — moving recovery, not just holds.',
+  duration:16,
+  areas:['shoulders','tspine','hamstrings'],
+  holds:[
+    {name:'Foam roll — quads & hip flexors', seconds:60, note:'Per side. Slow passes, pause on the tender spots, breathe.'},
+    {name:'Foam roll — t-spine', seconds:60, note:'Roller across the upper back, hands behind head, extend over it as you go.'},
+    {name:'Foam roll — lats', seconds:45, note:'Per side. Arm overhead, roll from armpit down the side.'},
+    {name:'Band shoulder dislocates', seconds:45, note:'Wide grip, smooth circles front to back. Narrow the grip as it opens up.'},
+    {name:'Band pull-aparts', seconds:45, note:'Steady reps, squeeze the upper back, control the return.'},
+    {name:'Band overhead side reach', seconds:45, note:'Per side. Band overhead, reach and lean away — opens lats and ribs.'},
+    {name:'Band hamstring floss', seconds:60, note:'Per side. On your back, band on the foot, leg up — pump from bent to straight.'},
+    {name:'Cat–cow flow', seconds:45, note:'Finish moving with the breath.'},
+  ],
+  notes:'Active recovery — keep everything moving rather than parked in one hold. Great on the day after the engine session or a hard press day. Tap the screen to pause and resume as you go.'
+},
+{
+  id:'active-loaded', category:'recovery', type:'session',
+  name:'Loaded Mobility — KB & Bar', source:'Recovery — active',
+  summary:'Light loaded stretching — goblet pry, halos, arm bars, get-ups.',
+  duration:15,
+  areas:['hips','shoulders','ankles'],
+  holds:[
+    {name:'Goblet squat pry', seconds:60, note:'Light bell, sit in the bottom, elbows pry the knees out, shift side to side.'},
+    {name:'KB halo', seconds:45, note:'Each direction. Light bell around the head, slow, ribs down.'},
+    {name:'KB arm bar', seconds:60, note:'Per side. On your back, bell pressed up, roll and let the shoulder settle under it. Slow breath.'},
+    {name:'Turkish get-up — slow', seconds:60, note:'Per side. Light bell, one deliberate rep up and down — mobility, not strength.'},
+    {name:'Half-kneeling KB overhead reach', seconds:45, note:'Per side. Bell locked out, squeeze the rear glute, shift gently forward.'},
+    {name:'Jefferson curl — light', seconds:45, note:'Empty bar or light KB. Roll down vertebra by vertebra, hang, roll up. Easy load, long spine.'},
+    {name:'Wall ankle rock', seconds:45, note:'Per side. Knee over toes to the wall, heel down — squat and bike ankles.'},
+  ],
+  notes:'A little load goes a long way for mobility — these positions open you up while keeping tissue working. All light: if any of it feels like training, drop the weight. Tap to pause whenever.'
 },
 {
   id:'mob-hips', category:'recovery', type:'session',

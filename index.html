@@ -405,16 +405,6 @@ input[type=date]{font-family:var(--font);}
 .tcell-name{font-size:12px;font-weight:600;margin-top:7px;}
 .tcell-cnt{font-size:11px;color:var(--muted);margin-top:2px;}
 .tcell-cnt b{color:var(--ink);font-weight:600;font-size:13px;}
-.gtg{margin:14px 18px 0;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;}
-.gtg-top{display:flex;align-items:baseline;gap:8px;}
-.gtg-name{font-size:13px;font-weight:600;}
-.gtg-cnt{margin-left:auto;font-size:12px;color:var(--muted2);}
-.gtg-cnt b{color:var(--ink);font-weight:600;}
-.gtg-btns{display:flex;gap:8px;margin-top:11px;}
-.gtg-btns button{flex:1;border:1px solid var(--line2);background:none;color:var(--ink);font-family:var(--font);font-size:13px;font-weight:600;padding:9px 0;border-radius:10px;cursor:pointer;}
-.gtg-btns button:active{border-color:var(--accent);color:var(--accent);}
-.gtg-in{width:52px;background:var(--surface2);border:1px solid transparent;border-radius:10px;color:var(--ink);font-family:var(--font);font-size:14px;text-align:center;outline:none;}
-.gtg-in:focus{border-color:var(--accent);background:#fff;}
 .std-row{padding:9px 0;border-bottom:1px solid var(--line);}
 .std-row:last-of-type{border-bottom:none;}
 .std-top{display:flex;align-items:baseline;gap:8px;font-size:13px;}
@@ -439,7 +429,6 @@ select.inp{height:48px;}
   <div class="htoday" id="h-today"></div>
   <div class="lbl">This week</div>
   <div class="tri" id="h-tri"></div>
-  <div id="h-gtg"></div>
   <button class="hgoal-edit" onclick="toggleGoals()">Adjust weekly goals &amp; bodyweight</button>
   <div id="h-goals"></div>
   <div class="hstat-row">
@@ -585,7 +574,7 @@ select.inp{height:48px;}
 // ═══ SHARED ═══
 const LIFTS_KEY='jvd_lifts', TM_KEY='jvd_tm', ACT_KEY='jvd_activity';
 const ACTIVE_KEY='jvd_active_program', ES_CFG_KEY='jvd_es_config', PROG_DONE_KEY='jvd_prog_done';
-const BACKUP_KEYS=['jvd_lifts','jvd_tm','jvd_activity','jvd_es_config','jvd_prog_done','jvd_active_program','jvd_goals','jvd_gtg','jvd_blocks','jvd_mobility'];
+const BACKUP_KEYS=['jvd_lifts','jvd_tm','jvd_activity','jvd_es_config','jvd_prog_done','jvd_active_program','jvd_goals','jvd_blocks','jvd_mobility'];
 function load(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return{};}}
 function save(k,o){try{localStorage.setItem(k,JSON.stringify(o));}catch(e){}}
 function loadArr(k){try{return JSON.parse(localStorage.getItem(k))||[];}catch(e){return[];}}
@@ -665,7 +654,6 @@ function renderHome(){
   if(tActs)parts.push('<b>'+tActs+'</b> activit'+(tActs>1?'ies':'y'));
   document.getElementById('h-today').innerHTML='<svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 9h18M5 4h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg><span>'+(parts.length?'Today: '+parts.join(' · ')+'.':'Nothing logged today yet — go for it.')+'</span>';
   renderTri(pillarCounts(wk),goals());
-  renderGtg();
 }
 
 // ═══ MY BLOCK — focus, ledger, rollover ═══
@@ -737,17 +725,7 @@ function renderTri(counts,G){
     return `<div class="tcell tl-${st}" role="button" tabindex="0" onclick="triGo('${x.id}')"><span class="tl-dot"></span><div class="tcell-name">${x.name}</div><div class="tcell-cnt"><b>${got}</b>/${goal}</div></div>`;
   }).join('');
 }
-function triGo(id){if(id==='train')goLib('strength');else if(id==='recover')goLib('recovery');else switchApp('activity');}
-// GTG push-up counter
-const GTG_KEY='jvd_gtg';
-function gtg(){try{return JSON.parse(localStorage.getItem(GTG_KEY))||{};}catch(e){return{};}}
-function gtgBest(){const g=gtg();return Object.values(g).reduce((m,d)=>Math.max(m,d.best||0),0);}
-function gtgAdd(n){n=parseInt(n)||0;if(n<=0)return;const g=gtg();const d=todayISO();if(!g[d])g[d]={total:0,best:0};g[d].total+=n;g[d].best=Math.max(g[d].best,n);localStorage.setItem(GTG_KEY,JSON.stringify(g));buzz();renderGtg();}
-function gtgCustom(){const el=document.getElementById('gtg-in');gtgAdd(el.value);}
-function renderGtg(){
-  const g=gtg();const d=g[todayISO()]||{total:0,best:0};
-  document.getElementById('h-gtg').innerHTML=`<div class="gtg"><div class="gtg-top"><span class="gtg-name">Push-ups · grease the groove</span><span class="gtg-cnt"><b>${d.total}</b> today · best set <b>${gtgBest()}</b>/50</span></div><div class="gtg-btns"><button onclick="gtgAdd(5)">+5</button><button onclick="gtgAdd(10)">+10</button><button onclick="gtgAdd(15)">+15</button><input class="gtg-in" id="gtg-in" type="number" inputmode="numeric" placeholder="#"><button onclick="gtgCustom()" style="flex:0 0 44px">✓</button></div></div>`;
-}
+function triGo(id){if(id==='train'){if(myBlockTpl())resumeProgram('my-block');else goLib('strength');}else if(id==='recover')goLib('recovery');else switchApp('activity');}
 // Dan John–style strength standards (targets off bodyweight, editable via bodyweight in goals)
 const STANDARDS=[
   {name:'Overhead press',exs:['Overhead Press'],mult:1.0},
@@ -756,7 +734,7 @@ const STANDARDS=[
   {name:'Deadlift',exs:['Trap Bar Deadlift','Deadlift'],mult:2.0},
   {name:'Back squat',exs:['Back Squat'],mult:1.5},
   {name:'Pull-ups (one set)',exs:['Pull-up','Chin-up'],reps:10},
-  {name:'Push-ups (one set)',gtg:true,reps:50},
+  {name:'Push-ups (one set)',exs:['Push-up'],reps:50},
 ];
 function bestE1(exs){return exs.reduce((m,ex)=>{const b=bestEntry(ex);return Math.max(m,b?epley(b.weight,b.reps):0);},0);}
 function bestReps(exs){return exs.reduce((m,ex)=>(lifts[ex]||[]).reduce((mm,e)=>Math.max(mm,e.reps||0),m),0);}
@@ -768,8 +746,7 @@ function renderStd(){
   const G=goals();const bw=G.bw||0;
   el.innerHTML=`<div class="hgoal-card"><div class="hgoal-hd">Strength standards · BW ${bw||'—'} kg</div>${STANDARDS.map(s=>{
     let cur,target,unit;
-    if(s.gtg){cur=gtgBest();target=s.reps;unit='reps';}
-    else if(s.reps){cur=bestReps(s.exs);target=s.reps;unit='reps';}
+    if(s.reps){cur=bestReps(s.exs);target=s.reps;unit='reps';}
     else{cur=bestE1(s.exs);target=bw?Math.round(bw*s.mult):0;unit='kg';}
     const pct=target?Math.min(100,Math.round(cur/target*100)):0;
     return `<div class="std-row"><div class="std-top"><span class="std-name">${s.name}</span><span class="std-val"><b>${cur||0}</b> / ${target||'—'} ${unit}</span></div><div class="std-bar"><i style="width:${pct}%"></i></div></div>`;
@@ -922,9 +899,9 @@ function recordWorkoutActivity(t){
 }
 function actCfg(id){return ACTS.find(a=>a.id===id)||{id,name:id,unit:'',pillar:'zone2'};}
 const PILLARS=[
-  {id:'strength',name:'Strength',target:4,note:'My Block sessions — three press days plus the weekend MMS leg day.'},
-  {id:'power',name:'Power / explosive',target:1,note:'Boxing and standalone explosive work. The block already carries swings/cleans inside the press days.'},
-  {id:'intense',name:'Intensity (heart rate)',target:1,note:'Assault-bike HIIT — capped at one a week so the press keeps progressing.'},
+  {id:'strength',name:'Strength',target:4,note:'My Block sessions — two press days, the engine day and Mass Made Simple.'},
+  {id:'power',name:'Power / explosive',target:1,note:'Boxing and standalone explosive work. The block already carries swings, sandbag cleans and slams.'},
+  {id:'intense',name:'Intensity (heart rate)',target:1,note:'The engine day covers this. Extra assault-bike HIIT only if recovery is good.'},
   {id:'zone2',name:'Aerobic base (Zone 2)',target:4,note:'Easy rides & walks. Your 7.5 km commute is the engine — most days. Uncapped.'},
   {id:'grip',name:'Grip',target:1,note:'A dedicated grip session each week — carries, holds, pinches.'},
   {id:'mobility',name:'Recovery & mobility',target:4,note:'Stretch / mobility / recovery sessions. Four a week keeps everything moving well.'},
@@ -1406,7 +1383,7 @@ function tick(){if(tState.paused)return;tState.left--;if(tState.left<=0){vibe(60
 function paintTimer(){
   const t=document.getElementById('timer');const p=tState.phases[tState.idx];
   t.className='timer on '+p.kind;
-  document.getElementById('t-phase').textContent=p.label;
+  document.getElementById('t-phase').textContent=tState.paused?'Paused — tap to resume':p.label;
   document.getElementById('t-count').textContent=tState.left;
   document.getElementById('t-round').textContent=p.round?`Round ${p.round} / ${p.total}`:'';
   document.getElementById('t-name').textContent=p.name||'';
@@ -1433,6 +1410,14 @@ function finishTimer(){
   document.getElementById('t-ctrl').innerHTML=`<button class="t-btn" onclick="exitTimer()">Close</button>`;
 }
 function exitTimer(){clearInterval(tInt);document.getElementById('timer').classList.remove('on');tState=null;}
+// tap anywhere on the timer (not a button) to pause/resume — for stretch sessions on the floor
+document.getElementById('timer').addEventListener('click',e=>{
+  if(!tState)return;
+  const t=document.getElementById('timer');
+  if(t.classList.contains('done'))return;
+  if(e.target.closest('.t-btn'))return;
+  tState.paused=!tState.paused;buzz();paintTimer();
+});
 
 // ═══ INIT ═══ (v3 — My Block cockpit)
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&document.activeElement&&document.activeElement.getAttribute('role')==='button'){e.preventDefault();document.activeElement.click();}});
