@@ -382,6 +382,49 @@ input[type=date]{font-family:var(--font);}
 .t-done-txt{font-size:30px;font-weight:300;color:var(--ink);letter-spacing:-1px;}
 .t-done-sub{font-size:14px;color:var(--muted);margin-top:8px;}
 .timer.done .t-btn{background:var(--ink);color:var(--bg);border:none;}
+
+/* ───── FOCUS COCKPIT (Home v3) ───── */
+.fx{margin:14px 18px 0;background:var(--ink);color:#faf9f6;border-radius:18px;padding:17px 18px;cursor:pointer;transition:transform .1s;}
+.fx:active{transform:scale(.99);}
+.fx-lbl{font-size:10px;letter-spacing:.5px;text-transform:uppercase;opacity:.6;font-weight:500;}
+.fx-row{display:flex;align-items:baseline;margin-top:6px;}
+.fx-big{font-size:34px;font-weight:300;letter-spacing:-1.5px;line-height:1;}
+.fx-big small{font-size:14px;opacity:.6;font-weight:400;letter-spacing:0;}
+.fx-pct{margin-left:auto;font-size:13px;font-weight:600;color:#cfe0d6;}
+.fx-bar{height:7px;border-radius:4px;background:rgba(255,255,255,.14);overflow:hidden;margin-top:12px;}
+.fx-bar i{display:block;height:100%;background:#9db8a9;border-radius:4px;transition:width .4s;}
+.fx-sub{font-size:12px;opacity:.7;margin-top:9px;line-height:1.5;}
+.fx-spark{margin-top:10px;}
+.fx-spark svg{width:100%;height:36px;display:block;}
+.tri{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:0 18px;}
+.tcell{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:13px 8px;text-align:center;cursor:pointer;transition:transform .1s;}
+.tcell:active{transform:scale(.98);}
+.tcell .tl-dot{margin:0 auto;display:block;}
+.tcell.tl-amber{border-color:var(--amber);} .tcell.tl-amber .tl-dot{background:var(--amber);}
+.tcell.tl-red{border-color:var(--warn);} .tcell.tl-red .tl-dot{background:var(--warn);}
+.tcell-name{font-size:12px;font-weight:600;margin-top:7px;}
+.tcell-cnt{font-size:11px;color:var(--muted);margin-top:2px;}
+.tcell-cnt b{color:var(--ink);font-weight:600;font-size:13px;}
+.gtg{margin:14px 18px 0;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;}
+.gtg-top{display:flex;align-items:baseline;gap:8px;}
+.gtg-name{font-size:13px;font-weight:600;}
+.gtg-cnt{margin-left:auto;font-size:12px;color:var(--muted2);}
+.gtg-cnt b{color:var(--ink);font-weight:600;}
+.gtg-btns{display:flex;gap:8px;margin-top:11px;}
+.gtg-btns button{flex:1;border:1px solid var(--line2);background:none;color:var(--ink);font-family:var(--font);font-size:13px;font-weight:600;padding:9px 0;border-radius:10px;cursor:pointer;}
+.gtg-btns button:active{border-color:var(--accent);color:var(--accent);}
+.gtg-in{width:52px;background:var(--surface2);border:1px solid transparent;border-radius:10px;color:var(--ink);font-family:var(--font);font-size:14px;text-align:center;outline:none;}
+.gtg-in:focus{border-color:var(--accent);background:#fff;}
+.std-row{padding:9px 0;border-bottom:1px solid var(--line);}
+.std-row:last-of-type{border-bottom:none;}
+.std-top{display:flex;align-items:baseline;gap:8px;font-size:13px;}
+.std-name{flex:1;font-weight:500;}
+.std-val{font-size:12px;color:var(--muted2);}
+.std-val b{color:var(--ink);font-weight:600;font-size:14px;}
+.std-bar{height:5px;border-radius:3px;background:var(--surface2);overflow:hidden;margin-top:6px;}
+.std-bar i{display:block;height:100%;background:var(--accent);border-radius:3px;}
+.std-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5;}
+select.inp{height:48px;}
 </style>
 </head>
 <body>
@@ -390,17 +433,20 @@ input[type=date]{font-family:var(--font);}
 <!-- ═══ HOME ═══ -->
 <section class="app on" id="app-home">
   <div class="hd"><span class="hd-title">Training</span><span class="hd-sub">your home-gym suite</span></div>
+  <div id="h-focus"></div>
+  <div id="h-std"></div>
   <div id="h-current"></div>
+  <div class="htoday" id="h-today"></div>
+  <div class="lbl">This week</div>
+  <div class="tri" id="h-tri"></div>
+  <div id="h-gtg"></div>
+  <button class="hgoal-edit" onclick="toggleGoals()">Adjust weekly goals &amp; bodyweight</button>
+  <div id="h-goals"></div>
   <div class="hstat-row">
     <div class="hstat"><div class="hstat-val" id="h-sets">0</div><div class="hstat-lbl">Sets</div></div>
     <div class="hstat"><div class="hstat-val" id="h-lifts">0</div><div class="hstat-lbl">Lifts</div></div>
     <div class="hstat"><div class="hstat-val" id="h-acts">0</div><div class="hstat-lbl">Wk activity</div></div>
   </div>
-  <div class="htoday" id="h-today"></div>
-  <div class="lbl">This week vs goals</div>
-  <div id="h-pillars"></div>
-  <button class="hgoal-edit" onclick="toggleGoals()">Adjust weekly goals</button>
-  <div id="h-goals"></div>
   <div class="gap"></div>
 </section>
 
@@ -416,7 +462,8 @@ input[type=date]{font-family:var(--font);}
   <div class="lgpage on" id="lg-log">
     <div class="fcard">
       <div class="fr"><label class="flbl">Exercise</label>
-        <input class="inp" id="f-ex" list="ex-list" placeholder="Back Squat" autocomplete="off" onchange="prefillWeight()">
+        <select class="inp" id="f-ex" onchange="exPicked()"></select>
+        <input class="inp" id="f-ex-new" list="ex-list" placeholder="New exercise name" autocomplete="off" style="display:none;margin-top:8px" onchange="prefillWeight()">
         <datalist id="ex-list"></datalist>
       </div>
       <div class="fr"><div class="g3">
@@ -538,7 +585,7 @@ input[type=date]{font-family:var(--font);}
 // ═══ SHARED ═══
 const LIFTS_KEY='jvd_lifts', TM_KEY='jvd_tm', ACT_KEY='jvd_activity';
 const ACTIVE_KEY='jvd_active_program', ES_CFG_KEY='jvd_es_config', PROG_DONE_KEY='jvd_prog_done';
-const BACKUP_KEYS=['jvd_lifts','jvd_tm','jvd_activity','jvd_es_config','jvd_prog_done','jvd_active_program'];
+const BACKUP_KEYS=['jvd_lifts','jvd_tm','jvd_activity','jvd_es_config','jvd_prog_done','jvd_active_program','jvd_goals','jvd_gtg','jvd_blocks','jvd_mobility'];
 function load(k){try{return JSON.parse(localStorage.getItem(k)||'{}');}catch(e){return{};}}
 function save(k,o){try{localStorage.setItem(k,JSON.stringify(o));}catch(e){}}
 function loadArr(k){try{return JSON.parse(localStorage.getItem(k))||[];}catch(e){return[];}}
@@ -586,25 +633,26 @@ function switchApp(name,btn){
   (btn||document.querySelector('.nav button[data-app="'+name+'"]')).classList.add('on');
   document.getElementById('scroll').scrollTop=0;
   if(name==='home')renderHome();
-  else if(name==='log'){logFeed();logCount();if(logSub==='lifts')renderLifts();if(logSub==='maxes')renderMaxes();}
+  else if(name==='log'){buildExSelect();logFeed();logCount();if(logSub==='lifts')renderLifts();if(logSub==='maxes')renderMaxes();}
   else if(name==='library'){renderViewSeg();renderChips();renderList();}
   else if(name==='activity'){actFeed();actCount();if(actSub==='balance')renderBalance();if(actSub==='trends')renderTrends();}
 }
 
 // ═══ HOME ═══
 const GOAL_KEY='jvd_goals';
-function goals(){let g={};try{g=JSON.parse(localStorage.getItem(GOAL_KEY))||{};}catch(e){}const out={};PILLARS.forEach(p=>{out[p.id]=(g[p.id]!=null)?g[p.id]:p.target;});return out;}
+function goals(){let g={};try{g=JSON.parse(localStorage.getItem(GOAL_KEY))||{};}catch(e){}const out={};PILLARS.forEach(p=>{out[p.id]=(g[p.id]!=null)?g[p.id]:p.target;});out.bw=(g.bw!=null)?g.bw:95;return out;}
 function saveGoals(g){localStorage.setItem(GOAL_KEY,JSON.stringify(g));}
 function tlStatus(got,goal){if(goal<=0||got>=goal)return 'green';if(got>=goal*0.5)return 'amber';return 'red';}
-function toggleGoals(){const el=document.getElementById('h-goals');if(el.innerHTML){el.innerHTML='';return;}const G=goals();el.innerHTML=`<div class="hgoal-card"><div class="hgoal-hd">Weekly session goals</div>${PILLARS.map(p=>`<div class="hgoal-row"><span>${p.name}</span><input class="hgoal-inp" id="g-${p.id}" type="number" inputmode="numeric" value="${G[p.id]}"></div>`).join('')}<button class="btn btn-pri" style="margin-top:8px" onclick="saveGoalsFromForm()">Save goals</button></div>`;}
-function saveGoalsFromForm(){const g={};PILLARS.forEach(p=>{const v=parseInt(document.getElementById('g-'+p.id).value);if(!isNaN(v))g[p.id]=v;});saveGoals(g);document.getElementById('h-goals').innerHTML='';renderHome();toast('Goals saved');}
+function toggleGoals(){const el=document.getElementById('h-goals');if(el.innerHTML){el.innerHTML='';return;}const G=goals();el.innerHTML=`<div class="hgoal-card"><div class="hgoal-hd">Weekly session goals</div>${PILLARS.map(p=>`<div class="hgoal-row"><span>${p.name}</span><input class="hgoal-inp" id="g-${p.id}" type="number" inputmode="numeric" value="${G[p.id]}"></div>`).join('')}<div class="hgoal-row" style="border-top:1px solid var(--line);padding-top:11px;margin-top:4px"><span>Bodyweight (kg) — sets the press goal</span><input class="hgoal-inp" id="g-bw" type="number" inputmode="decimal" value="${G.bw}"></div><button class="btn btn-pri" style="margin-top:8px" onclick="saveGoalsFromForm()">Save</button></div>`;}
+function saveGoalsFromForm(){const g={};PILLARS.forEach(p=>{const v=parseInt(document.getElementById('g-'+p.id).value);if(!isNaN(v))g[p.id]=v;});const bw=parseFloat(document.getElementById('g-bw').value);if(!isNaN(bw))g.bw=bw;saveGoals(g);document.getElementById('h-goals').innerHTML='';renderHome();toast('Saved');}
 function resumeProgram(id){switchApp('library');openTemplate(id);}
 function goLib(cat){view='workouts';filter=cat;switchApp('library');}
 function pillarRoute(id){if(id==='strength')goLib('strength');else if(id==='mobility')goLib('recovery');else switchApp('activity');}
 function renderHome(){
-  // current program resume card
+  renderFocus();renderStd();
+  // current program resume card(s)
   const aps=activePrograms().filter(p=>TEMPLATES.find(t=>t.id===p.id));
-  document.getElementById('h-current').innerHTML=aps.map(p=>{const t=TEMPLATES.find(x=>x.id===p.id);const n=progSessions(t.id).length;return `<div class="hcur" role="button" tabindex="0" onclick="resumeProgram('${t.id}')"><div class="hcur-lbl">● Current program</div><div class="hcur-name">${t.name}</div><div class="hcur-sub">${progReadout(t,n)}</div><div class="hcur-go">Continue →</div></div>`;}).join('');
+  document.getElementById('h-current').innerHTML=aps.map(p=>{const t=TEMPLATES.find(x=>x.id===p.id);const n=progSessions(t.id).length;return `<div class="hcur" role="button" tabindex="0" onclick="resumeProgram('${t.id}')"><div class="hcur-lbl">● ${t.myblock?(t.blockLabel||'Current block'):'Current program'}</div><div class="hcur-name">${t.name}</div><div class="hcur-sub">${progReadout(t,n)}</div><div class="hcur-go">Continue →</div></div>`;}).join('');
   document.getElementById('h-sets').textContent=allEntries().length;
   document.getElementById('h-lifts').textContent=exNames().length;
   const wk=thisWeek();
@@ -616,16 +664,116 @@ function renderHome(){
   if(tSets)parts.push('<b>'+tSets+'</b> set'+(tSets>1?'s':''));
   if(tActs)parts.push('<b>'+tActs+'</b> activit'+(tActs>1?'ies':'y'));
   document.getElementById('h-today').innerHTML='<svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 9h18M5 4h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg><span>'+(parts.length?'Today: '+parts.join(' · ')+'.':'Nothing logged today yet — go for it.')+'</span>';
-  const counts=pillarCounts(wk);const G=goals();
-  const mobDates=acts.filter(a=>a.type==='mobility').map(a=>a.date).sort();
-  const lastMob=mobDates.length?mobDates[mobDates.length-1]:null;
-  const daysSinceMob=lastMob?Math.floor((parseISODate(todayISO())-parseISODate(lastMob))/86400000):null;
-  document.getElementById('h-pillars').innerHTML=PILLARS.map(p=>{
-    const got=counts[p.id]||0,goal=G[p.id],pct=goal>0?Math.min(100,Math.round(got/goal*100)):100,st=tlStatus(got,goal);
-    let extra='';
-    if(p.id==='mobility')extra=lastMob?` · last ${daysSinceMob===0?'today':daysSinceMob+'d ago'}`:' · none yet';
-    return `<div class="hpil tl-${st}" role="button" tabindex="0" onclick="pillarRoute('${p.id}')"><div class="hpil-top"><span class="tl-dot"></span><span>${p.name}</span><span class="hpil-cnt"><b>${got}</b>/${goal}${extra}</span></div><div class="hbar"><i style="width:${pct}%"></i></div></div>`;
+  renderTri(pillarCounts(wk),goals());
+  renderGtg();
+}
+
+// ═══ MY BLOCK — focus, ledger, rollover ═══
+const BLOCKS_KEY='jvd_blocks';
+function blocks(){try{return JSON.parse(localStorage.getItem(BLOCKS_KEY))||[];}catch(e){return[];}}
+function myBlockTpl(){return TEMPLATES.find(x=>x.myblock);}
+function e1rmIn(ex,fromISO,toISO,first){
+  const arr=(load(LIFTS_KEY)[ex]||[]).filter(e=>(!fromISO||e.date>=fromISO)&&(!toISO||e.date<=toISO)).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  if(!arr.length)return 0;
+  if(first){const d=arr[0].date;return Math.max(...arr.filter(e=>e.date===d).map(e=>epley(e.weight,e.reps)));}
+  return Math.max(...arr.map(e=>epley(e.weight,e.reps)));
+}
+function archiveBlock(ap){
+  const end=todayISO();
+  const b={label:ap.label||'Block',focus:ap.focus||'',started:ap.started,ended:end,
+    sessions:progSessions('my-block').length,
+    startE1RM:ap.focus?e1rmIn(ap.focus,ap.started,end,true):0,
+    endE1RM:ap.focus?e1rmIn(ap.focus,ap.started,end,false):0};
+  const all=blocks();all.push(b);localStorage.setItem(BLOCKS_KEY,JSON.stringify(all));
+  const pd=progDone();delete pd['my-block'];localStorage.setItem(PROG_DONE_KEY,JSON.stringify(pd));
+}
+function ensureMyBlock(){
+  const tpl=myBlockTpl();if(!tpl)return;
+  let arr=activePrograms();const ap=arr.find(p=>p.id==='my-block');
+  if(!ap){arr.push({id:'my-block',started:todayISO(),label:tpl.blockLabel,focus:tpl.focus});localStorage.setItem(ACTIVE_KEY,JSON.stringify(arr));return;}
+  if(ap.label&&ap.label!==tpl.blockLabel){ // templates.js was rewritten with a new block → roll it
+    archiveBlock(ap);
+    ap.started=todayISO();ap.label=tpl.blockLabel;ap.focus=tpl.focus;
+    localStorage.setItem(ACTIVE_KEY,JSON.stringify(arr));
+    toast('New block started — previous block archived');
+  }else if(!ap.label){ap.label=tpl.blockLabel;ap.focus=tpl.focus;localStorage.setItem(ACTIVE_KEY,JSON.stringify(arr));}
+}
+function sparkPts(pts){
+  if(pts.length<2)return '';
+  const W=300,H=36,pad=4,min=Math.min(...pts),max=Math.max(...pts),range=(max-min)||1,step=(W-pad*2)/(pts.length-1);
+  const xy=pts.map((v,i)=>[pad+i*step,H-pad-((v-min)/range)*(H-pad*2)]);
+  const path=xy.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  const last=xy[xy.length-1];
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${path}" fill="none" stroke="#9db8a9" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="2.8" fill="#cfe0d6"/></svg>`;
+}
+function renderFocus(){
+  const el=document.getElementById('h-focus');const tpl=myBlockTpl();
+  if(!tpl||!tpl.goal){el.innerHTML='';return;}
+  const ex=tpl.goal.ex;const G=goals();
+  const target=tpl.goal.targetKg||(G.bw?Math.round(G.bw*(tpl.goal.targetBW||1)):0);
+  const arr=(lifts[ex]||[]).slice().sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  const cur=arr.length?Math.max(...arr.map(e=>epley(e.weight,e.reps))):0;
+  const pct=target?Math.min(100,Math.round(cur/target*100)):0;
+  const lastE=arr.length?arr[arr.length-1]:null;
+  const pts=arr.map(e=>epley(e.weight,e.reps));
+  el.innerHTML=`<div class="fx" role="button" tabindex="0" onclick="toggleStd()">
+    <div class="fx-lbl">${tpl.blockLabel||'Focus'} · ${ex} · est 1RM vs goal</div>
+    <div class="fx-row"><span class="fx-big">${cur||'—'}<small> / ${target||'—'} kg</small></span><span class="fx-pct">${target&&cur?pct+'%':''}</span></div>
+    <div class="fx-bar"><i style="width:${pct}%"></i></div>
+    <div class="fx-sub">${lastE?`Last: ${lastE.weight} kg × ${lastE.reps} · ${fmtShort(lastE.date)}`:'No '+ex+' sets logged yet — log the first one.'} · tap for all standards</div>
+    ${pts.length>1?`<div class="fx-spark">${sparkPts(pts)}</div>`:''}
+  </div>`;
+}
+// three glance dots: Train / Move / Recover (full 6-pillar detail in Activity → Balance)
+const TRI=[
+  {id:'train',name:'Train',p:['strength','power','grip']},
+  {id:'move',name:'Move',p:['zone2','intense']},
+  {id:'recover',name:'Recover',p:['mobility']},
+];
+function renderTri(counts,G){
+  document.getElementById('h-tri').innerHTML=TRI.map(x=>{
+    const got=x.p.reduce((s,p)=>s+(counts[p]||0),0),goal=x.p.reduce((s,p)=>s+(G[p]||0),0);
+    const st=tlStatus(got,goal);
+    return `<div class="tcell tl-${st}" role="button" tabindex="0" onclick="triGo('${x.id}')"><span class="tl-dot"></span><div class="tcell-name">${x.name}</div><div class="tcell-cnt"><b>${got}</b>/${goal}</div></div>`;
   }).join('');
+}
+function triGo(id){if(id==='train')goLib('strength');else if(id==='recover')goLib('recovery');else switchApp('activity');}
+// GTG push-up counter
+const GTG_KEY='jvd_gtg';
+function gtg(){try{return JSON.parse(localStorage.getItem(GTG_KEY))||{};}catch(e){return{};}}
+function gtgBest(){const g=gtg();return Object.values(g).reduce((m,d)=>Math.max(m,d.best||0),0);}
+function gtgAdd(n){n=parseInt(n)||0;if(n<=0)return;const g=gtg();const d=todayISO();if(!g[d])g[d]={total:0,best:0};g[d].total+=n;g[d].best=Math.max(g[d].best,n);localStorage.setItem(GTG_KEY,JSON.stringify(g));buzz();renderGtg();}
+function gtgCustom(){const el=document.getElementById('gtg-in');gtgAdd(el.value);}
+function renderGtg(){
+  const g=gtg();const d=g[todayISO()]||{total:0,best:0};
+  document.getElementById('h-gtg').innerHTML=`<div class="gtg"><div class="gtg-top"><span class="gtg-name">Push-ups · grease the groove</span><span class="gtg-cnt"><b>${d.total}</b> today · best set <b>${gtgBest()}</b>/50</span></div><div class="gtg-btns"><button onclick="gtgAdd(5)">+5</button><button onclick="gtgAdd(10)">+10</button><button onclick="gtgAdd(15)">+15</button><input class="gtg-in" id="gtg-in" type="number" inputmode="numeric" placeholder="#"><button onclick="gtgCustom()" style="flex:0 0 44px">✓</button></div></div>`;
+}
+// Dan John–style strength standards (targets off bodyweight, editable via bodyweight in goals)
+const STANDARDS=[
+  {name:'Overhead press',exs:['Overhead Press'],mult:1.0},
+  {name:'Bench press',exs:['Bench Press'],mult:1.0},
+  {name:'Power clean',exs:['Power Clean'],mult:1.0},
+  {name:'Deadlift',exs:['Trap Bar Deadlift','Deadlift'],mult:2.0},
+  {name:'Back squat',exs:['Back Squat'],mult:1.5},
+  {name:'Pull-ups (one set)',exs:['Pull-up','Chin-up'],reps:10},
+  {name:'Push-ups (one set)',gtg:true,reps:50},
+];
+function bestE1(exs){return exs.reduce((m,ex)=>{const b=bestEntry(ex);return Math.max(m,b?epley(b.weight,b.reps):0);},0);}
+function bestReps(exs){return exs.reduce((m,ex)=>(lifts[ex]||[]).reduce((mm,e)=>Math.max(mm,e.reps||0),m),0);}
+let stdOpen=false;
+function toggleStd(){stdOpen=!stdOpen;renderStd();}
+function renderStd(){
+  const el=document.getElementById('h-std');if(!el)return;
+  if(!stdOpen){el.innerHTML='';return;}
+  const G=goals();const bw=G.bw||0;
+  el.innerHTML=`<div class="hgoal-card"><div class="hgoal-hd">Strength standards · BW ${bw||'—'} kg</div>${STANDARDS.map(s=>{
+    let cur,target,unit;
+    if(s.gtg){cur=gtgBest();target=s.reps;unit='reps';}
+    else if(s.reps){cur=bestReps(s.exs);target=s.reps;unit='reps';}
+    else{cur=bestE1(s.exs);target=bw?Math.round(bw*s.mult):0;unit='kg';}
+    const pct=target?Math.min(100,Math.round(cur/target*100)):0;
+    return `<div class="std-row"><div class="std-top"><span class="std-name">${s.name}</span><span class="std-val"><b>${cur||0}</b> / ${target||'—'} ${unit}</span></div><div class="std-bar"><i style="width:${pct}%"></i></div></div>`;
+  }).join('')}<div class="std-note">Dan John–style targets computed from your best logged sets (Epley est 1RM) against bodyweight. Bodyweight is editable under weekly goals.</div></div>`;
 }
 // ═══ LOG (Lift Log) ═══
 let logSub='log';
@@ -642,9 +790,26 @@ function exNames(){return Object.keys(lifts).sort((a,b)=>a.localeCompare(b));}
 function allEntries(){const o=[];for(const ex in lifts)lifts[ex].forEach((e,i)=>o.push({ex,i,...e}));return o.sort((a,b)=>(b.date||'').localeCompare(a.date||'')||b.weight-a.weight);}
 function bestEntry(ex){const a=lifts[ex]||[];return a.length?a.reduce((m,e)=>epley(e.weight,e.reps)>epley(m.weight,m.reps)?e:m):null;}
 function latestEntry(ex){const a=(lifts[ex]||[]).slice().sort((x,y)=>(x.date||'').localeCompare(y.date||''));return a.length?a[a.length-1]:null;}
-function prefillWeight(){const ex=document.getElementById('f-ex').value.trim();const wf=document.getElementById('f-weight');if(wf.value)return;const e=latestEntry(ex);if(e&&e.weight)wf.value=e.weight;}
+// linked exercise dropdown: My Block lifts first, then your history — no free text drift
+function blockExs(){const t=myBlockTpl();if(!t||!t.days)return[];const s=[];t.days.forEach(d=>(d.items||[]).forEach(it=>{if(it.track&&it.ex&&!s.includes(it.ex))s.push(it.ex);}));return s;}
+function buildExSelect(){
+  const sel=document.getElementById('f-ex');if(!sel)return;
+  const prev=sel.value;
+  const blk=blockExs();const mine=exNames().filter(x=>!blk.includes(x));
+  let html='';
+  if(blk.length)html+='<optgroup label="My Block">'+blk.map(o=>`<option>${o}</option>`).join('')+'</optgroup>';
+  if(mine.length)html+='<optgroup label="Your lifts">'+mine.map(o=>`<option>${o}</option>`).join('')+'</optgroup>';
+  html+='<option value="__new">＋ New exercise…</option>';
+  sel.innerHTML=html;
+  if(prev&&prev!=='__new'&&[...sel.options].some(o=>o.value===prev))sel.value=prev;
+  syncExNew();
+}
+function syncExNew(){const sel=document.getElementById('f-ex');document.getElementById('f-ex-new').style.display=sel.value==='__new'?'block':'none';}
+function exPicked(){syncExNew();document.getElementById('f-weight').value='';prefillWeight();}
+function curEx(){const sel=document.getElementById('f-ex');return sel.value==='__new'?document.getElementById('f-ex-new').value.trim():sel.value;}
+function prefillWeight(){const ex=curEx();const wf=document.getElementById('f-weight');if(wf.value)return;const e=latestEntry(ex);if(e&&e.weight)wf.value=e.weight;}
 function addEntry(){
-  const ex=document.getElementById('f-ex').value.trim();
+  const ex=curEx();
   const w=num(document.getElementById('f-weight').value);
   const r=parseInt(document.getElementById('f-reps').value)||0;
   const date=document.getElementById('f-date').value||todayISO();
@@ -655,9 +820,12 @@ function addEntry(){
   lifts[ex].push({date,weight:w,reps:r,note});
   save(LIFTS_KEY,lifts);
   document.getElementById('f-weight').value='';document.getElementById('f-note').value='';
+  const wasNew=document.getElementById('f-ex').value==='__new';
+  buildExSelect();
+  if(wasNew){document.getElementById('f-ex').value=ex;document.getElementById('f-ex-new').value='';syncExNew();}
   refreshDatalist();logFeed();logCount();toast('Logged');
 }
-function delEntry(ex,i){if(!lifts[ex])return;lifts[ex].splice(i,1);if(!lifts[ex].length)delete lifts[ex];save(LIFTS_KEY,lifts);logFeed();logCount();refreshDatalist();}
+function delEntry(ex,i){if(!lifts[ex])return;lifts[ex].splice(i,1);if(!lifts[ex].length)delete lifts[ex];save(LIFTS_KEY,lifts);logFeed();logCount();refreshDatalist();buildExSelect();}
 function logFeed(){
   const f=document.getElementById('log-feed'),all=allEntries().slice(0,30);
   if(!all.length){f.innerHTML='<div class="empty">No sets logged yet. Add your first one above — it becomes available to every workout in the library.</div>';return;}
@@ -715,13 +883,13 @@ function importData(input){
     const d=JSON.parse(r.result);let n=0;
     BACKUP_KEYS.forEach(k=>{if(d[k]!==undefined){localStorage.setItem(k,JSON.stringify(d[k]));n++;}});
     lifts=load(LIFTS_KEY);tms=load(TM_KEY);acts=loadArr(ACT_KEY);
-    refreshDatalist();logFeed();logCount();renderLifts();renderMaxes();
+    refreshDatalist();buildExSelect();logFeed();logCount();renderLifts();renderMaxes();
     toast(n?'Restored '+n+' data set'+(n>1?'s':''):'Nothing to import');
   }catch(e){toast('Invalid file');}};
   r.readAsText(file);input.value='';
 }
-function seedExercises(){SUGGESTED.forEach(n=>{if(!lifts[n])lifts[n]=[];});save(LIFTS_KEY,lifts);refreshDatalist();logFeed();toast('Exercises added');}
-function logWipe(){if(!confirm('Delete ALL logged sets and training maxes?'))return;lifts={};tms={};save(LIFTS_KEY,lifts);save(TM_KEY,tms);refreshDatalist();logFeed();logCount();renderLifts();renderMaxes();toast('Cleared');}
+function seedExercises(){SUGGESTED.forEach(n=>{if(!lifts[n])lifts[n]=[];});save(LIFTS_KEY,lifts);refreshDatalist();buildExSelect();logFeed();toast('Exercises added');}
+function logWipe(){if(!confirm('Delete ALL logged sets and training maxes?'))return;lifts={};tms={};save(LIFTS_KEY,lifts);save(TM_KEY,tms);refreshDatalist();buildExSelect();logFeed();logCount();renderLifts();renderMaxes();toast('Cleared');}
 function refreshDatalist(){const set=new Set([...exNames(),...SUGGESTED]);document.getElementById('ex-list').innerHTML=[...set].sort((a,b)=>a.localeCompare(b)).map(n=>`<option value="${n}">`).join('');}
 // ═══ ACTIVITY ═══
 const IC={
@@ -754,10 +922,10 @@ function recordWorkoutActivity(t){
 }
 function actCfg(id){return ACTS.find(a=>a.id===id)||{id,name:id,unit:'',pillar:'zone2'};}
 const PILLARS=[
-  {id:'strength',name:'Strength',target:4,note:'Lifting sessions. Your 4-a-week anchor — main program plus the weekend Mass Made Simple.'},
-  {id:'power',name:'Power / explosive',target:2,note:'Jumps, throws, KB ballistics, Olympic lifts and boxing — fast and crisp, not fatiguing.'},
-  {id:'intense',name:'Intensity (heart rate)',target:2,note:'Runs and Assault-bike HIIT — raise the heart rate. Two runs a week is the target.'},
-  {id:'zone2',name:'Aerobic base (Zone 2)',target:4,note:'Easy rides & walks. Your 7.5 km commute is the engine — most days.'},
+  {id:'strength',name:'Strength',target:4,note:'My Block sessions — three press days plus the weekend MMS leg day.'},
+  {id:'power',name:'Power / explosive',target:1,note:'Boxing and standalone explosive work. The block already carries swings/cleans inside the press days.'},
+  {id:'intense',name:'Intensity (heart rate)',target:1,note:'Assault-bike HIIT — capped at one a week so the press keeps progressing.'},
+  {id:'zone2',name:'Aerobic base (Zone 2)',target:4,note:'Easy rides & walks. Your 7.5 km commute is the engine — most days. Uncapped.'},
   {id:'grip',name:'Grip',target:1,note:'A dedicated grip session each week — carries, holds, pinches.'},
   {id:'mobility',name:'Recovery & mobility',target:4,note:'Stretch / mobility / recovery sessions. Four a week keeps everything moving well.'},
 ];
@@ -901,7 +1069,7 @@ function actWipe(){if(!confirm('Delete ALL logged activity?'))return;acts=[];sav
 const CATS=[['all','All'],['strength','Strength'],['power','Power'],['boxing','Boxing'],['hiit','HIIT / circuits'],['grip','Grip'],['adf','ADF'],['warmup','Warm-ups'],['recovery','Recovery']];
 let filter='all', view='workouts';
 function renderViewSeg(){
-  const cnt=n=>TEMPLATES.filter(t=>n==='programs'?t.type==='program':t.type!=='program').length;
+  const cnt=n=>TEMPLATES.filter(t=>!t.archived&&(n==='programs'?t.type==='program':t.type!=='program')).length;
   document.getElementById('viewseg').innerHTML=
     `<button class="${view==='current'?'on':''}" onclick="setView('current')">Current</button>`+
     `<button class="${view==='workouts'?'on':''}" onclick="setView('workouts')">Workouts <span style="opacity:.6">${cnt('workouts')}</span></button>`+
@@ -918,8 +1086,8 @@ function setFilter(f){filter=f;renderChips();renderList();}
 function renderList(){
   if(view==='current'){ return renderCurrent(); }
   let items;
-  if(view==='programs'){ items=TEMPLATES.filter(t=>t.type==='program'); }
-  else { items=TEMPLATES.filter(t=>t.type!=='program'&&(filter==='all'||t.category===filter)); }
+  if(view==='programs'){ items=TEMPLATES.filter(t=>t.type==='program'&&!t.archived); }
+  else { items=TEMPLATES.filter(t=>t.type!=='program'&&!t.archived&&(filter==='all'||t.category===filter)); }
   document.getElementById('list').innerHTML=items.map(t=>{
     const badge=isActive(t.id)?'<span class="card-badge cur">● Current</span>':(t.type==='program'?'<span class="card-badge prog">Program</span>':'');
     return `<div class="lcard" role="button" tabindex="0" onclick="openTemplate('${t.id}')"><div class="card-top"><div class="card-name">${t.name}</div>${badge}</div><div class="card-sum">${t.summary}</div><div class="card-meta"><span><b>${t.source}</b></span><span>~${t.duration} min</span></div></div>`;
@@ -932,7 +1100,10 @@ function activeStart(id){const p=activePrograms().find(x=>x.id===id);return p?p.
 function setActive(id){
   let arr=activePrograms();
   if(arr.some(p=>p.id===id)){flash('Already a current program');return;}
-  arr.push({id,started:todayISO()});
+  const t=TEMPLATES.find(x=>x.id===id);
+  const entry={id,started:todayISO()};
+  if(t&&t.myblock){entry.label=t.blockLabel;entry.focus=t.focus;}
+  arr.push(entry);
   localStorage.setItem(ACTIVE_KEY,JSON.stringify(arr));
   flash(arr.length>1?'Added — '+arr.length+' programs running':'Set as current program');
 }
@@ -942,9 +1113,13 @@ function stageOf(t){
   const st=activeStart(t.id);return st?Math.min(weeksSince(st)+1,(t.weeks||[1]).length):1;
 }
 function endActive(id){
+  if(id==='my-block'){
+    if(!confirm('End this block? It gets archived to your block ledger; your lift history is untouched.'))return;
+    const ap=activePrograms().find(p=>p.id==='my-block');if(ap)archiveBlock(ap);
+  }
   const arr=activePrograms().filter(p=>p.id!==id);
   localStorage.setItem(ACTIVE_KEY,JSON.stringify(arr));
-  renderViewSeg();renderList();flash('Program ended');
+  renderViewSeg();renderList();flash(id==='my-block'?'Block archived':'Program ended');
 }
 function setActiveAndShow(id){setActive(id);view='current';renderViewSeg();renderChips();renderList();}
 function setActiveFromSheet(id){setActive(id);openTemplate(id);}
@@ -979,15 +1154,22 @@ function progReadout(t,n){
 function curCard(t){
   const st=activeStart(t.id);const dates=progSessions(t.id),n=dates.length;const last=n?dates[n-1]:null;
   const wkN=progThisWeek(t.id);const daysIn=st?Math.max(0,Math.floor((new Date()-parseISODate(st))/86400000)):0;
-  return `<div class="cur-card"><div class="cur-badge">● Current program</div><div class="cur-name">${t.name}</div><div class="cur-src">${t.source} · started ${fmtShort(st)}</div><div class="cur-stats"><div class="cur-cell"><div class="cur-val">${n}</div><div class="cur-lbl">Sessions</div></div><div class="cur-cell"><div class="cur-val">${wkN}</div><div class="cur-lbl">This week</div></div><div class="cur-cell"><div class="cur-val">${daysIn}</div><div class="cur-lbl">Days in</div></div></div><div class="cur-prog">${progReadout(t,n)}</div><button class="btn btn-pri" onclick="openTemplate('${t.id}')">Open program</button><button class="btn btn-soft" style="margin-top:8px" onclick="logProgSession('${t.id}')">＋ Log a session done${last?` · last ${fmtShort(last)}`:''}</button><button class="cur-link warn" style="margin-top:10px;width:100%" onclick="endActive('${t.id}')">End this program</button></div>`;
+  const quickLog=t.myblock?'':`<button class="btn btn-soft" style="margin-top:8px" onclick="logProgSession('${t.id}')">＋ Log a session done${last?` · last ${fmtShort(last)}`:''}</button>`;
+  return `<div class="cur-card"><div class="cur-badge">● ${t.myblock?(t.blockLabel||'Current block'):'Current program'}</div><div class="cur-name">${t.name}</div><div class="cur-src">${t.source} · started ${fmtShort(st)}</div><div class="cur-stats"><div class="cur-cell"><div class="cur-val">${n}</div><div class="cur-lbl">Sessions</div></div><div class="cur-cell"><div class="cur-val">${wkN}</div><div class="cur-lbl">This week</div></div><div class="cur-cell"><div class="cur-val">${daysIn}</div><div class="cur-lbl">Days in</div></div></div><div class="cur-prog">${progReadout(t,n)}</div><button class="btn btn-pri" onclick="openTemplate('${t.id}')">Open ${t.myblock?'block':'program'}</button>${quickLog}<button class="cur-link warn" style="margin-top:10px;width:100%" onclick="endActive('${t.id}')">${t.myblock?'End block (archive to ledger)':'End this program'}</button></div>`;
 }
 function renderCurrent(){
   const list=document.getElementById('list');
   const aps=activePrograms().filter(p=>TEMPLATES.find(t=>t.id===p.id));
   let html=aps.map(p=>curCard(TEMPLATES.find(t=>t.id===p.id))).join('');
-  if(aps.length<2){
-    html+=`<div class="cur-empty">${aps.length?'Run a second program alongside it — e.g. a weekend Mass Made Simple:':'No program running yet. Pick one — tap <b>Set as current</b> and it lives here so you can track and resume it.'}</div>`+
-      TEMPLATES.filter(t=>t.type==='program'&&!aps.some(a=>a.id===t.id)).map(t=>`<div class="lcard"><div class="card-top"><div class="card-name">${t.name}</div><span class="card-badge prog">Program</span></div><div class="card-sum">${t.summary}</div><div class="cur-choose"><button class="btn btn-pri" onclick="setActiveAndShow('${t.id}')">Set as current</button><button class="btn btn-soft" onclick="openTemplate('${t.id}')">Preview</button></div></div>`).join('');
+  const shelf=TEMPLATES.filter(t=>t.type==='program'&&!t.archived&&!t.myblock&&!aps.some(a=>a.id===t.id));
+  if(shelf.length){
+    html+=`<div class="cur-empty">Shelf — run one alongside the block if you want:</div>`+
+      shelf.map(t=>`<div class="lcard"><div class="card-top"><div class="card-name">${t.name}</div><span class="card-badge prog">Program</span></div><div class="card-sum">${t.summary}</div><div class="cur-choose"><button class="btn btn-pri" onclick="setActiveAndShow('${t.id}')">Set as current</button><button class="btn btn-soft" onclick="openTemplate('${t.id}')">Preview</button></div></div>`).join('');
+  }
+  const bl=blocks();
+  if(bl.length){
+    html+=`<div class="lbl" style="padding:16px 4px 8px">Block ledger</div>`+
+      bl.slice().reverse().map(b=>`<div class="lcard" style="cursor:default"><div class="card-top"><div class="card-name">${b.label}</div>${b.focus?`<span class="card-badge">${b.focus}</span>`:''}</div><div class="card-sum">${fmtShort(b.started)} → ${fmtShort(b.ended)} · ${b.sessions} session${b.sessions===1?'':'s'}${(b.startE1RM&&b.endE1RM)?` · est 1RM ${b.startE1RM} → ${b.endE1RM} kg`:''}</div></div>`).join('');
   }
   list.innerHTML=html||'<div class="cur-empty">No programs available.</div>';
 }
@@ -1252,12 +1434,13 @@ function finishTimer(){
 }
 function exitTimer(){clearInterval(tInt);document.getElementById('timer').classList.remove('on');tState=null;}
 
-// ═══ INIT ═══ (v2 consolidation + inline logging)
+// ═══ INIT ═══ (v3 — My Block cockpit)
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&document.activeElement&&document.activeElement.getAttribute('role')==='button'){e.preventDefault();document.activeElement.click();}});
+ensureMyBlock();   // auto-activates My Block; archives + rolls the block when blockLabel changes
 view=activePrograms().length?'current':'workouts';
 document.getElementById('f-date').value=todayISO();
 document.getElementById('d-date').value=todayISO();
-refreshDatalist();renderTypeSeg();
+refreshDatalist();buildExSelect();renderTypeSeg();
 switchApp('home');
 </script>
 </body>

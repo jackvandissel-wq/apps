@@ -29,6 +29,52 @@
    ════════════════════════════════════════════════════════════════ */
 const TEMPLATES = [
 
+/* ═════════════ MY BLOCK — the one tailored program ═════════════
+   Claude rewrites ONLY this object at each refocus. Rules:
+   - keep id:'my-block' stable; change blockLabel for a new block
+     (the app auto-archives the old block to the ledger on label change)
+   - exercise `ex` names MUST exactly match existing Lift Log keys
+   - never touch jvd_* data or the app shell
+   ════════════════════════════════════════════════════════════════ */
+{
+  id:'my-block', category:'strength', type:'program', programType:'weekly', myblock:true,
+  name:'My Block — OHP', source:'Tailored · rotating focus', blockLabel:'OHP Block 1',
+  focus:'Overhead Press', goal:{ex:'Overhead Press', targetBW:1.0},
+  summary:'Current focus: drive the overhead press toward bodyweight (95 kg). Press three days, legs on the weekend, conditioning capped at 1× HIIT + 1× boxing.',
+  duration:40, warmupRef:'broomstick',
+  days:[
+    {label:'Day 1 — Press heavy', focus:'OHP top set + hinge', dur:'~40 min', items:[
+      {name:'Overhead Press — ramp to top set', scheme:'top 1–3', note:'Small jumps to the heaviest clean 1–3 of the day. By feel — the moment bar speed drops, that\'s the top. Log it.', track:true, ex:'Overhead Press'},
+      {name:'Overhead Press — backoffs', scheme:'3×5 @ ~85%', note:'Drop ~15% off the top set, three crisp fives. This is where the volume lives.', track:true, ex:'Overhead Press'},
+      {name:'Trap Bar Deadlift', scheme:'2×5', note:'Heavy-ish but crisp, never a grind.', track:true, ex:'Trap Bar Deadlift'},
+      {name:'KB Swing — hard', scheme:'3×10', note:'Explosive finisher. Float the bell.', track:true, ex:'KB Swing'},
+    ]},
+    {label:'Day 2 — Press volume + pull', focus:'Pressing volume, back, carries', dur:'~40 min', items:[
+      {name:'Overhead Press — ramp to top set', scheme:'top 3–5', note:'Slightly higher reps than Day 1. Heavy but clean.', track:true, ex:'Overhead Press'},
+      {name:'Overhead Press — backoffs', scheme:'2×5 @ ~85%', note:'Two fives off today\'s top set.', track:true, ex:'Overhead Press'},
+      {name:'Pull-up', scheme:'3×5–8', note:'Balance the pressing. Add weight when 8 is easy.', track:true, ex:'Pull-up'},
+      {name:'Sandbag / Farmer Carry', scheme:'3 trips', note:'Sandbag bear-hug or farmer carry — walk tall, grip hard.', track:true, ex:'Farmer Carry'},
+    ]},
+    {label:'Day 3 — Push press + explosive', focus:'Overload the press pattern', dur:'~35 min', items:[
+      {name:'Push Press — ramp to top set', scheme:'top 3–5', note:'Leg drive lets you handle more than strict — overload the pattern. Crisp lockouts.', track:true, ex:'Push Press'},
+      {name:'Overhead Press — light backoff', scheme:'2×5 light', note:'Strict, fast bar speed, groove the pattern. Well under Day 1 weights.', track:true, ex:'Overhead Press'},
+      {name:'Power Clean or KB Swing', scheme:'5×3 / 3×10', note:'Pick one. Maximum intent, full rest, nothing grindy.', track:true, ex:'Power Clean'},
+    ]},
+    {label:'Day 4 — MMS legs (Sat or Sun)', focus:'Lower body, minimalist', dur:'~25 min', items:[
+      {name:'BB Complex (with push press)', scheme:'3–5 rounds', note:'Row · clean · front squat · push press · back squat · good morning — 6 reps each, bar never set down. Log the bar weight.', track:true, ex:'BB Complex'},
+      {name:'Goblet or Sandbag Squat', scheme:'3×8–10', note:'Real sets — sit between the knees, drive up.', track:true, ex:'Goblet Squat'},
+      {name:'Romanian Deadlift or KB DL', scheme:'2×8', note:'Hinge volume to finish.', track:true, ex:'Romanian Deadlift'},
+    ]},
+  ],
+  rules:[
+    {title:'The press leads', body:'Three pressing days a week, every week. Everything else supports it. If something has to give, it\'s never the press.'},
+    {title:'Top set by feel', body:'Ramp in small jumps; the top set is the heaviest clean set of the day — no misses, no grinders. Some days that\'s a PR, some days it isn\'t. Log it either way.'},
+    {title:'Conditioning is capped', body:'1× assault-bike HIIT and 1× boxing a week, max. Rides and walks are recovery — as many as you like.'},
+    {title:'Push-ups are GTG', body:'Sets of 10–15 through the day, never to failure. Tracked on Home — 50 in a row is the target.'},
+  ],
+  notes:'Your one program. When the press goal is hit (or goes stale), tell Claude to refocus — this block gets archived to your ledger and a new one takes its place. Your lift history carries over untouched.'
+},
+
 /* ───────────── DAN JOHN STRENGTH (sessions) ───────────── */
 {
   id:'abc', category:'strength', type:'session', warmupRef:'goblet-flow',
@@ -69,9 +115,12 @@ const TEMPLATES = [
   notes:'Same lifts, same submaximal loads, most days. Strength accumulates from consistency, not grind. For the full 8-week plan, run the Easy Strength program.'
 },
 
-/* ───────────── PROGRAMS (multi-week) ───────────── */
+/* ───────────── PROGRAMS (multi-week) — ARCHIVED ─────────────
+   archived:true hides a program from the Library; data/keys preserved.
+   Flip the flag back to re-enable one. They are reference material —
+   My Block is the program that gets run. ───────────── */
 {
-  id:'easy-strength', category:'strength', type:'program', run:'program',
+  id:'easy-strength', category:'strength', type:'program', run:'program', archived:true,
   name:'Easy Strength — Adaptable', source:'Dan John / Pavel — Easy Strength Omnibus',
   summary:'The daily-driver strength program. Choose your lifts and a rep template from the Omnibus.',
   duration:30,
@@ -99,7 +148,7 @@ const TEMPLATES = [
   notes:'Pick the exercise for each movement and a rep template — your choices save automatically. Based on the Easy Strength Omnibus. Run it most days and log your working sets to Lift Log so you can nudge the loads up over time.'
 },
 {
-  id:'one-lift', category:'strength', type:'program',
+  id:'one-lift', category:'strength', type:'program', archived:true,
   name:'One Lift a Day', source:'Dan John',
   summary:'One big lift per day, ramped to a heavy work set. Rotate the lifts across the week.',
   duration:30,
@@ -130,7 +179,7 @@ const TEMPLATES = [
   notes:'Dan John\'s simplest template — ideal for busy weeks. One lift, done well, each day. Rotate squat / press / deadlift / bench / chin. Log the top set so you can nudge it up.'
 },
 {
-  id:'10k-swing', category:'strength', type:'program', run:'challenge',
+  id:'10k-swing', category:'strength', type:'program', run:'challenge', archived:true,
   name:'10,000 Swing Challenge', source:'Dan John',
   summary:'20 workouts, 500 swings each — 10,000 swings in ~4 weeks. Tracks your progress.',
   duration:35,
@@ -152,7 +201,7 @@ const TEMPLATES = [
   notes:'Tap "Log session done" each time you finish 500 swings — the bar tracks you toward 10,000. Spread the 20 sessions over ~4 weeks; rest when your hands or hips need it.'
 },
 {
-  id:'armor-building', category:'strength', type:'program',
+  id:'armor-building', category:'strength', type:'program', archived:true,
   name:'Armor Building Formula', source:'Geoff Neupert',
   summary:'4-week double-KB density wave on the Armor Building Complex. EMOM time climbs each week.',
   duration:30,
@@ -188,7 +237,7 @@ const TEMPLATES = [
   notes:'A 4-week density wave built on the Armor Building Complex (also a standalone session in the library). The complex EMOM time is the progressive-overload dial — it climbs 10 → 12 → 15 → 20 min, then you restart heavier. Tap a week to see its target.'
 },
 {
-  id:'mass-made-simple', category:'strength', type:'program',
+  id:'mass-made-simple', category:'strength', type:'program', archived:true,
   name:'Mass Made Simple', source:'Dan John',
   summary:'6-week mass program — the barbell complex builds week to week, paired with 20-rep squats.',
   duration:35,
@@ -228,7 +277,7 @@ const TEMPLATES = [
   notes:'~6 weeks. The barbell complex builds work capacity (2 → 5 rounds) and the 20-rep squat builds size (+~2.5kg/week). Tap a week to see exactly that week\'s complexes and squat target. Warm up thoroughly.'
 },
 {
-  id:'531-classic', category:'strength', type:'program',
+  id:'531-classic', category:'strength', type:'program', archived:true,
   name:'5/3/1 — Classic Cycle', source:'Jim Wendler',
   summary:'4-week wave off your training max. Pulls TM from Lift Log.',
   duration:45,
@@ -251,7 +300,7 @@ const TEMPLATES = [
   notes:'Set training maxes in Lift Log (90% of est 1RM) — this template reads them to fill every set. Push the final "+" set for reps, leaving 1–2 in reserve. Add 2.5kg (upper) / 5kg (lower) to your TM each cycle.'
 },
 {
-  id:'power-fcm', category:'power', type:'program', programType:'progressive', warmupRef:'famous-five',
+  id:'power-fcm', category:'power', type:'program', programType:'progressive', warmupRef:'famous-five', archived:true,
   name:'French Contrast Power', source:'French Contrast Method',
   summary:'6-week explosive block — heavy → plyo → weighted-explosive → assisted, twice a week.',
   duration:35,
@@ -289,7 +338,7 @@ const TEMPLATES = [
   notes:'The French Contrast Method: a heavy lift, a plyometric, a weighted-explosive move, then an assisted/accelerated jump — training the whole force-velocity curve in one chain. Proven over 6–8 weeks for explosive power. Log the heavy primer lifts; the jumps are about speed, not load.'
 },
 {
-  id:'run-5k', category:'running', type:'program', programType:'progressive', warmupRef:'famous-five',
+  id:'run-5k', category:'running', type:'program', programType:'progressive', warmupRef:'famous-five', archived:true,
   name:'5K Builder', source:'Run — couch to 5K style',
   summary:'8-week run/walk progression from nothing to a continuous 5K. Two runs a week.',
   duration:30,
@@ -327,7 +376,7 @@ const TEMPLATES = [
   notes:'A gentle 8-week build to a continuous 5K. Feeds your Intensity pillar (two runs a week). Progresses by calendar week — repeat any week that still feels hard before moving on.'
 },
 {
-  id:'run-intervals', category:'running', type:'program', programType:'progressive', warmupRef:'famous-five',
+  id:'run-intervals', category:'running', type:'program', programType:'progressive', warmupRef:'famous-five', archived:true,
   name:'Run Intervals', source:'Run — speed / threshold',
   summary:'4-week interval block for when you can already run 5K — build speed and threshold.',
   duration:30,
@@ -667,7 +716,7 @@ const TEMPLATES = [
     {label:'Stage 3 — Hook & combos', goal:'3-punch combos', progress:'Add the lead hook and start linking punches.', items:[
       {name:'Lead hook (3)', scheme:'3 × 2 min', note:'Elbow up, rotate, short arc. Don\'t wind up.', track:false},
       {name:'Combos 1-2, 1-2-3', scheme:'4 × 2 min', note:'Shadow or light bag. Reset stance after each combo.', track:false},
-      {name:'Light bag rounds', scheme:'3 × 2 min', note:'Wrap hands. Technical, controlled — not for power yet.', track:true, ex:'KB Swing'},
+      {name:'Light bag rounds', scheme:'3 × 2 min', note:'Wrap hands. Technical, controlled — not for power yet.', track:false},
     ]},
     {label:'Stage 4 — Defense', goal:'Add slips & rolls', progress:'Now learn not to get hit — defense layered onto your combos.', items:[
       {name:'Slips (side to side)', scheme:'3 × 2 min', note:'Small head movement off-line. Stay balanced.', track:false},
